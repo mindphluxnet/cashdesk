@@ -121,7 +121,7 @@ def show_ausgangsrechnungen_neu():
     page_title = "Neue Ausgangsrechnung"
     page_id = "ausgangsrechnungneu"
 
-    kunden = database.kunden.load_kunden(sqlite_file)
+    kunden = database.kunden.load_kunden(sqlite_file)    
     rechnungs_id = database.rechnungen.get_next_invoice_id(sqlite_file)
 
     return render_template('ausgangsrechnung-neu.html', kunden = kunden, rechnungs_id = rechnungs_id, page_title = page_title, page_id = page_id)
