@@ -19,13 +19,13 @@
         <tbody>
           {% for kunde in kunden %}
           <tr>
-            <td>{{ kunde[0] }}</td>
-            <td>{{ kunde[2] }}, {{ kunde[1] }}</td>
-            <td>{{ kunde[6] }}</td>
+            <td>{{ kunde['rowid'] }}</td>
+            <td>{{ kunde['nachname'] }}, {{ kunde['vorname'] }}</td>
+            <td>{{ kunde['ort'] }}</td>
             <td></td>
             <td></td>
             <td>
-              <a class="btn btn-xs btn-default" href="/kunden/bearbeiten/{{ kunde[0] }}">Bearbeiten</a> <a class="btn btn-xs btn-danger" href="/kunden/loeschen/{{ kunde[0] }}">L&ouml;schen</a>
+              <a class="btn btn-xs btn-default" href="/kunden/bearbeiten/{{ kunde['rowid'] }}">Bearbeiten</a> <a class="btn btn-xs btn-danger" href="/kunden/loeschen/{{ kunde['rowid'] }}">L&ouml;schen</a>
             </td>
           {% endfor %}
         </tbody>
