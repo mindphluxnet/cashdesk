@@ -20,5 +20,10 @@ def setup_database(sqlite_file):
     except Exception as e:
         pass
 
+    try:
+        c.execute("CREATE TABLE einstellungen (schluessel TEXT, wert TEXT)")
+    except Exception as e:
+        pass
+
     conn.commit()
     conn.close()

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 #: cashdesk
 #: ein minimales fakturierungsprogramm
 #: Copyright 2017, Richard Kaemmerer <richard@richardkaemmerer.de>
@@ -73,6 +75,15 @@ def show_kassenbuch():
 
     return render_template('kassenbuch.html', page_title = page_title, page_id = page_id)
 
+@app.route('/einstellungen')
+def show_einstellungen():
+
+    page_title = "Einstellungen"
+    page_id = "einstellungen"
+
+    einstellungen = []
+
+    return render_template('einstellungen.html', page_title = page_title, page_id = page_id, einstellungen = einstellungen)
 
 if __name__ == '__main__':
 	app.run(debug = debug, host = bind_host, port = bind_port)
