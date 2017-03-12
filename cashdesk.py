@@ -118,13 +118,31 @@ def show_ausgangsrechnungen():
 @app.route('/ausgangsrechnungen/neu')
 def show_ausgangsrechnungen_neu():
 
-    page_title = "Neue Ausgangsrechnung"
+    page_title = "Neue Ausgangsrechnung (Schritt 1)"
     page_id = "ausgangsrechnungneu"
 
-    kunden = database.kunden.load_kunden(sqlite_file)    
-    rechnungs_id = database.rechnungen.get_next_invoice_id(sqlite_file)
+    kunden = database.kunden.load_kunden(sqlite_file)
+    rechnungsnummer = database.rechnungen.get_next_invoice_id(sqlite_file)
 
-    return render_template('ausgangsrechnung-neu.html', kunden = kunden, rechnungs_id = rechnungs_id, page_title = page_title, page_id = page_id)
+    return render_template('ausgangsrechnung-neu.html', kunden = kunden, rechnungsnummer = rechnungsnummer, page_title = page_title, page_id = page_id)
+
+@app.route('/ausgangsrechnungen/neu/step2/<string:id>')
+def ausgangsrechnung_neu_step2(id):
+
+    page_title = "Neue Ausgangsrechnung (Schritt 2)"
+    page_id = "ausgangsrechnungen"
+
+    rechnung = database.rechnungen.load_rechnung(sqlite_file, id)
+    kunden = database.kunden.load_kunden(sqlite_file)
+
+    return render_template('ausgangsrechnung-neu-step2.html', kunden = kunden, rechnung = rechnung, page_title = page_title, page_id = page_id)
+
+@app.route('/ausgangsrechnungen/speichern/step1', methods = ['POST'])
+def ausgangsrechnung_speichern_step1():
+
+    rechnung_id = database.rechnungen.save_rechnung_step1(sqlite_file, request.form)
+
+    return redirect('/ausgangsrechnungen/neu/step2/' + rechnung_id)
 
 @app.route('/kassenbuch')
 def show_kassenbuch():
