@@ -1,0 +1,39 @@
+{% include "header.html" %}
+
+    {% include "nav.html" %}
+
+
+    <div class="container">
+
+      <a class="btn btn-primary" href="/kunden/neu">Neuen Kunden anlegen</a>
+      <h3>Kundenverwaltung</h3>
+      <table class="table table-striped table-condensed">
+        <thead>
+          <th>Kundennummer</th>
+          <th>Name, Vorname</th>
+          <th>Anschrift</th>
+          <th>Umsatz</th>
+          <th>Rohgewinn</th>
+          <th>Optionen</th>
+        </thead>
+        <tbody>
+          {% for kunde in kunden %}
+          <tr>
+            <td>{{ kunde[1] }}</td>
+            <td>{{ kunde[2] }}</td>
+            <td>{{ kunde[3] }}</td>
+            <td>&euro; {{ '{0:0.2f}'.format(kunde[4]) }}</td>
+            <td>&euro; {{ '{0:0.2f}'.format(kunde[5]) }}</td>
+            <td>
+              <a class="btn btn-default" href="/kunden/bearbeiten/{{ kunde[0] }}">Bearbeiten</a> <a class="btn btn-danger" href="/kunden/loeschen/{{ kunde[0] }}">L&ouml;schen</a>
+            </td>
+          {% endfor %}
+        </tbody>
+
+      </table>
+
+
+
+    </div> <!-- /container -->
+
+{% include "footer.html" %}
