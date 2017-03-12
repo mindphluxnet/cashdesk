@@ -13,7 +13,7 @@
             <div class="col-sm-4">
               <select name="kunden_id" id ="kunden_id" class="form-control">
                 {% for kunde in kunden %}
-                  <option value="{{ kunde[0] }}">{{ kunde[1] }}, {{ kunde[2] }}</option>
+                  <option value="{{ kunde[0] }}">{{ kunde[2] }}, {{ kunde[1] }}</option>
                 {% endfor %}
               </select>
             </div>
