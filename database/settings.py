@@ -1,5 +1,4 @@
 import sqlite3
-import pprint
 
 def save_settings(sqlite_file, settings):
 
@@ -17,6 +16,6 @@ def load_settings(sqlite_file):
     c = conn.cursor()
 
     c.execute("SELECT * FROM einstellungen WHERE oid = 1")
-    einstellungen = c.fetchone()    
+    einstellungen = c.fetchone()
 
     return einstellungen

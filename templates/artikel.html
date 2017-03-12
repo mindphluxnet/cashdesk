@@ -11,7 +11,24 @@
         <thead>
           <th>Artikelnummer</th>
           <th>Artikelbezeichnung</th>
-          
+          <th>Bestand</th>
+          <th>EK-Preis</th>
+          <th>VK-Preis</th>
+          <th>Optionen</th>
+        </thead>
+        <tbody>
+          {% for art in artikel %}
+          <tr>
+            <td>{{ art[1] }}</td>
+            <td>{{ art[2] }}</td>
+            <td>{{ art[3] }}</td>
+            <td>&euro; {{ art[4] }}</td>
+            <td>&euro; {{ art[5] }}</td>
+            <td>
+              <a class="btn btn-default" href="/artikel/bearbeiten/{{ art[0] }}">Bearbeiten</a> <a class="btn btn-danger" href="/artikel/loeschen/{{ art[0] }}">L&ouml;schen</a>
+            </td>
+          {% endfor %}
+        </tbody>
 
       </table>
 

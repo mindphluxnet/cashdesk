@@ -14,6 +14,7 @@ import time
 
 import database.setup
 import database.settings
+import database.artikel
 
 sqlite_file = "cashdesk.sqlite"
 debug = True
@@ -51,6 +52,16 @@ def show_artikel_neu():
     page_id = "artikelneu"
 
     return render_template('artikel-neu.html', page_title = page_title, page_id = page_id)
+
+@app.route('/artikel/bearbeiten/<string:id>')
+def show_artikel_bearbeiten(id):
+
+    page_title = "Artikel bearbeiten"
+    page_id = "artikelbearbeiten"
+
+    artikel = database.artikel.load_artikel(int(id))
+
+    return render_template('artikel-bearbeiten.html', page_title = page_title, page_id = page_id, artikel = artikel)
 
 @app.route('/kunden')
 def show_kunden():
