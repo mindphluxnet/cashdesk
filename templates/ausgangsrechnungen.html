@@ -25,7 +25,7 @@
             <td>&euro; {{ '{0:0.2f}'.format(rechnung[4]) }}</td>
             <td>&euro; {{ '{0:0.2f}'.format(rechnung[5]) }}</td>
             <td>
-              <a class="btn btn-default" href="/ausgangsrechnung/bearbeiten/{{ rechnung[0] }}">Bearbeiten</a> <a class="btn btn-danger" href="/ausgangsrechnung/stornieren/{{ rechnung[0] }}">Storno</a>
+              <a class="btn btn-xs btn-default" href="/ausgangsrechnung/bearbeiten/{{ rechnung[0] }}">Bearbeiten</a> <a class="btn btn-xs btn-danger" href="/ausgangsrechnung/stornieren/{{ rechnung[0] }}">Storno</a>
             </td>
           {% endfor %}
         </tbody>
