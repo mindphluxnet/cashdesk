@@ -97,7 +97,7 @@ def show_kunden():
 
     kunden = database.kunden.load_kunden(sqlite_file)
 
-    return render_template('kunden.html', page_title = page_title, page_id = page_id)
+    return render_template('kunden.html', kunden = kunden, page_title = page_title, page_id = page_id)
 
 @app.route('/kunden/neu')
 def show_kunden_neu():
@@ -109,6 +109,8 @@ def show_kunden_neu():
 
 @app.route('/kunden/speichern', methods = ['POST'])
 def kunde_speichern():
+
+    database.kunden.save_kunde(sqlite_file, request.form)
 
     return redirect(url_for('show_kunden'))
 

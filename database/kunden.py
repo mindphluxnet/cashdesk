@@ -12,7 +12,7 @@ def load_kunden(sqlite_file):
 
     return kunden
 
-def save_customer(sqlite_file, customer):
+def save_kunde(sqlite_file, customer):
 
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
