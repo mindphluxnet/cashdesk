@@ -8,22 +8,22 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Cashdesk</a>
+      <a class="navbar-brand" href="/"><i class="glyphicon glyphicon-euro"></i> Cashdesk</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li {%if page_id == "index" %}class="active"{% endif %}><a href="/">Home</a></li>
-        <li><a href="/artikel">Artikelverwaltung</a></li>
-        <li><a href="/kunden">Kundenverwaltung</a></li>
+        <li {%if page_id == "index" %}class="active"{% endif %}><a href="/"><i class="glyphicon glyphicon-home"></i> Home</a></li>
+        <li><a href="/artikel"><i class="glyphicon glyphicon-barcode"></i> Artikelverwaltung</a></li>
+        <li><a href="/kunden"><i class="glyphicon glyphicon-user"></i> Kundenverwaltung</a></li>
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Rechnungen <span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-envelope"></i> Rechnungen <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="/eingangsrechnungen">Eingangsrechnungen</a></li>
-            <li><a href="/ausgangsrechnungen">Ausgangsrechnungen</a></li>
+            <li><a href="/eingangsrechnungen"><i class="glyphicon glyphicon-arrow-right"></i> Eingangsrechnungen</a></li>
+            <li><a href="/ausgangsrechnungen"><i class="glyphicon glyphicon-arrow-left"></i> Ausgangsrechnungen</a></li>
           </ul>
         </li>
-        <li><a href="/kassenbuch">Kassenbuch</a></li>
-        <li><a href="/einstellungen">Einstellungen</a></li>        
+        <li><a href="/kassenbuch"><i class="glyphicon glyphicon-credit-card"></i> Kassenbuch</a></li>
+        <li><a href="/einstellungen"><i class="glyphicon glyphicon-cog"></i> Einstellungen</a></li>
       </ul>
     </div><!--/.nav-collapse -->
   </div>
