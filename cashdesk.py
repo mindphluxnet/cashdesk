@@ -13,6 +13,7 @@ import time
 #: eigene importe
 
 import database.setup
+import database.settings
 
 sqlite_file = "cashdesk.sqlite"
 debug = True
@@ -84,6 +85,13 @@ def show_einstellungen():
     einstellungen = []
 
     return render_template('einstellungen.html', page_title = page_title, page_id = page_id, einstellungen = einstellungen)
+
+@app.route('/einstellungen/speichern', methods = ['POST'])
+def einstellungen_speichern():
+
+    database.settings.save_settings(sqlite_file, request.form)
+
+    return redirect(url_for(einstellungen))
 
 if __name__ == '__main__':
 	app.run(debug = debug, host = bind_host, port = bind_port)
