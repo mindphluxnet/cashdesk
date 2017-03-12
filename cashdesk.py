@@ -20,8 +20,9 @@ sqlite_file = "cashdesk.sqlite"
 debug = True
 bind_host = '0.0.0.0'
 bind_port = 5000
+dbversion = 1
 
-database.setup.setup_database(sqlite_file)
+database.setup.setup_database(sqlite_file, dbversion)
 
 app = Flask(__name__, static_url_path = '')
 
