@@ -68,9 +68,16 @@ def show_artikel_bearbeiten(id):
     page_title = "Artikel bearbeiten"
     page_id = "artikelbearbeiten"
 
-    artikel = database.artikel.load_artikel(int(id))
+    artikel = database.artikel.load_single_artikel(sqlite_file, id)
 
     return render_template('artikel-bearbeiten.html', page_title = page_title, page_id = page_id, artikel = artikel)
+
+@app.route('/artikel/loeschen/<string:id>')
+def artikel_loeschen(id):
+
+        database.artikel.delete_artikel(sqlite_file, id)
+
+        return redirect(url_for('show_artikel'))
 
 @app.route('/kunden')
 def show_kunden():
