@@ -4,7 +4,7 @@
 #: ein minimales fakturierungsprogramm
 #: Copyright 2017, Richard Kaemmerer <richard@richardkaemmerer.de>
 
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template, send_from_directory, request, redirect, url_for
 import sqlite3
 import dateutil.parser
 from path import Path
@@ -82,7 +82,7 @@ def show_einstellungen():
     page_title = "Einstellungen"
     page_id = "einstellungen"
 
-    einstellungen = []
+    einstellungen = database.settings.load_settings(sqlite_file)
 
     return render_template('einstellungen.html', page_title = page_title, page_id = page_id, einstellungen = einstellungen)
 
@@ -91,7 +91,7 @@ def einstellungen_speichern():
 
     database.settings.save_settings(sqlite_file, request.form)
 
-    return redirect(url_for(einstellungen))
+    return redirect(url_for('show_einstellungen'))
 
 if __name__ == '__main__':
 	app.run(debug = debug, host = bind_host, port = bind_port)
