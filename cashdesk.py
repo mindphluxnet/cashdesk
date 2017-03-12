@@ -43,7 +43,9 @@ def show_artikel():
     page_title = "Artikelverwaltung"
     page_id = "artikel"
 
-    return render_template('artikel.html', page_title = page_title, page_id = page_id)
+    artikel = database.artikel.load_artikel(sqlite_file)
+
+    return render_template('artikel.html', artikel = artikel, page_title = page_title, page_id = page_id)
 
 @app.route('/artikel/neu')
 def show_artikel_neu():
@@ -52,6 +54,13 @@ def show_artikel_neu():
     page_id = "artikelneu"
 
     return render_template('artikel-neu.html', page_title = page_title, page_id = page_id)
+
+@app.route('/artikel/speichern', methods = ['POST'])
+def artikel_speichern():
+
+    database.artikel.save_artikel(sqlite_file, request.form)
+
+    return redirect(url_for('show_artikel'))
 
 @app.route('/artikel/bearbeiten/<string:id>')
 def show_artikel_bearbeiten(id):
