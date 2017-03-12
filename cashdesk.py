@@ -95,7 +95,22 @@ def show_kunden():
     page_title = "Kundenverwaltung"
     page_id = "kunden"
 
+    kunden = database.kunden.load_kunden(sqlite_file)
+
     return render_template('kunden.html', page_title = page_title, page_id = page_id)
+
+@app.route('/kunden/neu')
+def show_kunden_neu():
+
+    page_title = "Neuer Kunde"
+    page_id = "kundenneu"
+
+    return render_template('kunden-neu.html', page_title = page_title, page_id = page_id)
+
+@app.route('/kunden/speichern', methods = ['POST'])
+def kunde_speichern():
+
+    return redirect(url_for('show_kunden'))
 
 @app.route('/eingangsrechnungen')
 def show_eingangsrechnungen():

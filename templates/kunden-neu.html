@@ -1,0 +1,52 @@
+{% include "header.html" %}
+
+    {% include "nav.html" %}
+
+
+    <div class="container">
+
+      <h3>Neuen Kunden anlegen</h3>
+
+      <form class="form-horizontal" method="post" action="/kunden/speichern">
+        <div class="form-group">
+          <label for="nachname" class="col-sm-2 control-label">Nachname</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="nachname" name="nachname" />
+          </div>
+          <label for="vorname" class="col-sm-1 control-label">Vorname</label>
+          <div class="col-sm-5">
+            <input type="text" class="form-control" id="vorname" name="vorname" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="nachname" class="col-sm-2 control-label">Strasse</label>
+          <div class="col-sm-7">
+            <input type="text" class="form-control" id="strasse" name="strasse" />
+          </div>
+          <label for="hausnummer" class="col-sm-1 control-label">Hausnr.</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="hausnummer" name="hausnummer" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="plz" class="col-sm-2 control-label">PLZ</label>
+          <div class="col-sm-2">
+            <input type="number" maxlength="5" class="form-control" id="plz" name="plz" />
+          </div>
+          <label for="ort" class="col-sm-1 control-label">Ort</label>
+          <div class="col-sm-7">
+            <input type="text" class="form-control" id="ort" name="ort" />
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <div>
+              <button type="submit" class="btn btn-primary">Speichern</button>
+              <a class="btn btn-default" href="/artikel">Zur&uuml;ck</a>
+            </div>
+          </div>
+        </div>
+
+    </div> <!-- /container -->
+
+{% include "footer.html" %}
