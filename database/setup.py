@@ -19,7 +19,7 @@ def setup_database(sqlite_file, dbversion):
     try:
         c.execute("CREATE TABLE kunden (kundennummer INT, vorname TEXT, nachname TEXT, strasse TEXT, hausnummer TEXT, plz INT(5), ort TEXT)")
     except Exception as e:
-        print(e.message)
+        pass
 
     try:
         c.execute("CREATE TABLE rechnungen (rechnungsnummer INT, kunden_id INT, rechnungsdatum TEXT)")
