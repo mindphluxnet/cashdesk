@@ -72,6 +72,13 @@ def show_artikel_bearbeiten(id):
 
     return render_template('artikel-bearbeiten.html', page_title = page_title, page_id = page_id, artikel = artikel)
 
+@app.route('/artikel/aktualisieren', methods = ['POST'])
+def artikel_aktualisieren():
+
+    database.artikel.update_artikel(sqlite_file, request.form)
+
+    return redirect(url_for('show_artikel'))
+
 @app.route('/artikel/loeschen/<string:id>')
 def artikel_loeschen(id):
 

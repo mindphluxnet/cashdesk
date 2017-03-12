@@ -5,7 +5,7 @@ def load_single_artikel(sqlite_file, id):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("SELECT * FROM artikel WHERE oid = ?", id)
+    c.execute("SELECT oid, * FROM artikel WHERE oid = ?", id)
     artikel = c.fetchone()
 
     conn.close()
@@ -29,6 +29,16 @@ def save_artikel(sqlite_file, artikel):
     c = conn.cursor()
 
     c.execute("INSERT INTO artikel (artikelnummer, artikelbezeichnung, ekpreis, vkpreis, bestand) VALUES (?, ?, ?, ?, ?)", [ artikel['artikelnummer'], artikel['artikelbezeichnung'], artikel['ekpreis'], artikel['vkpreis'], artikel['bestand'] ])
+
+    conn.commit()
+    conn.close()
+
+def update_artikel(sqlite_file, artikel):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("UPDATE artikel SET artikelnummer = ?, artikelbezeichnung = ?, ekpreis = ?, vkpreis = ?, bestand = ? WHERE oid = ?", [ artikel['artikelnummer'], artikel['artikelbezeichnung'], artikel['ekpreis'], artikel['vkpreis'], artikel['bestand'], artikel['id'] ])
 
     conn.commit()
     conn.close()
