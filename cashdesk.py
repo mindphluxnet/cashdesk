@@ -15,6 +15,7 @@ import time
 import database.setup
 import database.settings
 import database.artikel
+import database.rechnungen
 
 sqlite_file = "cashdesk.sqlite"
 debug = True
@@ -95,13 +96,24 @@ def show_kunden():
 
     return render_template('kunden.html', page_title = page_title, page_id = page_id)
 
-@app.route('/rechnungen')
-def show_rechnungen():
+@app.route('/eingangsrechnungen')
+def show_eingangsrechnungen():
 
-    page_title = "Rechnungen"
-    page_id = "rechnungen"
+    page_title = "Eingangsrechnungen"
+    page_id = "eingangsrechnungen"
 
-    return render_template('rechnungen.html', page_title = page_title, page_id = page_id)
+    return render_template('eingangsrechnungen.html', page_title = page_title, page_id = page_id)
+
+@app.route('/ausgangsrechnungen')
+def show_ausgangsrechnungen():
+
+    page_title = "Ausgangsrechnungen"
+    page_id = "ausgangsrechnungen"
+
+    rechnungen = database.rechnungen.load_rechnungen(sqlite_file)
+
+    return render_template('ausgangsrechnungen.html', rechnungen = rechnungen, page_title = page_title, page_id = page_id)
+
 
 @app.route('/kassenbuch')
 def show_kassenbuch():

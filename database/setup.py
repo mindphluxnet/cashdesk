@@ -17,12 +17,17 @@ def setup_database(sqlite_file, dbversion):
         pass
 
     try:
-        c.execute("CREATE TABLE kunden (kundennummer INT, vorname TEXT, nachname TEXT, strasse TEXT, hausnummer TEXT, plz INT(5), ort TEXT, UNIQUE kundennummer)")
+        c.execute("CREATE TABLE kunden (kundennummer INT, vorname TEXT, nachname TEXT, strasse TEXT, hausnummer TEXT, plz INT(5), ort TEXT)")
+    except Exception as e:
+        print(e.message)
+
+    try:
+        c.execute("CREATE TABLE rechnungen (rechnungsnummer INT, kunden_id INT, rechnungsdatum TEXT)")
     except Exception as e:
         pass
 
     try:
-        c.execute("CREATE TABLE rechnungen (rechnungsnummer INT, kundennummer INT, rechnungsdatum TEXT)")
+        c.execute("CREATE TABLE rechnungspositionen (rechnungs_id INT, artikel_id INT, anzahl INT, rabatt REAL)")
     except Exception as e:
         pass
 
