@@ -16,6 +16,7 @@ import database.setup
 import database.settings
 import database.artikel
 import database.rechnungen
+import database.kunden
 
 sqlite_file = "cashdesk.sqlite"
 debug = True
@@ -114,6 +115,16 @@ def show_ausgangsrechnungen():
 
     return render_template('ausgangsrechnungen.html', rechnungen = rechnungen, page_title = page_title, page_id = page_id)
 
+@app.route('/ausgangsrechnungen/neu')
+def show_ausgangsrechnungen_neu():
+
+    page_title = "Neue Ausgangsrechnung"
+    page_id = "ausgangsrechnungneu"
+
+    kunden = database.kunden.load_kunden(sqlite_file)
+    rechnungs_id = database.rechnungen.get_next_invoice_id(sqlite_file)
+
+    return render_template('ausgangsrechnung-neu.html', kunden = kunden, rechnungs_id = rechnungs_id, page_title = page_title, page_id = page_id)
 
 @app.route('/kassenbuch')
 def show_kassenbuch():
