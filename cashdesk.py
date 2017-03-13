@@ -156,10 +156,10 @@ def ausgangsrechnung_neu_step2(id):
 
 @app.route('/ausgangsrechnungen/speichern/step1', methods = ['POST'])
 def ausgangsrechnung_speichern_step1():
-        
+
     rechnung_id = database.rechnungen.save_rechnung_step1(sqlite_file, request.form)
 
-    return redirect('/ausgangsrechnungen/neu/step2/' + rechnung_id)
+    return redirect('/ausgangsrechnungen/neu/step2/' + str(rechnung_id))
 
 @app.route('/kassenbuch')
 def show_kassenbuch():
