@@ -19,13 +19,13 @@
         <tbody>
           {% for rechnung in rechnungen %}
           <tr>
-            <td>{{ rechnung[1] }}</td>
-            <td>{{ rechnung[2] }}</td>
-            <td>{{ rechnung[3] }}</td>
-            <td>&euro; {{ '{0:0.2f}'.format(rechnung[4]) }}</td>
-            <td>&euro; {{ '{0:0.2f}'.format(rechnung[5]) }}</td>
+            <td>{{ rechnung['rechnungsnummer'] }}</td>
+            <td>{{ rechnung['rechnungsdatum'] }}</td>
+            <td>{{ rechnung['nachname'] }}, {{ rechnung['vorname'] }}</td>
+            <td>&euro; </td>
+            <td>&euro; </td>
             <td>
-              <a class="btn btn-xs btn-default" href="/ausgangsrechnung/bearbeiten/{{ rechnung[0] }}">Bearbeiten</a> <a class="btn btn-xs btn-danger" href="/ausgangsrechnung/stornieren/{{ rechnung[0] }}">Storno</a>
+              <a class="btn btn-xs btn-default" href="/ausgangsrechnung/bearbeiten/{{ rechnung['rowid'] }}">Bearbeiten</a> <a class="btn btn-xs btn-danger" href="/ausgangsrechnung/stornieren/{{ rechnung['rowid'] }}">Storno</a>
             </td>
           {% endfor %}
         </tbody>

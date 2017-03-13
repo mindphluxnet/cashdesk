@@ -95,7 +95,7 @@ def show_kunden():
     page_title = "Kundenverwaltung"
     page_id = "kunden"
 
-    kunden = database.kunden.load_kunden(sqlite_file)    
+    kunden = database.kunden.load_kunden(sqlite_file)
 
     return render_template('kunden.html', kunden = kunden, page_title = page_title, page_id = page_id)
 
@@ -156,7 +156,7 @@ def ausgangsrechnung_neu_step2(id):
 
 @app.route('/ausgangsrechnungen/speichern/step1', methods = ['POST'])
 def ausgangsrechnung_speichern_step1():
-
+        
     rechnung_id = database.rechnungen.save_rechnung_step1(sqlite_file, request.form)
 
     return redirect('/ausgangsrechnungen/neu/step2/' + rechnung_id)

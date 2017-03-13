@@ -1,8 +1,11 @@
 import sqlite3
 
+import database.factory
+
 def load_rechnungen(sqlite_file):
 
     conn = sqlite3.connect(sqlite_file)
+    conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
 
     c.execute("SELECT r.oid, r.*, k.oid, k.* FROM rechnungen r LEFT JOIN kunden k ON(k.oid = r.kunden_id) ORDER BY rechnungsnummer ASC")
