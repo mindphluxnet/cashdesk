@@ -23,7 +23,6 @@
             <div class="col-sm-2">
               <input type="number" class="form-control" name="rechnungsnummer-disabled" id="rechnungsnummer" disabled="disabled" value="{{ rechnung['rowid'] }}">
               <input type="hidden" name="rechnungsnummer" value="{{ rechnung['rowid'] }}" />
-
             </div>
           </div>
           <div class="form-group">
@@ -35,8 +34,56 @@
               <a class="btn btn-default" href="#" onclick="document.getElementById('rechnungsdatum').valueAsDate = new Date();">Heute</a>
             </div>
           </div>
-          <button type="submit" class="btn btn-default">Speichern</button>
+          <button type="submit" class="btn btn-default">Speichern und ausgeben</button>
           <a href="/ausgangsrechnungen" class="btn btn-danger">Abbruch</a>
+          <hr />
+          <h4>Rechnungspositionen</h4>
+        </form>
+        <form action="/ausgangsrechnungen/positionen/speichern" method="post">
+          <table class="table">
+              <thead>
+                <th>#</th>
+                <th>Anzahl</th>
+                <th>Artikelbezeichnung</th>
+                <th>VK-Preis</th>
+                <th>Rabatt</th>
+                <th>Optionen</th>
+              </thead>
+              <tbody>
+              {% set idx = 1 %}
+              {% for pos in positionen %}
+                <tr>
+                  <td>{{ idx }}</td>
+                  <td><input type="number" size="2" name="position['anzahl']" /></td>
+                  <td>
+                    <select name="position['artikel_id']">
+                    {% for art in artikel %}
+                      <option value="{{ art['row_id'] }}">{{ art['artikelbezeichnung'] }}</option>
+                    {% endfor %}
+                  </select>
+                  </td>
+                  <td>&euro; {{ '{0:0.2f}'.format(artikel['vkpreis']) }}</td>
+                  <td><input type="number" size="2" name="position['rabatt']" /></td>
+                  <td></td>
+                </tr>
+              {% set idx = idx +1 %}
+              {% endfor %}
+              <tr>
+                <td>{{ idx }}</td>
+                <td><input type="number" size="2" name="position['anzahl']" /></td>
+                <td>
+                  <select name="position['artikel_id']">
+                  {% for art in artikel %}
+                    <option value="{{ art['row_id'] }}">{{ art['artikelbezeichnung'] }}</option>
+                  {% endfor %}
+                </select>
+                </td>
+                <td>&euro; {{ '{0:0.2f}'.format(artikel['vkpreis']) }}</td>
+                <td><input type="number" size="2" name="position['rabatt']" /></td>
+                <td></td>
+              </tr>              
+              </tbody>
+          </table>
 
       </form>
 
