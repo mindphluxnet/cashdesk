@@ -1,8 +1,11 @@
 import sqlite3
 
+import database.factory
+
 def load_single_artikel(sqlite_file, id):
 
     conn = sqlite3.connect(sqlite_file)
+    conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
 
     c.execute("SELECT oid, * FROM artikel WHERE oid = ?", id)
@@ -15,6 +18,7 @@ def load_single_artikel(sqlite_file, id):
 def load_artikel(sqlite_file):
 
     conn = sqlite3.connect(sqlite_file)
+    conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
 
     c.execute("SELECT oid, * FROM artikel ORDER BY artikelnummer ASC")

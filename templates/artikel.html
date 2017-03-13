@@ -19,13 +19,13 @@
         <tbody>
           {% for art in artikel %}
           <tr>
-            <td>{{ art[1] }}</td>
-            <td>{{ art[2] }}</td>
-            <td>{{ art[3] }}</td>
-            <td>&euro; {{ '{0:0.2f}'.format(art[4]) }}</td>
-            <td>&euro; {{ '{0:0.2f}'.format(art[5]) }}</td>
+            <td>{{ art['artikelnummer'] }}</td>
+            <td>{{ art['artikelbezeichnung'] }}</td>
+            <td>{{ art['bestand'] }}</td>
+            <td>&euro; {{ '{0:0.2f}'.format(art['ekpreis']) }}</td>
+            <td>&euro; {{ '{0:0.2f}'.format(art['vkpreis']) }}</td>
             <td>
-              <a class="btn btn-xs btn-default" href="/artikel/bearbeiten/{{ art[0] }}">Bearbeiten</a> <a class="btn btn-xs btn-danger" href="/artikel/loeschen/{{ art[0] }}">L&ouml;schen</a>
+              <a class="btn btn-xs btn-default" href="/artikel/bearbeiten/{{ art['rowid'] }}">Bearbeiten</a> <a class="btn btn-xs btn-danger" href="/artikel/loeschen/{{ art['rowid'] }}">L&ouml;schen</a>
             </td>
           {% endfor %}
         </tbody>
