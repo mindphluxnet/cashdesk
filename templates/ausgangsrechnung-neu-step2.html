@@ -39,55 +39,62 @@
           <hr />
           <h4>Rechnungspositionen</h4>
         </form>
-        <form action="/ausgangsrechnungen/positionen/speichern" method="post">
+        <form class="form-inline" action="/ausgangsrechnungen/positionen/speichern" method="post">
           <table class="table">
               <thead>
-                <th>#</th>
-                <th>Anzahl</th>
-                <th>Artikelbezeichnung</th>
-                <th>VK-Preis</th>
-                <th>Rabatt</th>
-                <th>Optionen</th>
+                <th class="col-xs-1">#</th>
+                <th class="col-xs-1">Anzahl</th>
+                <th class="col-xs-4">Artikelbezeichnung</th>
+                <th class="col-xs-1">Einzelpreis</th>
+                <th class="col-xs-1">Rabatt</th>
+                <th class="col-xs-1">Gesamtpreis</th>
+                <th class="col-xs-4">Optionen</th>
               </thead>
               <tbody>
               {% set idx = 1 %}
               {% for pos in positionen %}
                 <tr>
                   <td>{{ idx }}</td>
-                  <td><input type="number" size="2" name="position['anzahl']" /></td>
+                  <td><input type="number" maxlength="3" size="1" name="position['anzahl']" /></td>
                   <td>
-                    <select name="position['artikel_id']">
+                    <select name="position['artikel_id']" id="artikelwahl">
                     {% for art in artikel %}
                       <option value="{{ art['row_id'] }}">{{ art['artikelbezeichnung'] }}</option>
                     {% endfor %}
                   </select>
                   </td>
-                  <td>&euro; {{ '{0:0.2f}'.format(artikel['vkpreis']) }}</td>
-                  <td><input type="number" size="2" name="position['rabatt']" /></td>
-                  <td></td>
+                  <td class="text-right">&euro; {{ '{0:0.2f}'.format(pos['einzelpreis']) }}</td>
+                  <td><input type="number" size="2" name="position['rabatt']" value="{{ pos['rabatt'] }}" /></td>
+                  <td class="text-right">&euro; {{ '{0:0.2f}'.format(pos['gesamtpreis']) }}</td>
+                  <td><a class="btn btn-danger btn-xs" href="/ausgangsrechnungen/position/loeschen/{{ pos['rowid'] }}">L&ouml;schen</a></td>
                 </tr>
               {% set idx = idx +1 %}
               {% endfor %}
               <tr>
                 <td>{{ idx }}</td>
-                <td><input type="number" size="2" name="position['anzahl']" /></td>
+                <td><input type="number" class="form-control" name="position['anzahl']" /></td>
                 <td>
-                  <select name="position['artikel_id']">
+                  <select name="position['artikel_id']" class="form-control">
                   {% for art in artikel %}
                     <option value="{{ art['row_id'] }}">{{ art['artikelbezeichnung'] }}</option>
                   {% endfor %}
                 </select>
                 </td>
-                <td>&euro; {{ '{0:0.2f}'.format(artikel['vkpreis']) }}</td>
-                <td><input type="number" size="2" name="position['rabatt']" /></td>
-                <td></td>
-              </tr>              
+                <td id="artikelpreis" class="text-right">&euro; 0.00</td>
+                <td><input type="number" class="form-control" name="position['rabatt']" /></td>
+                <td id="gesamtpreis" class="text-right">&euro; 0.00</td>
+                <td>&nbsp;</td>
+              </tr>
               </tbody>
           </table>
-
+          <button type="submit" class="btn btn-default">Positionen speichern</button>
       </form>
 
     </div> <!-- /container -->
 
+    <script type="text/javascript">
+
+
+    </script>
 
 {% include "footer.html" %}
