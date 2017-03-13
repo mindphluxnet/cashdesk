@@ -38,7 +38,7 @@ def get_next_invoice_id(sqlite_file):
     if(last_id == None):
         next_id = 1
     else:
-        next_id = last_id + 1
+        next_id = int(last_id[0]) + 1
 
     conn.close()
 
