@@ -15,6 +15,19 @@ def load_rechnungen(sqlite_file):
 
     return rechnungen
 
+def load_rechnung(sqlite_file, id):
+
+    conn = sqlite3.connect(sqlite_file)
+    conn.row_factory = database.factory.dict_factory
+    c = conn.cursor()
+
+    c.execute("SELECT r.oid, r.*, k.oid, k.* FROM rechnungen r LEFT JOIN kunden k ON(k.oid = r.kunden_id) WHERE r.oid = ?", id)
+    rechnung = c.fetchone()
+
+    conn.close()
+
+    return rechnung
+
 def save_rechnung_step1(sqlite_file, rechnung):
 
     conn = sqlite3.connect(sqlite_file)
