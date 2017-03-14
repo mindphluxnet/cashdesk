@@ -56,23 +56,18 @@
                 <tr>
                   <td>{{ idx }}</td>
                   <td>
-                    <select name="position['anzahl']" class="form-control">
-                      {% for i in range(1,100) %}
-                        <option value="{{ i }}"{% if i == pos['anzahl'] %}selected="selected"{% endif %}>{{ i }}</option>
-                      {% endfor %}
-                    </select>
+                    {{ pos['anzahl'] }}
                   </td>
                   <td>
-                    <select name="position['artikel_id']" id="artikelwahl" data-id="{{ idx }}">
-                    {% for art in artikel %}
-                      <option value="{{ art['row_id'] }}">{{ art['artikelbezeichnung'] }}</option>
-                    {% endfor %}
-                  </select>
+                    {{ pos['artikelbezeichnung'] }}
                   </td>
                   <td class="text-right">&euro; {{ '{0:0.2f}'.format(pos['einzelpreis']) }}</td>
-                  <td><input type="number" size="2" name="position['rabatt']" value="{{ pos['rabatt'] }}" /></td>
+                  <td>{{ '{0:0.2f}'.format(pos['rabatt']) }}</td>
                   <td class="text-right">&euro; {{ '{0:0.2f}'.format(pos['gesamtpreis']) }}</td>
-                  <td><a class="btn btn-danger btn-xs" href="/ausgangsrechnungen/position/loeschen/{{ pos['rowid'] }}">L&ouml;schen</a></td>
+                  <td>
+                      <a class="btn btn-default btn-xs" href="#">Bearbeiten</a>
+                      <a class="btn btn-danger btn-xs" href="/ausgangsrechnungen/position/loeschen/{{ pos['rowid'] }}">L&ouml;schen</a>
+                  </td>
                 </tr>
               {% set idx = idx +1 %}
               {% endfor %}
@@ -86,7 +81,7 @@
                   </select>
                 </td>
                 <td>
-                  <select name="position['artikel_id']" class="form-control">
+                  <select name="position['artikel_id']" class="form-control artikelselect">
                   {% for art in artikel %}
                     <option value="{{ art['row_id'] }}">{{ art['artikelbezeichnung'] }}</option>
                   {% endfor %}
@@ -108,12 +103,24 @@
               </tbody>
           </table>
           <button type="submit" class="btn btn-default">Positionen speichern</button>
+          <input type="hidden" name="rechnungs_id" value="{{ rechnung['rowid'] }}" />
       </form>
 
     </div> <!-- /container -->
 
     <script type="text/javascript">
 
+      $('.artikelselect').on('change', function() {
+
+        $.ajax({
+          url: '/artikel/ajax/preis' + $(this).val(),
+          method: 'GET'
+        }).done(function(result) {
+          $('#artikelpreis').text = "&euro; " + result
+
+        });
+
+      });
 
     </script>
 
