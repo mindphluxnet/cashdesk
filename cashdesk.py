@@ -137,6 +137,20 @@ def show_ausgangsrechnungen():
 
     rechnungen = database.rechnungen.load_rechnungen(sqlite_file)
 
+    for rechnung in rechnungen:
+        print(rechnung['rechnungs_id'])
+        positionen = database.rechnungen.load_positionen(sqlite_file, rechnung['rechnungs_id'])
+
+        umsatz = 0
+        rohgewinn = 0
+
+        for pos in positionen:
+            umsatz = umsatz + (pos['vkpreis'] * pos['anzahl'])
+            rohgewinn = gesamtpreis - (pos['ekpreis'] * pos['anzahl'])
+
+        rechnung['umsatz'] = umsatz
+        rechnung['rohgewinn'] = rohgewinn
+
     return render_template('ausgangsrechnungen.html', rechnungen = rechnungen, page_title = page_title, page_id = page_id)
 
 @app.route('/ausgangsrechnungen/neu')
