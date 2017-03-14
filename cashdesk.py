@@ -89,6 +89,13 @@ def artikel_loeschen(id):
 
         return redirect(url_for('show_artikel'))
 
+@app.route('/artikel/ajax/preis/<string:id>')
+def artikel_ajax_preis(id):
+
+    artikel = database.artikel.load_single_artikel(sqlite_file, id)
+    return str(artikel['vkpreis'])
+
+
 @app.route('/kunden')
 def show_kunden():
 
