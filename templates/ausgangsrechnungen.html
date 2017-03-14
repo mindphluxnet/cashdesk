@@ -23,8 +23,8 @@
             <td>{{ rechnung['rechnungsnummer'] }}</td>
             <td>{{ rechnung['rechnungsdatum'] }}</td>
             <td>{{ rechnung['nachname'] }}, {{ rechnung['vorname'] }}</td>
-            <td>&euro; </td>
-            <td>&euro; </td>
+            <td>&euro; {{ '{0:0.2f}'.format(rechnung['umsatz']) }}</td>
+            <td>&euro; {{ '{0:0.2f}'.format(rechnung['rohgewinn']) }}</td>
             <td>{% if rechnung['zahlungssstatus'] == 1 %}Ja</a>{% else %}Nein{% endif %}</td>
             <td>
               <a class="btn btn-xs btn-default" href="/ausgangsrechnung/bearbeiten/{{ rechnung['rowid'] }}">Bearbeiten</a>
