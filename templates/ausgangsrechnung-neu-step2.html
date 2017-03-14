@@ -66,7 +66,7 @@
                 <th class="col-xs-1">Anzahl</th>
                 <th class="col-xs-4">Artikelbezeichnung</th>
                 <th class="col-xs-1">Einzelpreis</th>
-                <th class="col-xs-1">Rabatt</th>
+                <th class="col-xs-1">Rabatt %</th>
                 <th class="col-xs-1">Gesamtpreis</th>
                 <th class="col-xs-4">Optionen</th>
               </thead>
@@ -82,7 +82,7 @@
                   </td>
                   <td class="text-right">&euro; {{ '{0:0.2f}'.format(pos['vkpreis']) }}</td>
                   <td>{{ '{0:0.2f}'.format(pos['rabatt']) }}</td>
-                  {% set pos_gesamt = pos['anzahl'] * pos['vkpreis'] %}
+                  {% set pos_gesamt = pos['anzahl'] * pos['rabattpreis'] %}
                   <td class="text-right">&euro; {{ '{0:0.2f}'.format(pos_gesamt) }}</td>
                   <td>
                       <a class="btn btn-default btn-xs" href="#">Bearbeiten</a>
@@ -110,7 +110,7 @@
                 <td><input type="number" class="form-control" name="rabatt" value="0.00" /></td>
                 <td id="gesamtpreis" class="text-right">&euro; 0.00</td>
                 <td>&nbsp;</td>
-              </tr>              
+              </tr>
               <tr>
                 <td colspan="2">
                   <strong>Mehrwertsteuer</strong>

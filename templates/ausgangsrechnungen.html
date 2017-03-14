@@ -27,7 +27,7 @@
             <td>&euro; {{ '{0:0.2f}'.format(rechnung['rohgewinn']) }}</td>
             <td>{% if rechnung['zahlungssstatus'] == 1 %}Ja</a>{% else %}Nein{% endif %}</td>
             <td>
-              <a class="btn btn-xs btn-default" href="/ausgangsrechnung/bearbeiten/{{ rechnung['rowid'] }}">Bearbeiten</a>
+              <a class="btn btn-xs btn-default" href="/ausgangsrechnungen/neu/step2/{{ rechnung['rechnungs_id'] }}">Bearbeiten</a>
               {% if rechnung['gedruckt'] == 0 %}
                 <a class="btn btn-xs btn-danger" href="/ausgangsrechnung/loeschen/{{ rechnung['rowid'] }}">L&ouml;schen</a>
               {% else %}

@@ -145,7 +145,7 @@ def show_ausgangsrechnungen():
         rohgewinn = 0
 
         for pos in positionen:
-            umsatz = umsatz + (pos['vkpreis'] * pos['anzahl'])
+            umsatz = umsatz + ((pos['vkpreis'] - ((pos['vkpreis'] / 100) * pos['rabatt']) * pos['anzahl']))
             rohgewinn = umsatz - (pos['ekpreis'] * pos['anzahl'])
 
         rechnung['umsatz'] = umsatz
@@ -175,10 +175,14 @@ def ausgangsrechnung_neu_step2(id):
     artikel = database.artikel.load_artikel(sqlite_file)
     positionen = database.rechnungen.load_positionen(sqlite_file, id)
 
+    for pos in positionen:
+        pos['rabattpreis'] = pos['vkpreis'] - (pos['vkpreis'] / 100 * pos['rabatt'])
+
+
     gesamtpreis = 0
 
     for pos in positionen:
-        gesamtpreis = gesamtpreis + (pos['vkpreis'] * pos['anzahl'])
+        gesamtpreis = gesamtpreis + (pos['rabattpreis'] * pos['anzahl'])
 
     rohgewinn = 0
 
