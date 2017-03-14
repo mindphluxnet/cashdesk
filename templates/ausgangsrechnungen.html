@@ -9,11 +9,12 @@
       <h3>Ausgangsrechnungen</h3>
       <table class="table table-striped table-condensed">
         <thead>
-          <th>Rechnungsnummer</th>
+          <th>Rechnungsnr.</th>
           <th>Datum</th>
           <th>Kunde</th>
           <th>Umsatz</th>
           <th>Rohgewinn</th>
+          <th>Bezahlt</th>
           <th>Optionen</th>
         </thead>
         <tbody>
@@ -24,8 +25,14 @@
             <td>{{ rechnung['nachname'] }}, {{ rechnung['vorname'] }}</td>
             <td>&euro; </td>
             <td>&euro; </td>
+            <td>{% if rechnung['zahlungssstatus'] == 1 %}Ja</a>{% else %}Nein{% endif %}</td>
             <td>
-              <a class="btn btn-xs btn-default" href="/ausgangsrechnung/bearbeiten/{{ rechnung['rowid'] }}">Bearbeiten</a> <a class="btn btn-xs btn-danger" href="/ausgangsrechnung/stornieren/{{ rechnung['rowid'] }}">Storno</a>
+              <a class="btn btn-xs btn-default" href="/ausgangsrechnung/bearbeiten/{{ rechnung['rowid'] }}">Bearbeiten</a>
+              {% if rechnung['gedruckt'] == 0 %}
+                <a class="btn btn-xs btn-danger" href="/ausgangsrechnung/loeschen/{{ rechnung['rowid'] }}">L&ouml;schen</a>
+              {% else %}
+                <a class="btn btn-xs btn-danger" href="/ausgangsrechnung/stornieren/{{ rechnung['rowid'] }}">Stornieren</a>
+              {% endif %}
             </td>
           {% endfor %}
         </tbody>
