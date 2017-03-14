@@ -110,6 +110,15 @@
                 <td><input type="number" class="form-control" name="rabatt" value="0.00" /></td>
                 <td id="gesamtpreis" class="text-right">&euro; 0.00</td>
                 <td>&nbsp;</td>
+              </tr>              
+              <tr>
+                <td colspan="2">
+                  <strong>Mehrwertsteuer</strong>
+                </td>
+                <td colspan="4" class="text-right">
+                  <strong>&euro; {{ '{0:0.2f}'.format(ust) }}</strong>
+                </td>
+                <td>&nbsp;</td>
               </tr>
               <tr>
                 <td colspan="2">
@@ -119,6 +128,16 @@
                   <strong>&euro; {{ '{0:0.2f}'.format(gesamtpreis) }}</strong>
                 </td>
                 <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <strong>Rohgewinn</strong>
+                </td>
+                <td colspan="4" class="text-right">
+                  <strong>&euro; {{ '{0:0.2f}'.format(rohgewinn) }}</strong>
+                </td>
+                <td>&nbsp;</td>
+              </tr>
               </tbody>
           </table>
           <input type="hidden" id="einzelpreis-hidden" />

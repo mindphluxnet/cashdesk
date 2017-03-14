@@ -32,8 +32,8 @@ def setup_database(sqlite_file, dbversion):
         pass
 
     try:
-        c.execute("CREATE TABLE einstellungen (firmenname TEXT, inhaber TEXT, strasse TEXT, hausnummer TEXT, plz INT(5), ort TEXT, ustid TEXT, kleinunternehmer INT(1))")
-        c.execute("INSERT INTO einstellungen (firmenname, inhaber, strasse, hausnummer, plz, ort, ustid, kleinunternehmer) VALUES ('', '', '', '', '', '', '', '')")
+        c.execute("CREATE TABLE einstellungen (firmenname TEXT, inhaber TEXT, strasse TEXT, hausnummer TEXT, plz INT(5), ort TEXT, ustid TEXT, kleinunternehmer INT(1), ustsatz REAL)")
+        c.execute("INSERT INTO einstellungen (firmenname, inhaber, strasse, hausnummer, plz, ort, ustid, kleinunternehmer, ustsatz) VALUES ('', '', '', '', '', '', '', '', 19.0)")
     except Exception as e:
         pass
 
