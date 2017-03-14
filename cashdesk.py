@@ -169,6 +169,13 @@ def ausgangsrechnung_speichern_step1():
 
     return redirect('/ausgangsrechnungen/neu/step2/' + str(rechnung_id))
 
+@app.route('/ausgangsrechnungen/position/speichern', methods = ['POST'])
+def ausgangsrechnung_position_speichern():
+
+    database.rechnungen.save_position(sqlite_file, request.form)
+
+    return redirect('/ausgangsrechnungen/neu/step2/' + str(request.form['rechnungs_id']))
+
 @app.route('/kassenbuch')
 def show_kassenbuch():
 

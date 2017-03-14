@@ -40,6 +40,16 @@ def save_rechnung_step1(sqlite_file, rechnung):
 
     return c.lastrowid
 
+def save_position(sqlite_file, position):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("INSERT INTO rechnungspositionen (rechnungs_id, artikel_id, anzahl, rabatt) VALUES (?, ?, ?, ?)", [ position['rechnungs_id'], position['artikel_id'], position['anzahl'], position['rabatt'] ] )
+
+    conn.commit()
+    conn.close()
+
 def get_next_invoice_id(sqlite_file):
 
     conn = sqlite3.connect(sqlite_file)
