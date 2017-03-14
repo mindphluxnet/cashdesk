@@ -146,7 +146,7 @@ def show_ausgangsrechnungen():
 
         for pos in positionen:
             umsatz = umsatz + (pos['vkpreis'] * pos['anzahl'])
-            rohgewinn = gesamtpreis - (pos['ekpreis'] * pos['anzahl'])
+            rohgewinn = umsatz - (pos['ekpreis'] * pos['anzahl'])
 
         rechnung['umsatz'] = umsatz
         rechnung['rohgewinn'] = rohgewinn
