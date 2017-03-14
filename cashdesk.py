@@ -159,8 +159,14 @@ def ausgangsrechnung_neu_step2(id):
     rechnung = database.rechnungen.load_rechnung(sqlite_file, id)
     kunden = database.kunden.load_kunden(sqlite_file)
     artikel = database.artikel.load_artikel(sqlite_file)
+    positionen = database.rechnungen.load_positionen(sqlite_file, id)    
 
-    return render_template('ausgangsrechnung-neu-step2.html', artikel = artikel, kunden = kunden, rechnung = rechnung, page_title = page_title, page_id = page_id)
+    gesamtpreis = 0
+
+    for pos in positionen:
+        gesamtpreis = gesamtpreis + (pos['vkpreis'] * pos['anzahl'])
+
+    return render_template('ausgangsrechnung-neu-step2.html', artikel = artikel, positionen = positionen, gesamtpreis = gesamtpreis, kunden = kunden, rechnung = rechnung, page_title = page_title, page_id = page_id)
 
 @app.route('/ausgangsrechnungen/speichern/step1', methods = ['POST'])
 def ausgangsrechnung_speichern_step1():

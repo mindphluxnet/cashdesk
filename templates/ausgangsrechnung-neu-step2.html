@@ -71,27 +71,24 @@
                 <th class="col-xs-4">Optionen</th>
               </thead>
               <tbody>
-              {% set idx = 1 %}
-              {% set gesamtpreis = 0 %}
               {% for pos in positionen %}
                 <tr>
-                  <td>{{ idx }}</td>
+                  <td>{{ loop.index }}</td>
                   <td>
                     {{ pos['anzahl'] }}
                   </td>
                   <td>
                     {{ pos['artikelbezeichnung'] }}
                   </td>
-                  <td class="text-right">&euro; {{ '{0:0.2f}'.format(pos['einzelpreis']) }}</td>
+                  <td class="text-right">&euro; {{ '{0:0.2f}'.format(pos['vkpreis']) }}</td>
                   <td>{{ '{0:0.2f}'.format(pos['rabatt']) }}</td>
-                  <td class="text-right">&euro; {{ '{0:0.2f}'.format(pos['gesamtpreis']) }}</td>
+                  {% set pos_gesamt = pos['anzahl'] * pos['vkpreis'] %}
+                  <td class="text-right">&euro; {{ '{0:0.2f}'.format(pos_gesamt) }}</td>
                   <td>
                       <a class="btn btn-default btn-xs" href="#">Bearbeiten</a>
-                      <a class="btn btn-danger btn-xs" href="/ausgangsrechnungen/position/loeschen/{{ pos['rowid'] }}">L&ouml;schen</a>
+                      <a class="btn btn-danger btn-xs" href="/ausgangsrechnungen/position/loeschen/{{ pos['positions_id'] }}">L&ouml;schen</a>
                   </td>
                 </tr>
-              {% set idx = idx +1 %}
-              {% set gesamtpreis = gesamtpreis + (pos['einzelpreis'] * pos['anzahl']) %}
               {% endfor %}
               <tr>
                 <td>{{ idx }}</td>

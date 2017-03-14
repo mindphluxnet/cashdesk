@@ -50,6 +50,17 @@ def save_position(sqlite_file, position):
     conn.commit()
     conn.close()
 
+def load_positionen(sqlite_file, rechnungs_id):
+
+    conn = sqlite3.connect(sqlite_file)
+    conn.row_factory = database.factory.dict_factory
+    c = conn.cursor()
+
+    c.execute("SELECT p.oid AS positions_id, p.*, a.oid AS artikel_id, a.* FROM rechnungspositionen p LEFT JOIN artikel a ON(a.oid = p.artikel_id) WHERE rechnungs_id = ?", rechnungs_id)
+    positionen = c.fetchall()
+
+    return positionen
+
 def get_next_invoice_id(sqlite_file):
 
     conn = sqlite3.connect(sqlite_file)
