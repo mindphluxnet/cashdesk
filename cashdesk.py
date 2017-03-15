@@ -18,6 +18,8 @@ import database.artikel
 import database.rechnungen
 import database.kunden
 
+import lcd.raspi
+
 sqlite_file = "cashdesk.sqlite"
 debug = True
 bind_host = '0.0.0.0'
@@ -25,6 +27,11 @@ bind_port = 5000
 dbversion = 1
 
 database.setup.setup_database(sqlite_file, dbversion)
+
+if(lcd.raspi.is_raspi()):
+    print("[Startup] Raspberry Pi gefunden, aktiviere LCD-Support!")
+else:
+    print("[Startup] Raspberry Pi nicht gefunden, deaktiviere LCD-Support!")
 
 app = Flask(__name__, static_url_path = '')
 
