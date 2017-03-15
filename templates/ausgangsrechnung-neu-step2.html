@@ -164,6 +164,21 @@
         });
       });
 
+      $('#artikelselect').on('blur', function() {
+
+        $.ajax({
+          url: '/artikel/ajax/preis/' + $('#artikelselect').val(),
+          method: 'GET',
+          success: function(data) {
+            $('#einzelpreis').html("&euro; " + data);
+            $('#einzelpreis-hidden').val(data);
+            $('#gesamtpreis').html("&euro; " + $('#anzahl').val() * data);
+          }
+
+
+        });
+      });
+
       $('#anzahl').on('change', function() {
         var gesamt = $('#anzahl').val() * $('#einzelpreis-hidden').val();
         gesamt = gesamt.toFixed(2);
