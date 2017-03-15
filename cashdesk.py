@@ -9,6 +9,7 @@ import sqlite3
 import dateutil.parser
 import time
 import json
+import lcddriver
 
 #: eigene importe
 
@@ -18,7 +19,7 @@ import database.artikel
 import database.rechnungen
 import database.kunden
 
-import lcd.raspi
+import raspi.raspi
 
 import logger.logger
 
@@ -30,8 +31,17 @@ dbversion = 1
 
 database.setup.setup_database(sqlite_file, dbversion)
 
-if(lcd.raspi.is_raspi()):
+lcd = lcddriver.lcd()
+
+if(raspi.raspi.is_raspi()):
     logger.logger.log("Startup", "Raspberry Pi gefunden, aktiviere LCD-Support!")
+    lcd.clear()		
+    try:
+	    settings = database.settings.load_settings(sqlite_file)
+	    lcd.display_string(settings['lcd_welcome_line1'], 1)
+	    lcd.display_string(settings['lcd_welcome_line2'], 2)
+    except Exception:
+	pass
 else:
     logger.logger.log("Startup", "Raspberry Pi nicht gefunden, deaktiviere LCD-Support!")
 
@@ -146,8 +156,7 @@ def show_ausgangsrechnungen():
 
     rechnungen = database.rechnungen.load_rechnungen(sqlite_file)
 
-    for rechnung in rechnungen:
-        print(rechnung['rechnungs_id'])
+    for rechnung in rechnungen:        
         positionen = database.rechnungen.load_positionen(sqlite_file, rechnung['rechnungs_id'])
 
         umsatz = 0
@@ -247,7 +256,7 @@ def show_einstellungen():
     page_id = "einstellungen"
 
     einstellungen = database.settings.load_settings(sqlite_file)
-    is_raspi = lcd.raspi.is_raspi()
+    is_raspi = raspi.raspi.is_raspi()
 
     return render_template('einstellungen.html', page_title = page_title, page_id = page_id, einstellungen = einstellungen, is_raspi = is_raspi)
 
