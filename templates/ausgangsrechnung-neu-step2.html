@@ -162,14 +162,12 @@
 
 
         });
+      });
 
       $('#anzahl').on('change', function() {
         var gesamt = $('#anzahl').val() * $('#einzelpreis-hidden').val();
         gesamt = gesamt.toFixed(2);
         $('#gesamtpreis').html("&euro; " + gesamt);
-
-      });
-
       });
 
     </script>
