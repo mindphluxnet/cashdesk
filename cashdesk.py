@@ -9,7 +9,10 @@ import sqlite3
 import dateutil.parser
 import time
 import json
-import lcddriver
+try:
+    import lcddriver
+except Exception:
+    pass
 
 #: eigene importe
 
@@ -31,11 +34,10 @@ dbversion = 1
 
 database.setup.setup_database(sqlite_file, dbversion)
 
-lcd = lcddriver.lcd()
-
 if(raspi.raspi.is_raspi()):
     logger.logger.log("Startup", "Raspberry Pi gefunden, aktiviere LCD-Support!")
-    lcd.clear()		
+    lcd = lcddriver.lcd()
+    lcd.clear()
     try:
 	    settings = database.settings.load_settings(sqlite_file)
 	    lcd.display_string(settings['lcd_welcome_line1'], 1)
@@ -156,7 +158,7 @@ def show_ausgangsrechnungen():
 
     rechnungen = database.rechnungen.load_rechnungen(sqlite_file)
 
-    for rechnung in rechnungen:        
+    for rechnung in rechnungen:
         positionen = database.rechnungen.load_positionen(sqlite_file, rechnung['rechnungs_id'])
 
         umsatz = 0
