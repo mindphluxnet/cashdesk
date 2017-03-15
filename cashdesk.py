@@ -8,6 +8,7 @@ from flask import Flask, render_template, send_from_directory, request, redirect
 import sqlite3
 import dateutil.parser
 import time
+import json
 
 #: eigene importe
 
@@ -223,6 +224,13 @@ def ausgangsrechnung_position_loeschen(id):
     rechnungs_id = database.rechnungen.delete_position(sqlite_file, id)
 
     return redirect('/ausgangsrechnungen/neu/step2/' + str(rechnungs_id))
+
+@app.route('/positionen/ajax/position/<string:id>')
+def positionen_ajax_position(id):
+
+    position = database.rechnungen.load_position(sqlite_file, id)
+
+    return json.dumps(position)
 
 @app.route('/kassenbuch')
 def show_kassenbuch():

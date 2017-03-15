@@ -75,7 +75,22 @@ def load_positionen(sqlite_file, rechnungs_id):
     c.execute("SELECT p.oid AS positions_id, p.*, a.oid AS artikel_id, a.* FROM rechnungspositionen p LEFT JOIN artikel a ON(a.oid = p.artikel_id) WHERE rechnungs_id = ?", [ rechnungs_id ])
     positionen = c.fetchall()
 
+    conn.close()
+
     return positionen
+
+def load_position(sqlite_file, positions_id):
+
+    conn = sqlite3.connect(sqlite_file)
+    conn.row_factory = database.factory.dict_factory
+    c = conn.cursor()
+
+    c.execute("SELECT oid, * FROM rechnungspositionen WHERE oid = ?", positions_id)
+    position = c.fetchone()
+
+    conn.close()
+    
+    return position
 
 def get_next_invoice_id(sqlite_file):
 

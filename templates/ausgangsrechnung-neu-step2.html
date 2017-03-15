@@ -107,7 +107,7 @@
                 </select>
                 </td>
                 <td id="einzelpreis" class="text-right">&euro; 0.00</td>
-                <td><input type="number" class="form-control" name="rabatt" value="0.00" /></td>
+                <td><input type="number" class="form-control" name="rabatt" id="rabatt" value="0.00" /></td>
                 <td id="gesamtpreis" class="text-right">&euro; 0.00</td>
                 <td>&nbsp;</td>
               </tr>
@@ -149,45 +149,49 @@
 
     <div class="modal fade" tabindex="-1" role="dialog" id="position-bearbeiten">
       <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <h4>Position bearbeiten</h4>
-          <form class="form" action="/ausgangsrechnungen/position/bearbeiten" id="form-position-bearbeiten" method="post">
-            <table class="table">
-              <thead>
-                <th class="col-xs-1">Anzahl</th>
-                <th class="col-xs-4">Artikelbezeichnung</th>
-                <th class="col-xs-1">Einzelpreis</th>
-                <th class="col-xs-1">Rabatt %</th>
-                <th class="col-xs-1">Gesamtpreis</th>
-                <th class="col-xs-4">Optionen</th>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <select name="anzahl" id="bearbeiten-anzahl" class="form-control">
-                      {% for i in range(1,100) %}
-                        <option value="{{ i }}">{{ i }}</option>
-                      {% endfor %}
-                    </select>
-                  </td>
-                  <td>
-                    <select name="artikel_id" id="bearbeiten-artikelselect" class="form-control">
-                    {% for art in artikel %}
-                      <option value="{{ art['rowid'] }}">{{ art['artikelbezeichnung'] }}</option>
-                    {% endfor %}
-                  </select>
-                  </td>
-                  <td id="bearbeiten-einzelpreis" class="text-right">&euro; 0.00</td>
-                  <td><input type="number" class="form-control" name="rabatt" id="bearbeiten-rabatt" value="0.00" /></td>
-                  <td id="bearbeiten-gesamtpreis" class="text-right">&euro; 0.00</td>                  
-                </tr>
-              </tbody>
-            </table>
-          <input type="hidden" name="positions_id" id="positions_id" value="" />
-          </form>
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Position bearbeiten</h4>
+              </div>
+              <div class="modal-body">
+                <form class="form" action="/ausgangsrechnungen/position/bearbeiten" id="form-position-bearbeiten" method="post">
+                  <table class="table">
+                    <thead>
+                      <th class="col-xs-1">Anzahl</th>
+                      <th class="col-xs-4">Artikelbezeichnung</th>
+                      <th class="col-xs-1">Einzelpreis</th>
+                      <th class="col-xs-1">Rabatt %</th>
+                      <th class="col-xs-1">Gesamtpreis</th>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <select name="anzahl" id="bearbeiten-anzahl" class="form-control">
+                            {% for i in range(1,100) %}
+                              <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                          </select>
+                        </td>
+                        <td>
+                          <select name="artikel_id" id="bearbeiten-artikelselect" class="form-control">
+                          {% for art in artikel %}
+                            <option value="{{ art['rowid'] }}">{{ art['artikelbezeichnung'] }}</option>
+                          {% endfor %}
+                        </select>
+                        </td>
+                        <td id="bearbeiten-einzelpreis" class="text-right">&euro; 0.00</td>
+                        <td><input type="number" class="form-control" name="rabatt" id="bearbeiten-rabatt" value="0.00" /></td>
+                        <td id="bearbeiten-gesamtpreis" class="text-right">&euro; 0.00</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <input type="hidden" id="bearbeiten-einzelpreis-hidden" />
+                <input type="hidden" name="positions_id" id="positions_id" value="" />
+                </form>
 
-        </div>
-      </div>
+              </div>
+            </div>
     </div>
 
 
@@ -223,10 +227,63 @@
         });
       });
 
+      $('#bearbeiten-artikelselect').on('change', function() {
+
+        $.ajax({
+          url: '/artikel/ajax/preis/' + $('#bearbeiten-artikelselect').val(),
+          method: 'GET',
+          success: function(data) {
+            $('#bearbeiten-einzelpreis').html("&euro; " + data);
+            $('#bearbeiten-einzelpreis-hidden').val(data);
+            $('#bearbeiten-gesamtpreis').html("&euro; " + $('#anzahl').val() * data);
+          }
+
+
+        });
+      });
+
+      $('#bearbeiten-artikelselect').on('blur', function() {
+
+        $.ajax({
+          url: '/artikel/ajax/preis/' + $('#bearbeiten-artikelselect').val(),
+          method: 'GET',
+          success: function(data) {
+            $('#bearbeiten-einzelpreis').html("&euro; " + data);
+            $('#bearbeiten-einzelpreis-hidden').val(data);
+            $('#bearbeiten-gesamtpreis').html("&euro; " + $('#anzahl').val() * data);
+          }
+
+
+        });
+      });
+
       $('#anzahl').on('change', function() {
         var gesamt = $('#anzahl').val() * $('#einzelpreis-hidden').val();
         gesamt = gesamt.toFixed(2);
         $('#gesamtpreis').html("&euro; " + gesamt);
+      });
+
+      $('#anzahl').on('blur', function() {
+        var gesamt = $('#anzahl').val() * $('#einzelpreis-hidden').val();
+        gesamt = gesamt.toFixed(2);
+        $('#gesamtpreis').html("&euro; " + gesamt);
+      });
+
+      $('#bearbeiten-anzahl').on('change', function() {
+        var gesamt = $('#bearbeiten-anzahl').val() * $('#bearbeiten-einzelpreis-hidden').val();
+        gesamt = gesamt.toFixed(2);
+        $('#bearbeiten-gesamtpreis').html("&euro; " + gesamt);
+      });
+
+      $('#rabatt').on('blur', function() {
+
+        var ep = $('#einzelpreis-hidden').val();
+        var rabatt = $(this).val();
+
+        var ep_mit_rabatt = ep - ((ep / 100) * rabatt);
+
+        $('#gesamtpreis').html("&euro; " + ($('#anzahl').val() * ep_mit_rabatt).toFixed(2));
+
       });
 
       $('.editbutton').on('click', function() {
@@ -235,8 +292,12 @@
         $.ajax({
           url: '/positionen/ajax/position/' + id,
           method: 'GET',
-          success: function(data, id) {
-              $('#positions_id').val = id;
+          success: function(data) {
+              data = JSON.parse(data);
+              $('#positions_id').val(data.rowid);
+              $('#bearbeiten-anzahl').val(data.anzahl);
+              $('#bearbeiten-artikelselect').val(data.artikel_id);
+              $('#bearbeiten-rabatt').val(data.rabatt.toFixed(2));
               $('#position-bearbeiten').modal();
           }
 
