@@ -14,9 +14,9 @@ Raspberry Pi (3) konzipiert.
 # Installation
 
 ```
-sudo pip install -r requirements.txt
 git clone https://github.com/mindphluxnet/cashdesk
 cd cashdesk
+sudo pip install -r requirements.txt
 ```
 
 # Programmstart
