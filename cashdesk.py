@@ -259,7 +259,7 @@ def show_einstellungen():
 
 @app.route('/einstellungen/speichern', methods = ['POST'])
 def einstellungen_speichern():
-
+    
     database.settings.save_settings(sqlite_file, request.form)
 
     return redirect(url_for('show_einstellungen'))

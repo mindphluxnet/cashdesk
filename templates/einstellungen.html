@@ -53,6 +53,24 @@
               </div>
             </div>
             <div class="form-group">
+              <label for="telefonnummer" class="col-sm-2 control-label">Telefonnummer</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="telefonnummer" name="telefonnummer" value="{{ einstellungen['telefonnummer'] }}" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="telefaxnummer" class="col-sm-2 control-label">Faxnummer</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="telefaxnummer" name="telefaxnummer" value="{{ einstellungen['telefaxnummer'] }}" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email" class="col-sm-2 control-label">Email</label>
+              <div class="col-sm-10">
+                <input type="email" class="form-control" id="email" name="email" value="{{ einstellungen['email'] }}" />
+              </div>
+            </div>
+            <div class="form-group">
               <label for="ustid" class="col-sm-2 control-label">Ust-ID</label>
               <div class="col-sm-10">
                 <input type="text" class="form-control" id="ustid" name="ustid" value="{{ einstellungen['ustid'] }}" />
@@ -77,14 +95,15 @@
 
         <div role="tabpanel" class="tab-pane" id="lcd">
           <div class="clearfix">&nbsp;</div>
-          {% if is_raspi %}
-          <div class="form-group">
-            <label for="enable_lcd" class="col-sm-2 control-label">LCD-Display aktiviert</label>
-            <div class="col-sm-10">
-                  <select name="enable_lcd" class="form-control">
-                      <option value="0"{% if einstellungen['enable_lcd'] == 0 %}selected="selected"{% endif %}>nein</option>
-                      <option value="1"{% if einstellungen['enable_lcd'] == 1 %}selected="selected"{% endif %}>ja</option>
-                  </select>
+          {% if is_raspi == False %}
+            <div class="form-group">
+              <label for="enable_lcd" class="col-sm-2 control-label">LCD-Display aktiviert</label>
+              <div class="col-sm-10">
+                    <select name="enable_lcd" class="form-control">
+                        <option value="0"{% if einstellungen['enable_lcd'] == 0 %}selected="selected"{% endif %}>nein</option>
+                        <option value="1"{% if einstellungen['enable_lcd'] == 1 %}selected="selected"{% endif %}>ja</option>
+                    </select>
+              </div>
             </div>
             <div class="form-group">
               <label for="lcd_greeting_line1" class="col-sm-2 control-label">Begr&uuml;&szlig;ung (Zeile 1)</label>
@@ -99,9 +118,33 @@
               </div>
             </div>
             <div class="form-group">
+              <label for="lcd_greeting_line3" class="col-sm-2 control-label">Begr&uuml;&szlig;ung (Zeile 3)</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="lcd_greeting_line3" name="lcd_greeting_line3" value="{{ einstellungen['lcd_greeting_line3'] }}" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="lcd_greeting_line4" class="col-sm-2 control-label">Begr&uuml;&szlig;ung (Zeile 4)</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="lcd_greeting_line4" name="lcd_greeting_line4" value="{{ einstellungen['lcd_greeting_line4'] }}" />
+              </div>
+            </div>
+            <div class="form-group">
               <label for="lcd_goodbye_line1" class="col-sm-2 control-label">Verabschiedung (Zeile 1)</label>
               <div class="col-sm-10">
                 <input type="text" class="form-control" id="lcd_goodbye_line1" name="lcd_goodbye_line1" value="{{ einstellungen['lcd_goodbye_line1'] }}" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="lcd_goodbye_line3" class="col-sm-2 control-label">Verabschiedung (Zeile 3)</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="lcd_goodbye_line3" name="lcd_goodbye_line3" value="{{ einstellungen['lcd_goodbye_line3'] }}" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="lcd_goodbye_line4" class="col-sm-2 control-label">Verabschiedung (Zeile 4)</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="lcd_goodbye_line4" name="lcd_goodbye_line4" value="{{ einstellungen['lcd_goodbye_line4'] }}" />
               </div>
             </div>
             <div class="form-group">
@@ -109,7 +152,7 @@
               <div class="col-sm-10">
                 <input type="text" class="form-control" id="lcd_goodbye_line2" name="lcd_goodbye_line2" value="{{ einstellungen['lcd_goodbye_line2'] }}" />
               </div>
-            </div>            
+            </div>
           </div>
 
           {% else %}
