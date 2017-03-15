@@ -24,8 +24,6 @@ import database.kunden
 
 import raspi.raspi
 
-import logger.logger
-
 sqlite_file = "cashdesk.sqlite"
 debug = True
 bind_host = '0.0.0.0'
@@ -35,7 +33,6 @@ dbversion = 1
 database.setup.setup_database(sqlite_file, dbversion)
 
 if(raspi.raspi.is_raspi()):
-    logger.logger.log("Startup", "Raspberry Pi gefunden, aktiviere LCD-Support!")
     lcd = lcddriver.lcd()
     lcd.clear()
     try:
@@ -44,8 +41,6 @@ if(raspi.raspi.is_raspi()):
 	    lcd.display_string(settings['lcd_welcome_line2'], 2)
     except Exception:
 	pass
-else:
-    logger.logger.log("Startup", "Raspberry Pi nicht gefunden, deaktiviere LCD-Support!")
 
 app = Flask(__name__, static_url_path = '')
 
