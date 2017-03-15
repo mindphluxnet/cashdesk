@@ -217,6 +217,13 @@ def ausgangsrechnung_position_speichern():
 
     return redirect('/ausgangsrechnungen/neu/step2/' + str(request.form['rechnungs_id']))
 
+@app.route('/ausgangsrechnungen/position/loeschen/<string:id>')
+def ausgangsrechnung_position_loeschen(id):
+
+    rechnungs_id = database.rechnungen.delete_position(sqlite_file, id)
+
+    return redirect('/ausgangsrechnungen/neu/step2/' + str(rechnungs_id))
+
 @app.route('/kassenbuch')
 def show_kassenbuch():
 

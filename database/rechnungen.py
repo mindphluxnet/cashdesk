@@ -50,6 +50,22 @@ def save_position(sqlite_file, position):
     conn.commit()
     conn.close()
 
+def delete_position(sqlite_file, position):
+
+    conn = sqlite3.connect(sqlite_file)
+    conn.row_factory = database.factory.dict_factory
+    c = conn.cursor()
+
+    c.execute("SELECT rechnungs_id FROM rechnungspositionen WHERE oid = ?", position)
+    rechnungs_id = c.fetchone()
+
+    c.execute("DELETE FROM rechnungspositionen WHERE oid = ?", position)
+
+    conn.commit()
+    conn.close()
+
+    return rechnungs_id['rechnungs_id']
+
 def load_positionen(sqlite_file, rechnungs_id):
 
     conn = sqlite3.connect(sqlite_file)
