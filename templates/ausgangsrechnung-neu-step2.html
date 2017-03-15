@@ -85,7 +85,7 @@
                   {% set pos_gesamt = pos['anzahl'] * pos['rabattpreis'] %}
                   <td class="text-right">&euro; {{ '{0:0.2f}'.format(pos_gesamt) }}</td>
                   <td>
-                      <a class="btn btn-default btn-xs" href="#">Bearbeiten</a>
+                      <button class="btn btn-default btn-xs editbutton" data-id="{{ pos['positions_id'] }}">Bearbeiten</button>
                       <a class="btn btn-danger btn-xs" href="/ausgangsrechnungen/position/loeschen/{{ pos['positions_id'] }}">L&ouml;schen</a>
                   </td>
                 </tr>
@@ -147,6 +147,50 @@
 
     </div> <!-- /container -->
 
+    <div class="modal fade" tabindex="-1" role="dialog" id="position-bearbeiten">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <h4>Position bearbeiten</h4>
+          <form class="form" action="/ausgangsrechnungen/position/bearbeiten" id="form-position-bearbeiten" method="post">
+            <table class="table">
+              <thead>
+                <th class="col-xs-1">Anzahl</th>
+                <th class="col-xs-4">Artikelbezeichnung</th>
+                <th class="col-xs-1">Einzelpreis</th>
+                <th class="col-xs-1">Rabatt %</th>
+                <th class="col-xs-1">Gesamtpreis</th>
+                <th class="col-xs-4">Optionen</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <select name="anzahl" id="bearbeiten-anzahl" class="form-control">
+                      {% for i in range(1,100) %}
+                        <option value="{{ i }}">{{ i }}</option>
+                      {% endfor %}
+                    </select>
+                  </td>
+                  <td>
+                    <select name="artikel_id" id="bearbeiten-artikelselect" class="form-control">
+                    {% for art in artikel %}
+                      <option value="{{ art['rowid'] }}">{{ art['artikelbezeichnung'] }}</option>
+                    {% endfor %}
+                  </select>
+                  </td>
+                  <td id="bearbeiten-einzelpreis" class="text-right">&euro; 0.00</td>
+                  <td><input type="number" class="form-control" name="rabatt" id="bearbeiten-rabatt" value="0.00" /></td>
+                  <td id="bearbeiten-gesamtpreis" class="text-right">&euro; 0.00</td>                  
+                </tr>
+              </tbody>
+            </table>
+          <input type="hidden" name="positions_id" id="positions_id" value="" />
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+
     <script type="text/javascript">
 
       $('#artikelselect').on('change', function() {
@@ -183,6 +227,22 @@
         var gesamt = $('#anzahl').val() * $('#einzelpreis-hidden').val();
         gesamt = gesamt.toFixed(2);
         $('#gesamtpreis').html("&euro; " + gesamt);
+      });
+
+      $('.editbutton').on('click', function() {
+        event.preventDefault();
+        var id = $(this).data('id');
+        $.ajax({
+          url: '/positionen/ajax/position/' + id,
+          method: 'GET',
+          success: function(data, id) {
+              $('#positions_id').val = id;
+              $('#position-bearbeiten').modal();
+          }
+
+        });
+
+        $(this).blur();
       });
 
     </script>
