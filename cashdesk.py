@@ -233,8 +233,9 @@ def show_einstellungen():
     page_id = "einstellungen"
 
     einstellungen = database.settings.load_settings(sqlite_file)
+    is_raspi = lcd.raspi.is_raspi()
 
-    return render_template('einstellungen.html', page_title = page_title, page_id = page_id, einstellungen = einstellungen)
+    return render_template('einstellungen.html', page_title = page_title, page_id = page_id, einstellungen = einstellungen, is_raspi = is_raspi)
 
 @app.route('/einstellungen/speichern', methods = ['POST'])
 def einstellungen_speichern():
