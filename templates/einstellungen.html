@@ -80,8 +80,8 @@
               <label for="kleinunternehmer" class="col-sm-2 control-label">Kleinunternehmer</label>
               <div class="col-sm-10">
                     <select name="kleinunternehmer" class="form-control">
-                        <option value="0"{% if einstellungen['kleinunternehmer'] == 0 %}selected="selected"{% endif %}>nein</option>
-                        <option value="1"{% if einstellungen['kleinunternehmer'] == 1 %}selected="selected"{% endif %}>ja</option>
+                        <option value="0"{% if einstellungen['kleinunternehmer'] == '0' %}selected="selected"{% endif %}>nein</option>
+                        <option value="1"{% if einstellungen['kleinunternehmer'] == '1' %}selected="selected"{% endif %}>ja</option>
                     </select>
               </div>
             </div>
@@ -100,8 +100,8 @@
               <label for="enable_lcd" class="col-sm-2 control-label">LCD-Display aktiviert</label>
               <div class="col-sm-10">
                     <select name="enable_lcd" class="form-control">
-                        <option value="0"{% if einstellungen['enable_lcd'] == 0 %}selected="selected"{% endif %}>nein</option>
-                        <option value="1"{% if einstellungen['enable_lcd'] == 1 %}selected="selected"{% endif %}>ja</option>
+                        <option value="0"{% if einstellungen['enable_lcd'] == '0' %}selected="selected"{% endif %}>nein</option>
+                        <option value="1"{% if einstellungen['enable_lcd'] == '1' %}selected="selected"{% endif %}>ja</option>
                     </select>
               </div>
             </div>
