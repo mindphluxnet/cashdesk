@@ -32,12 +32,5 @@ def setup_database(sqlite_file, dbversion):
     except Exception as e:
         pass
 
-    try:
-        c.execute("CREATE TABLE einstellungen (firmenname TEXT, inhaber TEXT, strasse TEXT, hausnummer TEXT, plz INT(5), ort TEXT, ustid TEXT, kleinunternehmer INT(1), ustsatz REAL, enable_lcd INT(1), lcd_greeting_line1 TEXT(20), lcd_greeting_line2 TEXT(20), lcd_greeting_line3 TEXT(20), lcd_greeting_line4 TEXT(20), lcd_goodbye_line1 TEXT(20), lcd_goodbye_line2 TEXT(20), lcd_goodbye_line3 TEXT(20), lcd_goodbye_line4 TEXT(20), telefonnummer TEXT, telefaxnummer TEXT, email TEXT)")
-    except Exception as e:
-        pass
-
-    c.execute("INSERT OR IGNORE INTO einstellungen (firmenname, inhaber, strasse, hausnummer, plz, ort, ustid, kleinunternehmer, ustsatz, enable_lcd, lcd_greeting_line1, lcd_greeting_line2, lcd_greeting_line3, lcd_greeting_line4, lcd_goodbye_line1, lcd_goodbye_line2, lcd_goodbye_line3, lcd_goodbye_line4, telefonnummer, telefaxnummer, email) VALUES ('', '', '', '', '', '', '', '', 19.0, 0, '', '', '', '', '', '', '', '', '', '', '')")
-
     conn.commit()
     conn.close()
