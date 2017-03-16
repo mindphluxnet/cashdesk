@@ -9,6 +9,7 @@ import sqlite3
 import dateutil.parser
 import time
 import json
+import webbrowser
 try:
     import lcddriver
 except Exception:
@@ -43,6 +44,9 @@ if(raspi.raspi.is_raspi()):
 	pass
 
 app = Flask(__name__, static_url_path = '')
+
+if(debug == False):
+    webbrowser.open('http://localhost:5000')
 
 @app.route('/assets/<path:path>')
 def serve_asset(path):
@@ -259,7 +263,7 @@ def show_einstellungen():
 
 @app.route('/einstellungen/speichern', methods = ['POST'])
 def einstellungen_speichern():
-    
+
     database.settings.save_settings(sqlite_file, request.form)
 
     return redirect(url_for('show_einstellungen'))
