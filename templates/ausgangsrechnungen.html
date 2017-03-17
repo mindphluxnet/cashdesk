@@ -28,6 +28,7 @@
             <td>{% if rechnung['zahlungssstatus'] == 1 %}Ja</a>{% else %}Nein{% endif %}</td>
             <td>
               <a class="btn btn-xs btn-default" href="/ausgangsrechnungen/neu/step2/{{ rechnung['rechnungsnummer'] }}">Bearbeiten</a>
+              <a class="btn btn-xs btn-default" target="_rechnungsausgabe" href="/ausgangsrechnungen/pdfrenderer/drucken/{{ rechnung['rechnungsnummer'] }}">Drucken</a>
               {% if rechnung['gedruckt'] == 0 %}
                 <a class="btn btn-xs btn-danger" href="/ausgangsrechnung/loeschen/{{ rechnung['rechnungsnummer'] }}">L&ouml;schen</a>
               {% else %}

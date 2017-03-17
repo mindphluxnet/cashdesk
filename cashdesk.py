@@ -192,7 +192,7 @@ def show_ausgangsrechnungen():
 
         rechnung['umsatz'] = umsatz
         rechnung['rohgewinn'] = rohgewinn
-
+    
     return render_template('ausgangsrechnungen.html', rechnungen = rechnungen, page_title = page_title, page_id = page_id)
 
 @app.route('/ausgangsrechnungen/neu')
