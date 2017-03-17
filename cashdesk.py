@@ -11,6 +11,8 @@ import time
 import json
 import webbrowser
 import pdfkit
+import os.path
+import imghdr
 from jinja2 import Environment, FileSystemLoader
 import base64
 try:
@@ -29,6 +31,7 @@ import database.kunden
 import raspi.raspi
 
 sqlite_file = "cashdesk.sqlite"
+upload_dir = "assets/"
 debug = True
 bind_host = '0.0.0.0'
 bind_port = 5000
@@ -346,10 +349,18 @@ def show_einstellungen():
     einstellungen = database.settings.load_settings()
     is_raspi = raspi.raspi.is_raspi()
 
-    return render_template('einstellungen.html', page_title = page_title, page_id = page_id, einstellungen = einstellungen, is_raspi = is_raspi)
+    has_logo = False
+    if(os.path.isfile('assets/firmenlogo.png') and imghdr.what('assets/firmenlogo.png') == 'png'):
+        has_logo = True
+
+    return render_template('einstellungen.html', page_title = page_title, page_id = page_id, einstellungen = einstellungen, is_raspi = is_raspi, has_logo = has_logo)
 
 @app.route('/einstellungen/speichern', methods = ['POST'])
 def einstellungen_speichern():
+
+    uploaded_file = request.files['logobild']
+    if(uploaded_file):
+        uploaded_file.save('assets/firmenlogo.png')
 
     database.settings.save_settings(request.form)
 
