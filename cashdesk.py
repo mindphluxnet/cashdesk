@@ -45,8 +45,9 @@ if(raspi.raspi.is_raspi()):
         lcd.display_string(settings['lcd_welcome_line2'], 2)
         lcd.display_string(settings['lcd_welcome_line3'], 3)
         lcd.display_string(settings['lcd_welcome_line4'], 4)
-    except Exception:
-	pass
+    except Exception as e:
+        print(e.message)
+        pass
 
 app = Flask(__name__, static_url_path = '')
 
