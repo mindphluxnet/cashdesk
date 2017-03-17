@@ -252,7 +252,7 @@ def ausgangsrechnung_verbuchen():
 @app.route('/ausgangsrechnungen/speichern/step3', methods = ['POST'])
 def ausgangsrechnung_speichern_step3():
 
-    rechnung_id = database.rechnungen.save_rechnung_step1(sqlite_file, request.form)
+    rechnung_id = database.rechnungen.save_rechnung_step2(sqlite_file, request.form)
 
     return redirect('/ausgangsrechnungen/ausgeben/' + str(rechnung_id))
 
