@@ -33,7 +33,7 @@ def save_rechnung_step1(sqlite_file, rechnung):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("INSERT INTO rechnungen (rechnungsnummer, kunden_id, rechnungsdatum, zahlungsart, zahlungsstatus, gedruckt) VALUES (?, ?, ?, ?, ?)", [ rechnung['rechnungsnummer'], rechnung['kunden_id'], rechnung['rechnungsdatum'], rechnung['zahlungsart'], rechnung['zahlungsstatus'], rechnung['gedruckt'] ] )
+    c.execute("INSERT INTO rechnungen (rechnungsnummer, kunden_id, rechnungsdatum, zahlungsart, zahlungsstatus, gedruckt, storniert) VALUES (?, ?, ?, ?, ?, ?, ?)", [ rechnung['rechnungsnummer'], rechnung['kunden_id'], rechnung['rechnungsdatum'], rechnung['zahlungsart'], rechnung['zahlungsstatus'], 0, 0 ] )
 
     conn.commit()
     conn.close()
@@ -89,7 +89,7 @@ def load_position(sqlite_file, positions_id):
     position = c.fetchone()
 
     conn.close()
-    
+
     return position
 
 def get_next_invoice_id(sqlite_file):

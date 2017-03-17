@@ -144,8 +144,6 @@ def kunde_speichern():
 @app.route('/kunden/ajax/speichern', methods = ['POST'])
 def kunde_ajax_speichern():
 
-    print(request.form)
-
     new_id = database.kunden.save_kunde(sqlite_file, request.form)
     kunden = database.kunden.load_kunden(sqlite_file)
 
@@ -230,7 +228,7 @@ def ausgangsrechnung_neu_step2(id):
     return render_template('ausgangsrechnung-neu-step2.html', artikel = artikel, positionen = positionen, ust = ust, rohgewinn = rohgewinn, gesamtpreis = gesamtpreis, kunden = kunden, rechnung = rechnung, page_title = page_title, page_id = page_id)
 
 @app.route('/ausgangsrechnungen/speichern/step1', methods = ['POST'])
-def ausgangsrechnung_speichern_step1():
+def ausgangsrechnung_speichern_step1():    
 
     rechnung_id = database.rechnungen.save_rechnung_step1(sqlite_file, request.form)
 
