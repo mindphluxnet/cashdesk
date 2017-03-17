@@ -25,10 +25,13 @@
             <td>{{ rechnung['nachname'] }}, {{ rechnung['vorname'] }}</td>
             <td>&euro; {{ '{0:0.2f}'.format(rechnung['umsatz']) }}</td>
             <td>&euro; {{ '{0:0.2f}'.format(rechnung['rohgewinn']) }}</td>
-            <td>{% if rechnung['zahlungssstatus'] == 1 %}Ja</a>{% else %}Nein{% endif %}</td>
+            <td>{% if rechnung['zahlungsstatus'] == 1 %}<span class="text-success">Ja</span></a>{% else %}<span class="text-danger">Nein</span>{% endif %}</td>
             <td>
               <a class="btn btn-xs btn-default" href="/ausgangsrechnungen/neu/step2/{{ rechnung['rechnungsnummer'] }}">Bearbeiten</a>
               <a class="btn btn-xs btn-default" target="_rechnungsausgabe" href="/ausgangsrechnungen/pdfrenderer/drucken/{{ rechnung['rechnungsnummer'] }}">Drucken</a>
+              {% if rechnung['zahlungsstatus'] == 0 %}
+              <button class="btn btn-xs btn-success" id="btn-rechnung-verbuchen" data-id="{{ rechnung['rechnungsnummer'] }}">Als bezahlt verbuchen</button>
+              {% endif %}
               {% if rechnung['gedruckt'] == 0 %}
                 <a class="btn btn-xs btn-danger" href="/ausgangsrechnung/loeschen/{{ rechnung['rechnungsnummer'] }}">L&ouml;schen</a>
               {% else %}
@@ -40,8 +43,51 @@
 
       </table>
 
-
-
     </div> <!-- /container -->
+
+    <form class="form-horizontal" method="post" id="rechnungverbuchen-form" action="/ausgangsrechnungen/verbuchen">
+    <div class="modal fade" id="rechnung-verbuchen" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" <span>&times;</span></button>
+            <h4 class="modal-title" id="neuerKundeLabel">Rechnung verbuchen</h4>
+          </div>
+          <div class="modal-body">
+
+              <div class="form-group">
+                <label for="zahlungsdatum" class="col-sm-3 control-label">Zahlungsdatum</label>
+                <div class="col-sm-6">
+                  <input type="date" class="form-control" id="zahlungsdatum" name="zahlungsdatum" />
+                </div>
+                <div class="col-sm-3">
+                  <button class="btn btn-default" onclick="event.preventDefault(); document.getElementById('zahlungsdatum').valueAsDate = new Date();">Heute</button>
+                </div>
+              </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+                <button type="submit" id="button-rechnung-verbuchen" class="btn btn-primary">Rechnung verbuchen</button>
+                <input type="hidden" id="verbuchen-rechnungsnummer" name="rechnungsnummer" value="" />
+            </div>
+          </div>
+
+      </div>
+
+    </form>
+
+    <script type="text/javascript">
+
+      $('#btn-rechnung-verbuchen').on('click', function() {
+        event.preventDefault();
+        var id = $(this).data('id');
+        $('#verbuchen-rechnungsnummer').val(id);
+        $('#rechnung-verbuchen').modal();
+
+      });
+
+    </script>
+
 
 {% include "footer.html" %}

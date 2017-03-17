@@ -118,3 +118,15 @@ def get_next_invoice_id(sqlite_file):
     conn.close()
 
     return next_id
+
+def ausgangsrechnung_verbuchen(sqlite_file, rechnung):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("UPDATE rechnungen SET zahlungsstatus = 1 WHERE rechnungsnummer = ?", rechnung['rechnungsnummer'])
+
+    #: TODO: Zahlungseingang verbuchen
+
+    conn.commit()
+    conn.close()

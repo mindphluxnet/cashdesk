@@ -125,7 +125,6 @@ def artikel_ajax_preis(id):
     artikel = database.artikel.load_single_artikel(sqlite_file, id)
     return str(artikel['vkpreis'])
 
-
 @app.route('/kunden')
 def show_kunden():
 
@@ -192,7 +191,7 @@ def show_ausgangsrechnungen():
 
         rechnung['umsatz'] = umsatz
         rechnung['rohgewinn'] = rohgewinn
-    
+
     return render_template('ausgangsrechnungen.html', rechnungen = rechnungen, page_title = page_title, page_id = page_id)
 
 @app.route('/ausgangsrechnungen/neu')
@@ -205,6 +204,13 @@ def show_ausgangsrechnungen_neu():
     rechnungsnummer = database.rechnungen.get_next_invoice_id(sqlite_file)
 
     return render_template('ausgangsrechnung-neu.html', kunden = kunden, rechnungsnummer = rechnungsnummer, page_title = page_title, page_id = page_id)
+
+@app.route('/ausgangsrechnungen/speichern/step1', methods = ['POST'])
+def ausgangsrechnung_speichern_step1():
+
+    rechnung_id = database.rechnungen.save_rechnung_step1(sqlite_file, request.form)
+
+    return redirect('/ausgangsrechnungen/neu/step2/' + str(rechnung_id))
 
 @app.route('/ausgangsrechnungen/neu/step2/<string:id>')
 def ausgangsrechnung_neu_step2(id):
@@ -234,15 +240,14 @@ def ausgangsrechnung_neu_step2(id):
 
     ust = (gesamtpreis / 100) * float(settings['ustsatz'])
 
-
     return render_template('ausgangsrechnung-neu-step2.html', einstellungen = settings, artikel = artikel, positionen = positionen, ust = ust, rohgewinn = rohgewinn, gesamtpreis = gesamtpreis, kunden = kunden, rechnung = rechnung, page_title = page_title, page_id = page_id)
 
-@app.route('/ausgangsrechnungen/speichern/step1', methods = ['POST'])
-def ausgangsrechnung_speichern_step1():
+@app.route('/ausgangsrechnungen/verbuchen', methods = ['POST'])
+def ausgangsrechnung_verbuchen():
 
-    rechnung_id = database.rechnungen.save_rechnung_step1(sqlite_file, request.form)
+    database.rechnungen.ausgangsrechnung_verbuchen(sqlite_file, request.form)
 
-    return redirect('/ausgangsrechnungen/neu/step2/' + str(rechnung_id))
+    return redirect(url_for('show_ausgangsrechnungen'))
 
 @app.route('/ausgangsrechnungen/speichern/step3', methods = ['POST'])
 def ausgangsrechnung_speichern_step3():
