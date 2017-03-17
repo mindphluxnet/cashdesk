@@ -168,17 +168,6 @@
             Der Gesamtbetrag wird innerhalb von 7 Tagen von dem Ihnen bekannten Konto abgebucht.
           </p>
           {% endif %}
-          {% if rechnung['zahlungsart'] == 4 %}
-          <p>
-            Bitte &uuml;berweisen Sie die vereinbarte Ratenh&ouml;he <strong>rechtzeitig</strong> auf folgendes Konto:
-          </p>
-          <p>
-            IBAN: {{ stammdaten['iban'] }}
-          </p>
-          <p>
-            BIC: {{ stammdaten['bic'] }} ({{ stammdaten['bankname'] }})
-          </p>
-          {% endif %}
           {% if stammdaten['kleinunternehmer'] == '1' %}
           <p>
             In dieser Rechnung ist gem&auml;&szlig; der Kleinunternehmer-Regelung nach &sect;19 Abs. 1 UStG. keine Umsatzsteuer enthalten und ausgewiesen.
