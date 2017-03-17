@@ -1,6 +1,5 @@
 import sqlite3
 import pickle
-from flask import request
 
 import database.factory
 
