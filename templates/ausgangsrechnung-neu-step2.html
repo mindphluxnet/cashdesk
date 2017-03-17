@@ -189,6 +189,11 @@
                   </table>
                   <input type="hidden" id="bearbeiten-einzelpreis-hidden" />
                 <input type="hidden" name="positions_id" id="positions_id" value="" />
+                <input type="hidden" name="rechnungs_id" value="{{ rechnung['rechnungsnummer'] }}" />
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+                  <button type="submit" id="kundeneu-speichern" class="btn btn-primary">Speichern</button>
+              </div>
                 </form>
 
               </div>

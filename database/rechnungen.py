@@ -50,6 +50,16 @@ def save_position(sqlite_file, position):
     conn.commit()
     conn.close()
 
+def update_position(sqlite_file, position):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("UPDATE rechnungspositionen SET artikel_id = ?, anzahl = ?, rabatt = ? WHERE oid = ?", [ position['artikel_id'], position['anzahl'], position['rabatt'], position['positions_id'] ])
+
+    conn.commit()
+    conn.close()
+
 def delete_position(sqlite_file, position):
 
     conn = sqlite3.connect(sqlite_file)

@@ -310,6 +310,13 @@ def ausgangsrechnung_position_loeschen(id):
 
     return redirect('/ausgangsrechnungen/neu/step2/' + str(rechnungs_id))
 
+@app.route('/ausgangsrechnungen/position/bearbeiten', methods = ['POST'])
+def ausgangsrechnung_position_bearbeiten():
+
+    database.rechnungen.update_position(sqlite_file, request.form)
+
+    return redirect('/ausgangsrechnungen/neu/step2/' + str(request.form['rechnungs_id']))
+
 @app.route('/positionen/ajax/position/<string:id>')
 def positionen_ajax_position(id):
 
