@@ -43,6 +43,9 @@
           {% if stammdaten['email']|trim != '' %}
           <h5>{{ stammdaten['email'] }}</h5>
           {% endif %}
+          {% if stammdaten['ustid']|trim != '' %}
+          <h5>USt-Id: {{ stammdaten['ustid'] }}</h5>
+          {% endif %}
 
         </div>
       </div>
