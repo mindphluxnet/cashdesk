@@ -13,6 +13,9 @@
           <a href="#stammdaten" role="tab" data-toggle="tab">Stammdaten</a>
         </li>
         <li>
+          <a href="#konto" role="tab" data-toggle="tab">Kontodaten</a>
+        </li>
+        <li>
           <a href="#lcd" role="tab" data-toggle="tab">LCD-Display</a>
         </li>
       </ul>
@@ -158,6 +161,27 @@
           {% else %}
             <div class="alert alert-warning">LCD-Displays werden nur auf einem Raspberry Pi unterst&uuml;tzt!</div>
           {% endif %}
+
+          <div role="tabpanel" class="tab-pane" id="konto">
+            <div class="clearfix">&nbsp;</div>
+              <div class="form-group">
+                <label for="iban" class="col-sm-2 control-label">IBAN</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" maxlength="22" id="iban" name="iban" value="{{ einstellungen['iban'] }}" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="bic" class="col-sm-2 control-label">BIC</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" maxlength="13" id="bic" name="bic" value="{{ einstellungen['bic'] }}" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="lcd_greeting_line3" class="col-sm-2 control-label">Bank</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" maxlength="20" id="bankname" name="bankname" value="{{ einstellungen['bankname'] }}" />
+                </div>
+              </div>     
         </div>
 
         <div class="form-group">
