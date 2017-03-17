@@ -42,10 +42,10 @@ if(raspi.raspi.is_raspi()):
     try:
         settings = database.settings.load_settings()
         print(settings)
-        lcd.display_string(settings['lcd_welcome_line1'], 1)
-        lcd.display_string(settings['lcd_welcome_line2'], 2)
-        lcd.display_string(settings['lcd_welcome_line3'], 3)
-        lcd.display_string(settings['lcd_welcome_line4'], 4)
+        lcd.display_string(settings['lcd_greeting_line1'], 1)
+        lcd.display_string(settings['lcd_greeting_line2'], 2)
+        lcd.display_string(settings['lcd_greeting_line3'], 3)
+        lcd.display_string(settings['lcd_greeting_line4'], 4)
     except Exception as e:
         print(e.message)
         pass
