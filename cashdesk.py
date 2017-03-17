@@ -28,6 +28,8 @@ import database.artikel
 import database.rechnungen
 import database.kunden
 
+import statics.konten
+
 import raspi.raspi
 
 sqlite_file = "cashdesk.sqlite"
