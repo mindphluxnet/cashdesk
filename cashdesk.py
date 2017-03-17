@@ -141,6 +141,21 @@ def kunde_speichern():
 
     return redirect(url_for('show_kunden'))
 
+@app.route('/kunden/ajax/speichern', methods = ['POST'])
+def kunde_ajax_speichern():
+
+    print(request.form)
+
+    new_id = database.kunden.save_kunde(sqlite_file, request.form)
+    kunden = database.kunden.load_kunden(sqlite_file)
+
+    result = []
+
+    result.append(kunden)
+    result.append(new_id)
+
+    return json.dumps(result)
+
 @app.route('/eingangsrechnungen')
 def show_eingangsrechnungen():
 

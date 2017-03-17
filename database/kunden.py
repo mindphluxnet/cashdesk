@@ -26,3 +26,5 @@ def save_kunde(sqlite_file, customer):
 
     conn.commit()
     conn.close()
+
+    return c.lastrowid

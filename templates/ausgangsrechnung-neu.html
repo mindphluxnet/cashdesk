@@ -11,7 +11,7 @@
           <div class="form-group">
             <label for="kunden_id" class="col-sm-2 control-label">Kunde</label>
             <div class="col-sm-4">
-              <select name="kunden_id" id ="kunden_id" class="form-control">
+              <select name="kunden_id" id="kunden_id" class="form-control">
                 {% for kunde in kunden %}
                   <option value="{{ kunde['rowid'] }}">{{ kunde['nachname'] }}, {{ kunde['vorname'] }}</option>
                 {% endfor %}
@@ -64,8 +64,9 @@
 
     </div> <!-- /container -->
 
+    <form class="form-horizontal" method="post" id="kundeneu-form">
     <div class="modal fade" id="neuerKunde" role="dialog">
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" <span>&times;</span></button>
@@ -73,13 +74,85 @@
           </div>
           <div class="modal-body">
 
+              <div class="form-group">
+                <label for="nachname" class="col-sm-2 control-label">Nachname</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control" id="nachname" name="nachname" />
+                </div>
+                <label for="vorname" class="col-sm-1 control-label">Vorname</label>
+                <div class="col-sm-5">
+                  <input type="text" class="form-control" id="vorname" name="vorname" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="nachname" class="col-sm-2 control-label">Strasse</label>
+                <div class="col-sm-7">
+                  <input type="text" class="form-control" id="strasse" name="strasse" />
+                </div>
+                <label for="hausnummer" class="col-sm-1 control-label">Hausnr.</label>
+                <div class="col-sm-2">
+                  <input type="text" class="form-control" id="hausnummer" name="hausnummer" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="plz" class="col-sm-2 control-label">PLZ</label>
+                <div class="col-sm-2">
+                  <input type="number" maxlength="5" class="form-control" id="plz" name="plz" />
+                </div>
+                <label for="ort" class="col-sm-1 control-label">Ort</label>
+                <div class="col-sm-7">
+                  <input type="text" class="form-control" id="ort" name="ort" />
+                </div>
+              </div>
+
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
-            <button type="button" class="btn btn-primary">Speichern</button>            
+            <button type="submit" id="kundeneu-speichern" class="btn btn-primary">Speichern</button>
         </div>
       </div>
+    </form>
 
     </div>
+
+    <script type="text/javascript">
+
+     var request;
+
+      $('#kundeneu-form').submit(function(event) {
+        event.preventDefault();
+
+        if(request) {
+          request.abort();
+        }
+
+        var $form = $(this);
+
+        var $inputs = $form.find("input");
+
+        var serData = $form.serialize();
+
+        $inputs.prop("disabled", true);
+
+        request = $.ajax({
+          url: '/kunden/ajax/speichern',
+          method: 'POST',
+          data: serData,
+          success: function(data) {
+            $('#kunden_id').empty();
+            data = JSON.parse(data);
+            for(i=0;i<data[0].length;i++) {
+              $('<option />').val(data[0][i].rowid).text(data[0][i].nachname + ', ' + data[0][i].vorname).appendTo('#kunden_id');
+            }
+
+            $('#kunden_id').val(data[1]);
+            $('#neuerKunde').modal('hide');
+          }
+        });
+
+
+      });
+
+    </script>
 
 {% include "footer.html" %}
