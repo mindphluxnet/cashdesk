@@ -181,13 +181,13 @@ def show_ausgangsrechnungen():
     rechnungen = database.rechnungen.load_rechnungen(sqlite_file)
 
     for rechnung in rechnungen:
-        positionen = database.rechnungen.load_positionen(sqlite_file, rechnung['rechnungs_id'])
+        positionen = database.rechnungen.load_positionen(sqlite_file, rechnung['rechnungsnummer'])
 
         umsatz = 0
         rohgewinn = 0
 
         for pos in positionen:
-            umsatz = umsatz + ((pos['vkpreis'] - ((pos['vkpreis'] / 100) * pos['rabatt']) * pos['anzahl']))
+            umsatz = umsatz + pos['anzahl'] * (pos['vkpreis'] - (pos['vkpreis'] / 100 * pos['rabatt']))
             rohgewinn = umsatz - (pos['ekpreis'] * pos['anzahl'])
 
         rechnung['umsatz'] = umsatz
