@@ -137,9 +137,36 @@ def ausgangsrechnung_verbuchen(sqlite_file, rechnung):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
+    print(rechnung)
+
     c.execute("UPDATE rechnungen SET zahlungsstatus = 1 WHERE rechnungsnummer = ?", rechnung['rechnungsnummer'])
 
-    #: TODO: Zahlungseingang verbuchen
+    rechnung = database.rechnungen.load_rechnung(sqlite_file, rechnung['rechnungsnummer'])
+
+    #: Gesamtbetrag ermitteln
+    try:
+        positionen = database.rechnungen.load_positionen(sqlite_file, rechnung['rechnungsnummer'])
+
+        gesamtbetrag = 0
+
+        for pos in positionen:
+            rabattpreis = pos['vkpreis'] - (pos['vkpreis'] / 100 * pos['rabatt'])
+            gesamtbetrag = gesamtbetrag + (pos['anzahl'] * rabattpreis)
+
+
+        if(rechnung['zahlungsart'] == 1):
+            konto_id = 1  #: Kasse
+        else:
+            konto_id = 2  #: Girokonto
+
+        if(gesamtbetrag >= 0):
+            einaus = 1
+        else:
+            einaus = 0
+
+        c.execute("INSERT INTO buchungen (konto_id, eurkonto, rechnungs_id, betrag, datum, einaus) VALUES (?, ?, ?, ?, ?, ?)", [ konto_id, 111, rechnung['rechnungsnummer'], gesamtbetrag, rechnung['rechnungsdatum'], einaus ] )
+    except Exception as e:
+        print(e.message)
 
     conn.commit()
     conn.close()
