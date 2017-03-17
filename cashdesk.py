@@ -37,7 +37,7 @@ dbversion = 1
 database.setup.setup_database(sqlite_file, dbversion)
 settings = database.settings.load_settings()
 
-if(raspi.raspi.is_raspi() and settings['enable_lcd'] == 1):
+if(raspi.raspi.is_raspi()):
     lcd = lcddriver.lcd()
     lcd.clear()
     try:
