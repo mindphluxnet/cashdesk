@@ -21,7 +21,7 @@ def load_rechnung(sqlite_file, id):
     conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
 
-    c.execute("SELECT r.oid, r.*, k.oid, k.* FROM rechnungen r LEFT JOIN kunden k ON(k.oid = r.kunden_id) WHERE r.oid = ?", id)
+    c.execute("SELECT r.oid, r.*, k.oid, k.* FROM rechnungen r LEFT JOIN kunden k ON(k.oid = r.kunden_id) WHERE rechnungsnummer = ?", id)
     rechnung = c.fetchone()
 
     conn.close()
@@ -38,7 +38,7 @@ def save_rechnung_step1(sqlite_file, rechnung):
     conn.commit()
     conn.close()
 
-    return c.lastrowid
+    return rechnung['rechnungsnummer']
 
 def save_position(sqlite_file, position):
 
