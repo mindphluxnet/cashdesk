@@ -41,6 +41,7 @@ if(raspi.raspi.is_raspi()):
     lcd = lcddriver.lcd()
     lcd.clear()
     try:
+        settings = database.settings.load_settings()
         lcd.display_string(settings['lcd_welcome_line1'], 1)
         lcd.display_string(settings['lcd_welcome_line2'], 2)
         lcd.display_string(settings['lcd_welcome_line3'], 3)
