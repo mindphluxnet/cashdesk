@@ -1,7 +1,7 @@
 # Cashdesk
 
-Eine extrem schlanke Faktura in Python, hauptsächlich für den Einsatz auf einem 
-Raspberry Pi (3) konzipiert. 
+Eine extrem schlanke Faktura in Python, hauptsächlich für den Einsatz auf einem
+Raspberry Pi (3) konzipiert.
 
 # Geplante Features
 
@@ -10,6 +10,12 @@ Raspberry Pi (3) konzipiert.
 - Kassenmodul mit Ansteuerung von LCD-Display und Bondrucker
 - Bedienung vollständig im Browser (Bootstrap, jQuery)
 - Ausgabe/Druck von Rechnungen als PDF mit eigenem Layout aus HTML-Template
+
+# Abhängigkeiten installieren
+
+```
+sudo apt-get install wkhtmltopdf
+```
 
 # Installation
 
@@ -29,11 +35,9 @@ Sobald das Programm läuft, kann die Oberfläche im Browser unter der URL
 
 ```
 http://localhost:5000
-``` 
+```
 
 geöffnet werden.
 
 Hinweis: diese Software befindet sich im frühen Entwicklungsstadium. Sie ist
 aktuell nicht besonders funktionsfähig.
-
-

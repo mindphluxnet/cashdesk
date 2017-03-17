@@ -28,3 +28,16 @@ def save_kunde(sqlite_file, customer):
     conn.close()
 
     return c.lastrowid
+
+def load_kunde(sqlite_file, id):
+
+    conn = sqlite3.connect(sqlite_file)
+    conn.row_factory = database.factory.dict_factory
+    c = conn.cursor()
+
+    c.execute("SELECT * FROM kunden WHERE oid = ?", [ id ] )
+    kunde = c.fetchone()
+
+    conn.close()
+
+    return kunde

@@ -4,13 +4,15 @@
 #: ein minimales fakturierungsprogramm
 #: Copyright 2017, Richard Kaemmerer <richard@richardkaemmerer.de>
 
-from flask import Flask, render_template, send_from_directory, request, redirect, url_for, send_file
+from flask import Flask, render_template, send_from_directory, request, redirect, url_for, send_file, make_response
 import sqlite3
 import dateutil.parser
 import time
 import json
 import webbrowser
 import pdfkit
+from jinja2 import Environment, FileSystemLoader
+import base64
 try:
     import lcddriver
 except Exception:
@@ -253,21 +255,42 @@ def ausgangsrechnung_ausgeben(id):
 
     return render_template('ausgangsrechnung-ausgeben.html', page_title = page_title, page_id = page_id, rechnung = rechnung, positionen = positionen)
 
-@app.route('/ausgangsrechnungen/to-pdf/<string:id>')
-def ausgangsrechnungen_topdf(id):
-
-    pdfkit.from_url('/ausgangsrechnungen/pdfrenderer/' + string(id), 'dokumente/rechnungen/rechnung-' + string(id) + '.pdf')
-
-    return send_from_directory('dokumente/rechnungen', 'rechnung-' + string(id) + '.pdf')
-
 @app.route('/ausgangsrechnungen/pdfrenderer/<string:id>')
 def ausgangsrechnungen_pdfrenderer(id):
 
     rechnung = database.rechnungen.load_rechnung(sqlite_file, id)
+    kunde = database.kunden.load_kunde(sqlite_file, rechnung['kunden_id'])
     positionen = database.rechnungen.load_positionen(sqlite_file, id)
     stammdaten = database.settings.load_settings()
 
-    return render_template('template-ausgangsrechnung.html', rechnung = rechnung, positionen = positionen, stammdaten = stammdaten)
+    gesamtsumme = 0
+    for pos in positionen:
+        possumme = (pos['vkpreis'] - ((pos['vkpreis'] / 100) * pos['rabatt'])) * pos['anzahl']
+        gesamtsumme = gesamtsumme + possumme
+
+    bootstrap_css = ''
+
+    f = file('assets/css/bootstrap.min.css', 'r')
+    for line in f:
+        bootstrap_css = bootstrap_css + line
+
+    f.close()
+
+    with open('assets/firmenlogo.png', 'rb') as logo:
+        firmenlogo = base64.b64encode(logo.read())
+
+    env = Environment(loader=FileSystemLoader('templates'))
+    template = env.get_template('template-ausgangsrechnung.html')
+    out = template.render(bootstrap_css = bootstrap_css, firmenlogo = firmenlogo, bind_host = bind_host, bind_port = bind_port, rechnung = rechnung, positionen = positionen, stammdaten = stammdaten, kunde = kunde, gesamtsumme = gesamtsumme)
+    pdf = pdfkit.from_string(out, False)
+
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'inline; filename=rechnung-' + id + '.pdf'
+
+    return response
+
+    #: return render_template('template-ausgangsrechnung.html', bootstrap_css = bootstrap_css, firmenlogo = firmenlogo, bind_host = bind_host, bind_port = bind_port, rechnung = rechnung, positionen = positionen, stammdaten = stammdaten, kunde = kunde, gesamtsumme = gesamtsumme)
 
 @app.route('/ausgangsrechnungen/position/speichern', methods = ['POST'])
 def ausgangsrechnung_position_speichern():

@@ -5,14 +5,153 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
-    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+    {{ bootstrap_css }}
+    </style>
+    <style type="text/css">
+      body {
+        padding: 10px;
+
+      }
+      .spacer {
+        height: 3em;
+      }
+
+      .spacer-small {
+        height: 1.5em;
+      }
+
+      .mleft {
+        margin-left: 1.5em;
+
+      }
+    </style>
   </head>
   <body>
     <div class="container">
       <div class="row">
-        
+        <div class="col-md-12 text-left">
+          <img src="data:image/png;base64,{{ firmenlogo }}" class="img pull-right" width="200" height="220"/>
+          <h4>{{ stammdaten['firmenname'] }}</h4>
+          <h5>{{ stammdaten['inhaber'] }}</h5>
+          <h5>{{ stammdaten['strasse'] }} {{ stammdaten['hausnummer'] }}</h5>
+          <h5>{{ stammdaten['plz'] }} {{ stammdaten['ort'] }}</h5>
+          <h5>Fon {{ stammdaten['telefonnummer'] }}</h5>
+          {% if stammdaten['telefaxnummer']|trim != '' %}
+          <h5>Fax {{ stammdaten['telefaxnummer'] }}</h5>
+          {% endif %}
+          {% if stammdaten['email']|trim != '' %}
+          <h5>{{ stammdaten['email'] }}</h5>
+          {% endif %}
+
+        </div>
       </div>
-    </div>
+      <div class="row">
+        <div class="col-md-12 spacer">&nbsp;</div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 spacer">&nbsp;</div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h4>{{ kunde['vorname']}} {{ kunde['nachname'] }}</h4>
+          <h4>{{ kunde['strasse']}} {{ kunde['hausnummer'] }}</h4>
+          <h4>{{ kunde['plz']}} {{ kunde['ort'] }}</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 spacer">&nbsp;</div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <h2>Rechnung</h2>
+        </div>
+        <div class="col-md-6 text-right">
+          Rechnungsdatum: {{ rechnung['rechnungsdatum'] }}<br />
+          Rechnungsnummer: {{ rechnung['rechnungsnummer'] }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 spacer">&nbsp;</div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <p>
+            Sehr geehrte/r Herr/Frau {{ kunde['nachname'] }},
+          </p>
+          <p>
+            vielen Dank f&uuml;r Ihren Auftrag! Ich erlaube mir, wie folgt Rechnung zu stellen:
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 spacer-small">&nbsp;</div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+            <table class="table table-condensed table-striped">
+              <thead>
+                <th>Pos.</th>
+                <th>Anzahl</th>
+                <th>Art-Nr.</th>
+                <th>Artikelbezeichnung</th>
+                <th>Einzelpreis</th>
+                <th>Rabatt</th>
+                <th>Gesamtpreis</th>
+              </thead>
+              <tbody>
+                {% for pos in positionen %}
+                  <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ pos['anzahl'] }}</td>
+                    <td>{{ pos['artikelnummer'] }}</td>
+                    <td>{{ pos['artikelbezeichnung'] }}</td>
+                    <td>&euro; {{ '{0:0.2f}'.format(pos['vkpreis']) }}</td>
+                    <td>{{ '{0:0.2f}'.format(pos['rabatt']) }} &#037;</td>
+                    {% set posgesamt = (pos['vkpreis'] - (pos['vkpreis'] / 100 * pos['rabatt'])) * pos['anzahl'] %}
+                    <td>&euro; {{ '{0:0.2f}'.format(posgesamt) }}</td>
+                  </tr>
+                {% endfor %}
+                  <tr>
+                    <td colspan="4">&nbsp;</td>
+                    <td colspan="2"><strong>Gesamtsumme:</strong></td>
+                    <td><strong>&euro; {{ '{0:0.2f}'.format(gesamtsumme) }}</strong></td>
+                  </tr>
+              </tbody>
+            </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 spacer-small">&nbsp;</div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <p>Zahlungsart:
+            {% if rechnung['zahlungsart'] == 1 %}Barzahlung
+            {% elif rechnung['zahlungsart'] == 2 %}&Uuml;berweisung
+            {% elif rechnung['zahlungsart'] == 3 %}Lastschrift
+            {% elif rechnung['zahlungsart'] == 4 %}Ratenzahlung
+            {% endif %}
+          </p>
+          {% if rechnung['zahlungsart'] == 2 or rechnung['zahlungsart'] == 4 %}
+          <p>
+            Bitte &uuml;berweisen Sie den Gesamtbetrag innerhalb von 7 Tagen auf folgendes Konto:
+          </p>
+          <p>
+            IBAN: {{ stammdaten['iban'] }}
+          </p>
+          <p>
+            BIC: {{ stammdaten['bic'] }}
+          </p>
+          {% endif %}
+          {% if stammdaten['kleinunternehmer'] == '1' %}
+          <p>
+            In dieser Rechnung ist gem&auml;&szlig; der Kleinunternehmer-Regelung nach &sect;19 Abs. 1 UStG. keine Umsatzsteuer enthalten und ausgewiesen.
+          </p>
+          {% endif %}
+        </div>
+      </div>
+
 
   </body>
 </html>
