@@ -193,7 +193,7 @@ def show_ausgangsrechnungen():
 @app.route('/ausgangsrechnungen/neu')
 def show_ausgangsrechnungen_neu():
 
-    page_title = "Neue Ausgangsrechnung (Schritt 1)"
+    page_title = "Neue Ausgangsrechnung"
     page_id = "ausgangsrechnungneu"
 
     kunden = database.kunden.load_kunden(sqlite_file)
@@ -204,13 +204,14 @@ def show_ausgangsrechnungen_neu():
 @app.route('/ausgangsrechnungen/neu/step2/<string:id>')
 def ausgangsrechnung_neu_step2(id):
 
-    page_title = "Neue Ausgangsrechnung (Schritt 2)"
+    page_title = "Ausgangsrechnung bearbeiten"
     page_id = "ausgangsrechnungen"
 
     rechnung = database.rechnungen.load_rechnung(sqlite_file, id)
     kunden = database.kunden.load_kunden(sqlite_file)
     artikel = database.artikel.load_artikel(sqlite_file)
     positionen = database.rechnungen.load_positionen(sqlite_file, id)
+    settings = database.settings.load_settings()
 
     for pos in positionen:
         pos['rabattpreis'] = pos['vkpreis'] - (pos['vkpreis'] / 100 * pos['rabatt'])
@@ -226,11 +227,10 @@ def ausgangsrechnung_neu_step2(id):
     for pos in positionen:
         rohgewinn = gesamtpreis - (pos['ekpreis'] * pos['anzahl'])
 
-    ust = gesamtpreis - (gesamtpreis / 1.19)
+    ust = (gesamtpreis / 100) * float(settings['ustsatz'])
 
 
-
-    return render_template('ausgangsrechnung-neu-step2.html', artikel = artikel, positionen = positionen, ust = ust, rohgewinn = rohgewinn, gesamtpreis = gesamtpreis, kunden = kunden, rechnung = rechnung, page_title = page_title, page_id = page_id)
+    return render_template('ausgangsrechnung-neu-step2.html', einstellungen = settings, artikel = artikel, positionen = positionen, ust = ust, rohgewinn = rohgewinn, gesamtpreis = gesamtpreis, kunden = kunden, rechnung = rechnung, page_title = page_title, page_id = page_id)
 
 @app.route('/ausgangsrechnungen/speichern/step1', methods = ['POST'])
 def ausgangsrechnung_speichern_step1():
@@ -266,9 +266,12 @@ def ausgangsrechnungen_pdfrenderer(action, id):
     stammdaten = database.settings.load_settings()
 
     gesamtsumme = 0
+
     for pos in positionen:
         possumme = (pos['vkpreis'] - ((pos['vkpreis'] / 100) * pos['rabatt'])) * pos['anzahl']
         gesamtsumme = gesamtsumme + possumme
+
+    mwst = (gesamtsumme / 100) * float(stammdaten['ustsatz'])
 
     bootstrap_css = ''
 
@@ -283,7 +286,7 @@ def ausgangsrechnungen_pdfrenderer(action, id):
 
     env = Environment(loader=FileSystemLoader('templates'))
     template = env.get_template('template-ausgangsrechnung.html')
-    out = template.render(bootstrap_css = bootstrap_css, firmenlogo = firmenlogo, bind_host = bind_host, bind_port = bind_port, rechnung = rechnung, positionen = positionen, stammdaten = stammdaten, kunde = kunde, gesamtsumme = gesamtsumme)
+    out = template.render(bootstrap_css = bootstrap_css, firmenlogo = firmenlogo, bind_host = bind_host, bind_port = bind_port, rechnung = rechnung, positionen = positionen, stammdaten = stammdaten, kunde = kunde, gesamtsumme = gesamtsumme, mwst = mwst)
     pdf = pdfkit.from_string(out, False)
 
     response = make_response(pdf)

@@ -5,7 +5,7 @@
 
     <div class="container">
 
-      <h3>Neue Ausgangsrechnung - Schritt 2</h3>
+      <h3>{{ page_title}}</h3>
 
       <form class="form-horizontal" method="post" action="/ausgangsrechnungen/speichern/step3" id="rechnungausgeben-form">
           <div class="form-group">
@@ -113,10 +113,10 @@
                 <td>&nbsp;</td>
               </tr>
               <tr>
-                <td colspan="2">
-                  <strong>Mehrwertsteuer</strong>
+                <td colspan="3">
+                  <strong>{{ einstellungen['ustsatz'] }}% Mehrwertsteuer {% if einstellungen['kleinunternehmer'] == '1' %}(wird nicht angegeben){% endif %}</strong>
                 </td>
-                <td colspan="4" class="text-right">
+                <td colspan="3" class="text-right">
                   <strong>&euro; {{ '{0:0.2f}'.format(ust) }}</strong>
                 </td>
                 <td>&nbsp;</td>

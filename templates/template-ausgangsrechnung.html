@@ -129,6 +129,12 @@
       </div>
       <div class="row">
         <div class="col-md-12">
+          {% if stammdaten['kleinunternehmer'] == '1' %}
+            <p>
+              Im Gesamtbetrag sind {{ stammdaten['ustsatz'] }}% Mehrwertsteuer = &euro; {{ '{0:0.2f}'.format(mwst) }} enthalten.
+            </p>
+          {% endif %}
+
           <p>Zahlungsart:
             {% if rechnung['zahlungsart'] == 1 %}Barzahlung
             {% elif rechnung['zahlungsart'] == 2 %}&Uuml;berweisung
@@ -136,7 +142,17 @@
             {% elif rechnung['zahlungsart'] == 4 %}Ratenzahlung
             {% endif %}
           </p>
-          {% if rechnung['zahlungsart'] == 2 or rechnung['zahlungsart'] == 4 %}
+          {% if rechnung['zahlungsart'] == 1 and rechnung['zahlungsstatus'] == 1 %}
+          <p>
+            Der Gesamtbetrag wurde bereits bar bezahlt, vielen Dank!
+          </p>
+          {% endif %}
+          {% if rechnung['zahlungsart'] == 1 and rechnung['zahlungsstatus'] == 0 %}
+          <p>
+            Bitte bezahlen Sie den Gesamtbetrag an der Kasse, vielen Dank!
+          </p>
+          {% endif %}
+          {% if rechnung['zahlungsart'] == 2 %}
           <p>
             Bitte &uuml;berweisen Sie den Gesamtbetrag innerhalb von 7 Tagen auf folgendes Konto:
           </p>
@@ -144,7 +160,23 @@
             IBAN: {{ stammdaten['iban'] }}
           </p>
           <p>
-            BIC: {{ stammdaten['bic'] }}
+            BIC: {{ stammdaten['bic'] }} ({{ stammdaten['bankname'] }})
+          </p>
+          {% endif %}
+          {% if rechnung['zahlungsart'] == 3 %}
+          <p>
+            Der Gesamtbetrag wird innerhalb von 7 Tagen von dem Ihnen bekannten Konto abgebucht.
+          </p>
+          {% endif %}
+          {% if rechnung['zahlungsart'] == 4 %}
+          <p>
+            Bitte &uuml;berweisen Sie die vereinbarte Ratenh&ouml;he <strong>rechtzeitig</strong> auf folgendes Konto:
+          </p>
+          <p>
+            IBAN: {{ stammdaten['iban'] }}
+          </p>
+          <p>
+            BIC: {{ stammdaten['bic'] }} ({{ stammdaten['bankname'] }})
           </p>
           {% endif %}
           {% if stammdaten['kleinunternehmer'] == '1' %}
