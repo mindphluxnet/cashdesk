@@ -1,6 +1,7 @@
 import sqlite3
 
 import database.factory
+import statics.konten
 
 def load_rechnungen(sqlite_file):
 
@@ -134,39 +135,37 @@ def get_next_invoice_id(sqlite_file):
 
 def ausgangsrechnung_verbuchen(sqlite_file, rechnung):
 
+    konto_einnahmen = 111
+
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
-
-    print(rechnung)
 
     c.execute("UPDATE rechnungen SET zahlungsstatus = 1 WHERE rechnungsnummer = ?", rechnung['rechnungsnummer'])
 
     rechnung = database.rechnungen.load_rechnung(sqlite_file, rechnung['rechnungsnummer'])
 
     #: Gesamtbetrag ermitteln
-    try:
-        positionen = database.rechnungen.load_positionen(sqlite_file, rechnung['rechnungsnummer'])
 
-        gesamtbetrag = 0
+    positionen = database.rechnungen.load_positionen(sqlite_file, rechnung['rechnungsnummer'])
 
-        for pos in positionen:
-            rabattpreis = pos['vkpreis'] - (pos['vkpreis'] / 100 * pos['rabatt'])
-            gesamtbetrag = gesamtbetrag + (pos['anzahl'] * rabattpreis)
+    gesamtbetrag = 0
+
+    for pos in positionen:
+        rabattpreis = pos['vkpreis'] - (pos['vkpreis'] / 100 * pos['rabatt'])
+        gesamtbetrag = gesamtbetrag + (pos['anzahl'] * rabattpreis)
 
 
-        if(rechnung['zahlungsart'] == 1):
-            konto_id = 1  #: Kasse
-        else:
-            konto_id = 2  #: Girokonto
+    if(rechnung['zahlungsart'] == 1):
+        konto_id = 1  #: Kasse
+    else:
+        konto_id = 2  #: Girokonto
 
-        if(gesamtbetrag >= 0):
-            einaus = 1
-        else:
-            einaus = 0
+    if(gesamtbetrag >= 0):
+        einaus = 1
+    else:
+        einaus = 0
 
-        c.execute("INSERT INTO buchungen (konto_id, eurkonto, rechnungs_id, betrag, datum, einaus) VALUES (?, ?, ?, ?, ?, ?)", [ konto_id, 111, rechnung['rechnungsnummer'], gesamtbetrag, rechnung['rechnungsdatum'], einaus ] )
-    except Exception as e:
-        print(e.message)
+    c.execute("INSERT INTO buchungen (konto_id, eurkonto, rechnungs_id, betrag, datum, einaus) VALUES (?, ?, ?, ?, ?, ?)", [ konto_id, konto_einnahmen, rechnung['rechnungsnummer'], gesamtbetrag, rechnung['rechnungsdatum'], einaus ] )
 
     conn.commit()
     conn.close()

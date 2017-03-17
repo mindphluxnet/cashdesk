@@ -40,3 +40,4 @@ eurkonten = { 111: "Betriebseinnahmen nach &para;19 Abs. 1 UStG.",
               176: "Mindestens abziehbare Kfz-Kosten f&uuml;r Wege zwischen Wohnung und erster Betriebsst&auml;tte"
 
          }
+        
