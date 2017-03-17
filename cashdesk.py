@@ -275,6 +275,10 @@ def ausgangsrechnungen_pdfrenderer(action, id):
     positionen = database.rechnungen.load_positionen(sqlite_file, id)
     stammdaten = database.settings.load_settings()
 
+    #: Rechnung als gedruckt markieren
+
+    database.rechnungen.rechnung_gedruckt(sqlite_file, id)
+
     gesamtsumme = 0
 
     for pos in positionen:

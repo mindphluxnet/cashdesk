@@ -130,3 +130,13 @@ def ausgangsrechnung_verbuchen(sqlite_file, rechnung):
 
     conn.commit()
     conn.close()
+
+def rechnung_gedruckt(sqlite_file, id):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("UPDATE rechnungen set gedruckt = 1 WHERE rechnungsnummer = ?", id)
+
+    conn.commit()
+    conn.close()
