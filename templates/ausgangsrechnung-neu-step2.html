@@ -234,9 +234,12 @@
           url: '/artikel/ajax/preis/' + $('#bearbeiten-artikelselect').val(),
           method: 'GET',
           success: function(data) {
+            var ep_mit_rabatt = data - ((data / 100) * $('#bearbeiten-rabatt').val());
             $('#bearbeiten-einzelpreis').html("&euro; " + data);
             $('#bearbeiten-einzelpreis-hidden').val(data);
-            $('#bearbeiten-gesamtpreis').html("&euro; " + $('#anzahl').val() * data);
+            gesamt = $('#bearbeiten-anzahl').val() * ep_mit_rabatt;
+            gesamt = gesamt.toFixed(2)
+            $('#bearbeiten-gesamtpreis').html("&euro; " + gesamt);
           }
 
 
@@ -249,9 +252,12 @@
           url: '/artikel/ajax/preis/' + $('#bearbeiten-artikelselect').val(),
           method: 'GET',
           success: function(data) {
+            var ep_mit_rabatt = data - ((data / 100) * $('#bearbeiten-rabatt').val());
             $('#bearbeiten-einzelpreis').html("&euro; " + data);
             $('#bearbeiten-einzelpreis-hidden').val(data);
-            $('#bearbeiten-gesamtpreis').html("&euro; " + $('#anzahl').val() * data);
+            gesamt = $('#bearbeiten-anzahl').val() * ep_mit_rabatt;
+            gesamt = gesamt.toFixed(2)
+            $('#bearbeiten-gesamtpreis').html("&euro; " + gesamt);
           }
 
 
@@ -271,9 +277,21 @@
       });
 
       $('#bearbeiten-anzahl').on('change', function() {
-        var gesamt = $('#bearbeiten-anzahl').val() * $('#bearbeiten-einzelpreis-hidden').val();
+        var ep = $('#einzelpreis-hidden').val()
+        var ep_mit_rabatt = ep - ((ep / 100) * $('#bearbeiten-rabatt').val());
+        var gesamt = $('#anzahl').val() * ep_mit_rabatt;
         gesamt = gesamt.toFixed(2);
         $('#bearbeiten-gesamtpreis').html("&euro; " + gesamt);
+        $('#bearbeiten-artikelselect').blur();
+      });
+
+      $('#bearbeiten-anzahl').on('blur', function() {
+        var ep = $('#einzelpreis-hidden').val()
+        var ep_mit_rabatt = ep - ((ep / 100) * $('#bearbeiten-rabatt').val());
+        var gesamt = $('#anzahl').val() * ep_mit_rabatt;
+        gesamt = gesamt.toFixed(2);
+        $('#bearbeiten-gesamtpreis').html("&euro; " + gesamt);
+        $('#bearbeiten-artikelselect').blur();
       });
 
       $('#rabatt').on('blur', function() {
@@ -284,6 +302,17 @@
         var ep_mit_rabatt = ep - ((ep / 100) * rabatt);
 
         $('#gesamtpreis').html("&euro; " + ($('#anzahl').val() * ep_mit_rabatt).toFixed(2));
+
+      });
+
+      $('#bearbeiten-rabatt').on('blur', function() {
+
+        var ep = $('#bearbeiten-einzelpreis-hidden').val();
+        var rabatt = $(this).val();
+
+        var ep_mit_rabatt = ep - ((ep / 100) * rabatt);
+
+        $('#bearbeiten-gesamtpreis').html("&euro; " + ($('#bearbeiten-anzahl').val() * ep_mit_rabatt).toFixed(2));
 
       });
 
@@ -299,6 +328,7 @@
               $('#bearbeiten-anzahl').val(data.anzahl);
               $('#bearbeiten-artikelselect').val(data.artikel_id);
               $('#bearbeiten-rabatt').val(data.rabatt.toFixed(2));
+              $('#bearbeiten-artikelselect').blur();
               $('#position-bearbeiten').modal();
           }
 
