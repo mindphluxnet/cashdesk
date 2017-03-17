@@ -255,8 +255,8 @@ def ausgangsrechnung_ausgeben(id):
 
     return render_template('ausgangsrechnung-ausgeben.html', page_title = page_title, page_id = page_id, rechnung = rechnung, positionen = positionen)
 
-@app.route('/ausgangsrechnungen/pdfrenderer/<string:id>')
-def ausgangsrechnungen_pdfrenderer(id):
+@app.route('/ausgangsrechnungen/pdfrenderer/<string:action>/<string:id>')
+def ausgangsrechnungen_pdfrenderer(action, id):
 
     rechnung = database.rechnungen.load_rechnung(sqlite_file, id)
     kunde = database.kunden.load_kunde(sqlite_file, rechnung['kunden_id'])
@@ -286,11 +286,13 @@ def ausgangsrechnungen_pdfrenderer(id):
 
     response = make_response(pdf)
     response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = 'inline; filename=rechnung-' + id + '.pdf'
+    if(action == 'speichern'):
+        response.headers['Content-Disposition'] = 'attachment; filename=rechnung-' + id + '.pdf'
 
-    return response
+    if(action == 'drucken'):
+        response.headers['Content-Disposition'] = 'inline; filename=rechnung-' + id + '.pdf'
 
-    #: return render_template('template-ausgangsrechnung.html', bootstrap_css = bootstrap_css, firmenlogo = firmenlogo, bind_host = bind_host, bind_port = bind_port, rechnung = rechnung, positionen = positionen, stammdaten = stammdaten, kunde = kunde, gesamtsumme = gesamtsumme)
+    return response    
 
 @app.route('/ausgangsrechnungen/position/speichern', methods = ['POST'])
 def ausgangsrechnung_position_speichern():
