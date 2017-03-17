@@ -37,17 +37,18 @@ dbversion = 1
 database.setup.setup_database(sqlite_file, dbversion)
 settings = database.settings.load_settings()
 
-if(raspi.raspi.is_raspi() and settings['enable_lcd'] == '1'):
+if(raspi.raspi.is_raspi()):
     lcd = lcddriver.lcd()
     lcd.clear()
-    try:
-        lcd.display_string(settings['lcd_greeting_line1'], 1)
-        lcd.display_string(settings['lcd_greeting_line2'], 2)
-        lcd.display_string(settings['lcd_greeting_line3'], 3)
-        lcd.display_string(settings['lcd_greeting_line4'], 4)
-    except Exception as e:
-        print(e.message)
-        pass
+    if(settings['enable_lcd'] == '1'):
+        try:
+            lcd.display_string(settings['lcd_greeting_line1'], 1)
+            lcd.display_string(settings['lcd_greeting_line2'], 2)
+            lcd.display_string(settings['lcd_greeting_line3'], 3)
+            lcd.display_string(settings['lcd_greeting_line4'], 4)
+        except Exception as e:
+            print(e.message)
+            pass
 
 app = Flask(__name__, static_url_path = '')
 
