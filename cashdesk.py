@@ -35,14 +35,16 @@ bind_port = 5000
 dbversion = 1
 
 database.setup.setup_database(sqlite_file, dbversion)
+settings = database.settings.load_settings()
 
-if(raspi.raspi.is_raspi()):
+if(raspi.raspi.is_raspi() and settings['enable_lcd'] == '1'):
     lcd = lcddriver.lcd()
     lcd.clear()
     try:
-	    settings = database.settings.load_settings()
-	    lcd.display_string(settings['lcd_welcome_line1'], 1)
-	    lcd.display_string(settings['lcd_welcome_line2'], 2)
+        lcd.display_string(settings['lcd_welcome_line1'], 1)
+        lcd.display_string(settings['lcd_welcome_line2'], 2)
+        lcd.display_string(settings['lcd_welcome_line3'], 3)
+        lcd.display_string(settings['lcd_welcome_line4'], 4)
     except Exception:
 	pass
 
@@ -292,7 +294,7 @@ def ausgangsrechnungen_pdfrenderer(action, id):
     if(action == 'drucken'):
         response.headers['Content-Disposition'] = 'inline; filename=rechnung-' + id + '.pdf'
 
-    return response    
+    return response
 
 @app.route('/ausgangsrechnungen/position/speichern', methods = ['POST'])
 def ausgangsrechnung_position_speichern():
