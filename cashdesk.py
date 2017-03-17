@@ -35,13 +35,13 @@ bind_port = 5000
 dbversion = 1
 
 database.setup.setup_database(sqlite_file, dbversion)
-settings = database.settings.load_settings()
 
 if(raspi.raspi.is_raspi()):
     lcd = lcddriver.lcd()
     lcd.clear()
     try:
         settings = database.settings.load_settings()
+        print(settings)
         lcd.display_string(settings['lcd_welcome_line1'], 1)
         lcd.display_string(settings['lcd_welcome_line2'], 2)
         lcd.display_string(settings['lcd_welcome_line3'], 3)
