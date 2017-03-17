@@ -4,12 +4,13 @@
 #: ein minimales fakturierungsprogramm
 #: Copyright 2017, Richard Kaemmerer <richard@richardkaemmerer.de>
 
-from flask import Flask, render_template, send_from_directory, request, redirect, url_for
+from flask import Flask, render_template, send_from_directory, request, redirect, url_for, send_file
 import sqlite3
 import dateutil.parser
 import time
 import json
 import webbrowser
+import pdfkit
 try:
     import lcddriver
 except Exception:
@@ -37,7 +38,7 @@ if(raspi.raspi.is_raspi()):
     lcd = lcddriver.lcd()
     lcd.clear()
     try:
-	    settings = database.settings.load_settings(sqlite_file)
+	    settings = database.settings.load_settings()
 	    lcd.display_string(settings['lcd_welcome_line1'], 1)
 	    lcd.display_string(settings['lcd_welcome_line2'], 2)
     except Exception:
@@ -228,11 +229,45 @@ def ausgangsrechnung_neu_step2(id):
     return render_template('ausgangsrechnung-neu-step2.html', artikel = artikel, positionen = positionen, ust = ust, rohgewinn = rohgewinn, gesamtpreis = gesamtpreis, kunden = kunden, rechnung = rechnung, page_title = page_title, page_id = page_id)
 
 @app.route('/ausgangsrechnungen/speichern/step1', methods = ['POST'])
-def ausgangsrechnung_speichern_step1():    
+def ausgangsrechnung_speichern_step1():
 
     rechnung_id = database.rechnungen.save_rechnung_step1(sqlite_file, request.form)
 
     return redirect('/ausgangsrechnungen/neu/step2/' + str(rechnung_id))
+
+@app.route('/ausgangsrechnungen/speichern/step3', methods = ['POST'])
+def ausgangsrechnung_speichern_step3():
+
+    rechnung_id = database.rechnungen.save_rechnung_step1(sqlite_file, request.form)
+
+    return redirect('/ausgangsrechnungen/ausgeben/' + str(rechnung_id))
+
+@app.route('/ausgangsrechnungen/ausgeben/<string:id>')
+def ausgangsrechnung_ausgeben(id):
+
+    page_title = "Ausgangsrechnung ausgeben"
+    page_id = "ausgangsrechnungen"
+
+    rechnung = database.rechnungen.load_rechnung(sqlite_file, id)
+    positionen = database.rechnungen.load_positionen(sqlite_file, id)
+
+    return render_template('ausgangsrechnung-ausgeben.html', page_title = page_title, page_id = page_id, rechnung = rechnung, positionen = positionen)
+
+@app.route('/ausgangsrechnungen/to-pdf/<string:id>')
+def ausgangsrechnungen_topdf(id):
+
+    pdfkit.from_url('/ausgangsrechnungen/pdfrenderer/' + string(id), 'dokumente/rechnungen/rechnung-' + string(id) + '.pdf')
+
+    return send_from_directory('dokumente/rechnungen', 'rechnung-' + string(id) + '.pdf')
+
+@app.route('/ausgangsrechnungen/pdfrenderer/<string:id>')
+def ausgangsrechnungen_pdfrenderer(id):
+
+    rechnung = database.rechnungen.load_rechnung(sqlite_file, id)
+    positionen = database.rechnungen.load_positionen(sqlite_file, id)
+    stammdaten = database.settings.load_settings()
+
+    return render_template('template-ausgangsrechnung.html', rechnung = rechnung, positionen = positionen, stammdaten = stammdaten)
 
 @app.route('/ausgangsrechnungen/position/speichern', methods = ['POST'])
 def ausgangsrechnung_position_speichern():
@@ -269,7 +304,7 @@ def show_einstellungen():
     page_title = "Einstellungen"
     page_id = "einstellungen"
 
-    einstellungen = database.settings.load_settings(sqlite_file)
+    einstellungen = database.settings.load_settings()
     is_raspi = raspi.raspi.is_raspi()
 
     return render_template('einstellungen.html', page_title = page_title, page_id = page_id, einstellungen = einstellungen, is_raspi = is_raspi)
@@ -277,7 +312,7 @@ def show_einstellungen():
 @app.route('/einstellungen/speichern', methods = ['POST'])
 def einstellungen_speichern():
 
-    database.settings.save_settings(sqlite_file, request.form)
+    database.settings.save_settings(request.form)
 
     return redirect(url_for('show_einstellungen'))
 

@@ -3,12 +3,12 @@ import pickle
 
 import database.factory
 
-def save_settings(sqlite_file, settings):
+def save_settings(settings):
 
     with open('settings.pickle', 'wb') as settingsfile:
         pickle.dump(settings, settingsfile, protocol=pickle.HIGHEST_PROTOCOL)
 
-def load_settings(sqlite_file):
+def load_settings():
 
     einstellungen = []
 
