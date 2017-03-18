@@ -1,6 +1,3 @@
-konten = {      1: "Kasse",
-                2: "Bankkonto" }
-
 eurkonten = { 111: "Betriebseinnahmen nach &para;19 Abs. 1 UStG.",
               141: "Vom Finanzamt erstattete/verrechnete Umsatzsteuer",
               102: "Ver&auml;sserung oder Entnahme von Anlageverm&ouml;gen",
@@ -40,4 +37,3 @@ eurkonten = { 111: "Betriebseinnahmen nach &para;19 Abs. 1 UStG.",
               176: "Mindestens abziehbare Kfz-Kosten f&uuml;r Wege zwischen Wohnung und erster Betriebsst&auml;tte"
 
          }
-        
