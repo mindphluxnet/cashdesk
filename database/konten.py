@@ -47,3 +47,14 @@ def update_konto(sqlite_file, konto):
 
     conn.commit()
     conn.close()
+
+def delete_konto(sqlite_file, id):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("DELETE FROM konten WHERE oid = ?", id)
+    c.execute("DELETE FROM buchungen WHERE konto_id = ?", id)
+
+    conn.commit()
+    conn.close()

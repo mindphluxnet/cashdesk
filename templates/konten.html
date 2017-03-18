@@ -23,7 +23,10 @@
             <td>{% if konto['is_kasse'] == 0 %}{{ konto['bic'] }}{% else %}&mdash;{% endif %}</td>
             <td>{% if konto['is_kasse'] == 0 %}{{ konto['bankname'] }}{% else %}&mdash;{% endif %}</td>
             <td>
-              <a class="btn btn-xs btn-default" href="/konten/bearbeiten/{{ konto['rowid'] }}">Bearbeiten</a> <a class="btn btn-xs btn-danger" href="/konten/loeschen/{{ konto['rowid'] }}">L&ouml;schen</a>
+              <a class="btn btn-xs btn-default" href="/konten/bearbeiten/{{ konto['rowid'] }}">Bearbeiten</a>
+              {% if show_delete %}
+              <a class="btn btn-xs btn-danger" href="/konten/loeschen/{{ konto['rowid'] }}">L&ouml;schen</a>
+              {% endif %}
             </td>
           {% endfor %}
         </tbody>

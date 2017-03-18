@@ -378,15 +378,19 @@ def einstellungen_speichern():
 
     return redirect(url_for('show_einstellungen'))
 
-@app.route('/konten')
+@app.route('/konten', methods = ['GET'])
 def show_konten():
+
+    show_delete = False
+    if(request.args.get('show_delete') == 'True'):
+        show_delete = True
 
     page_title = "Kontoverwaltung"
     page_id = "konten"
 
     konten = database.konten.load_konten(sqlite_file)
 
-    return render_template('konten.html', page_title = page_title, page_id = page_id, konten = konten)
+    return render_template('konten.html', page_title = page_title, page_id = page_id, konten = konten, show_delete = show_delete)
 
 @app.route('/konten/neu')
 def show_konten_neu():
@@ -417,6 +421,13 @@ def konten_speichern():
 def konten_aktualisieren():
 
     database.konten.update_konto(sqlite_file, request.form)
+
+    return redirect(url_for('show_konten'))
+
+@app.route('/konten/loeschen/<string:id>')
+def konten_loeschen(id):
+
+    database.konten.delete_konto(sqlite_file, id)
 
     return redirect(url_for('show_konten'))
 
