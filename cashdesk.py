@@ -382,11 +382,26 @@ def einstellungen_speichern():
 def show_konten():
 
     page_title = "Kontoverwaltung"
-    page_id = "konten"    
+    page_id = "konten"
 
     konten = database.konten.load_konten(sqlite_file)
 
     return render_template('konten.html', page_title = page_title, page_id = page_id, konten = konten)
+
+@app.route('/konten/neu')
+def show_konten_neu():
+
+    page_title = "Neues Konto anlegen"
+    page_id = "konten"
+
+    return render_template('konten-neu.html', page_title = page_title, page_id = page_id)
+
+@app.route('/konten/speichern', methods = ['POST'])
+def konten_speichern():
+
+    database.konten.save_konto(sqlite_file, request.form)
+
+    return redirect(url_for('show_konten'))
 
 if __name__ == '__main__':
 	app.run(debug = debug, host = bind_host, port = bind_port)

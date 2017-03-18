@@ -14,3 +14,13 @@ def load_konten(sqlite_file):
     conn.close()
 
     return konten
+
+def save_konto(sqlite_file, konto):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("INSERT INTO konten (bezeichnung, iban, bic, bankname, is_kasse) VALUES(?, ?, ?, ?, ?)", [ konto['bezeichnung'], konto['iban'], konto['bic'], konto['bankname'], konto['is_kasse'] ])
+
+    conn.commit()
+    conn.close()

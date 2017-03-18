@@ -19,9 +19,9 @@
           {% for konto in konten %}
           <tr>
             <td>{{ konto['bezeichnung'] }}</td>
-            <td>{{ konto['iban'] }}</td>
-            <td>{{ konto['bic'] }}</td>
-            <td>{{ konto['bankname'] }}</td>
+            <td>{% if konto['is_kasse'] == 0 %}{{ konto['iban'] }}{% else %}&mdash;{% endif %}</td>
+            <td>{% if konto['is_kasse'] == 0 %}{{ konto['bic'] }}{% else %}&mdash;{% endif %}</td>
+            <td>{% if konto['is_kasse'] == 0 %}{{ konto['bankname'] }}{% else %}&mdash;{% endif %}</td>
             <td>
               <a class="btn btn-xs btn-default" href="/konten/bearbeiten/{{ konto['rowid'] }}">Bearbeiten</a> <a class="btn btn-xs btn-danger" href="/konten/loeschen/{{ konto['rowid'] }}">L&ouml;schen</a>
             </td>
