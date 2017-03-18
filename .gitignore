@@ -2,3 +2,4 @@
 *.pickle
 *.png
 *.pdf
+*.sqlite
