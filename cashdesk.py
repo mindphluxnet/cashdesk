@@ -71,7 +71,11 @@ def show_index():
     page_title = "Startseite"
     page_id = "index"
 
-    return render_template('index.html', page_title = page_title, page_id = page_id)
+    has_logo = False
+    if(os.path.isfile('assets/firmenlogo.png')):
+        has_logo = True
+
+    return render_template('index.html', page_title = page_title, page_id = page_id, has_logo = has_logo)
 
 @app.route('/artikel')
 def show_artikel():

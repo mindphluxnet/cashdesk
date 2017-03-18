@@ -5,7 +5,9 @@
 
 
     <div class="container">
-
+      {% if no_logo %}
+      <div class="alert alert-warning">Es wurde noch kein Firmenlogo hochgeladen! Es k&ouml;nnen so keine Rechnungen ausgegeben werden! <a href="/einstellungen">Hier hochladen</a></div>
+      {% endif %}
 
     </div> <!-- /container -->
 
