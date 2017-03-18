@@ -348,10 +348,31 @@ def positionen_ajax_position(id):
 @app.route('/ausgangsrechnungen/stornieren/<string:id>')
 def ausgangsrechnung_stornieren(id):
 
+    page_title = "Rechnung stornieren"
+    page_id = "ausgangsrechnungen"
+
+    settings = database.settings.load_settings()
     rechnung = database.rechnungen.load_rechnung(sqlite_file, id)
     positionen = database.rechnungen.load_positionen(sqlite_file, id)
+    kunden = database.kunden.load_kunden(sqlite_file)
 
-    return render_template('ausgangsrechnung-stornieren.html', page_title = page_title, page_id = page_id, rechnung = rechnung, positionen = positionen)
+    for pos in positionen:
+        pos['vkpreis'] = -pos['vkpreis']
+        pos['rabattpreis'] = pos['vkpreis'] - (pos['vkpreis'] / 100 * pos['rabatt'])
+
+    gesamtpreis = 0
+
+    for pos in positionen:
+        gesamtpreis = gesamtpreis + (pos['rabattpreis'] * pos['anzahl'])
+
+    rohgewinn = 0
+
+    for pos in positionen:
+        rohgewinn = gesamtpreis - (-pos['ekpreis'] * pos['anzahl'])
+
+    ust = (gesamtpreis / 100) * float(settings['ustsatz'])
+
+    return render_template('ausgangsrechnung-stornieren.html', page_title = page_title, page_id = page_id, rechnung = rechnung, positionen = positionen, kunden = kunden, einstellungen = settings, ust = ust, gesamtpreis = gesamtpreis, rohgewinn = rohgewinn)
 
 @app.route('/kassenbuch')
 def show_kassenbuch():

@@ -35,9 +35,9 @@
               <button class="btn btn-xs btn-success" id="btn-rechnung-verbuchen" data-id="{{ rechnung['rechnungsnummer'] }}" data-zahlungsart="{{ rechnung['zahlungsart'] }}">Als bezahlt verbuchen</button>
               {% endif %}
               {% if rechnung['gedruckt'] == 0 %}
-                <a class="btn btn-xs btn-danger" href="/ausgangsrechnung/loeschen/{{ rechnung['rechnungsnummer'] }}">L&ouml;schen</a>
+                <a class="btn btn-xs btn-danger" href="/ausgangsrechnung/enloeschen/{{ rechnung['rechnungsnummer'] }}">L&ouml;schen</a>
               {% else %}
-                <a class="btn btn-xs btn-danger" href="/ausgangsrechnung/stornieren/{{ rechnung['rechnungsnummer'] }}">Stornieren</a>
+                <a class="btn btn-xs btn-danger" href="/ausgangsrechnungen/stornieren/{{ rechnung['rechnungsnummer'] }}">Stornieren</a>
               {% endif %}
             </td>
           {% endfor %}
