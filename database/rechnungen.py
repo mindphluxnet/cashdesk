@@ -34,7 +34,7 @@ def save_rechnung_step1(sqlite_file, rechnung):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("INSERT INTO rechnungen (rechnungsnummer, kunden_id, rechnungsdatum, zahlungsart, zahlungsstatus, gedruckt, storniert) VALUES (?, ?, ?, ?, ?, ?, ?)", [ rechnung['rechnungsnummer'], rechnung['kunden_id'], rechnung['rechnungsdatum'], rechnung['zahlungsart'], rechnung['zahlungsstatus'], 0, 0 ] )
+    c.execute("INSERT INTO rechnungen (rechnungsnummer, kunden_id, rechnungsdatum, zahlungsart, zahlungsstatus, gedruckt, storniert, storno_rechnungsnummer) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [ rechnung['rechnungsnummer'], rechnung['kunden_id'], rechnung['rechnungsdatum'], rechnung['zahlungsart'], rechnung['zahlungsstatus'], 0, rechnung['storniert'], rechnung['storno_rechnungsnummer'] ] )
 
     conn.commit()
     conn.close()
@@ -59,7 +59,7 @@ def save_position(sqlite_file, position):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("INSERT INTO rechnungspositionen (rechnungs_id, artikel_id, anzahl, rabatt) VALUES (?, ?, ?, ?)", [ position['rechnungs_id'], position['artikel_id'], position['anzahl'], position['rabatt'] ] )
+    c.execute("INSERT INTO rechnungspositionen (rechnungs_id, artikel_id, anzahl, rabatt, storniert) VALUES (?, ?, ?, ?, ?)", [ position['rechnungs_id'], position['artikel_id'], position['anzahl'], position['rabatt'], position['storniert'] ] )
 
     conn.commit()
     conn.close()
@@ -173,3 +173,25 @@ def rechnung_gedruckt(sqlite_file, id):
 
     conn.commit()
     conn.close()
+
+def rechnung_stornieren(sqlite_file, rechnung):
+
+    neue_rechnungsnummer = 0
+
+    try:
+
+        neue_rechnungsnummer = get_next_invoice_id(sqlite_file)
+
+        positionen = load_positionen(sqlite_file, rechnung['rechnungsnummer'])
+
+        for pos in positionen:
+            position = { 'rechnungs_id': neue_rechnungsnummer, 'artikel_id': pos['artikel_id'], 'anzahl': pos['anzahl'], 'rabatt': pos['rabatt'], 'storniert': 1 }
+            save_position(sqlite_file, position)
+
+        neue_rechnung = { 'rechnungsnummer': neue_rechnungsnummer, 'storniert': 1, 'kunden_id': rechnung['kunden_id'], 'rechnungsdatum': rechnung['rechnungsdatum'], 'zahlungsart': rechnung['zahlungsart'], 'zahlungsstatus': 1, 'gedruckt': 0, 'storno_rechnungsnummer': rechnung['rechnungsnummer'] }
+
+        save_rechnung_step1(sqlite_file, neue_rechnung)
+    except Exception as e:
+        print(e.message)
+
+    return neue_rechnungsnummer

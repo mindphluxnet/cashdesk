@@ -67,10 +67,10 @@
       </div>
       <div class="row">
         <div class="col-md-6">
-          <h2>Rechnung</h2>
+          <h2>Gutschrift zu Rechnung Nr. {{ alte_rechnungs_id }}</h2>
         </div>
         <div class="col-md-6 text-right">
-          Rechnungsdatum: {{ rechnung['rechnungsdatum'] }}<br />
+          Gutschriftsdatum: {{ rechnung['rechnungsdatum'] }}<br />
           Rechnungsnummer: {{ rechnung['rechnungsnummer'] }}
         </div>
       </div>
@@ -83,7 +83,7 @@
             Sehr geehrte/r Herr/Frau {{ kunde['nachname'] }},
           </p>
           <p>
-            vielen Dank f&uuml;r Ihren Auftrag! Ich erlaube mir, wie folgt Rechnung zu stellen:
+            wie gew&uuml;nscht schreibe ich Ihnen folgende Positionen gut:
           </p>
         </div>
       </div>
@@ -139,33 +139,21 @@
             {% if rechnung['zahlungsart'] == 1 %}Barzahlung
             {% elif rechnung['zahlungsart'] == 2 %}&Uuml;berweisung
             {% elif rechnung['zahlungsart'] == 3 %}Lastschrift
-            {% elif rechnung['zahlungsart'] == 4 %}Ratenzahlung
             {% endif %}
           </p>
           {% if rechnung['zahlungsart'] == 1 and rechnung['zahlungsstatus'] == 1 %}
           <p>
-            Der Gesamtbetrag wurde bereits bar bezahlt, vielen Dank!
+            Der Erstattungsbetrag wurde Ihnen in bar ausgezahlt.
           </p>
           {% endif %}
           {% if rechnung['zahlungsart'] == 1 and rechnung['zahlungsstatus'] == 0 %}
           <p>
-            Bitte bezahlen Sie den Gesamtbetrag an der Kasse, vielen Dank!
+            Der Erstattungsbetrag wird Ihnen in bar ausgezahlt.
           </p>
           {% endif %}
-          {% if rechnung['zahlungsart'] == 2 %}
+          {% if rechnung['zahlungsart'] == 2 or rechnung['zahlungsart'] == 3 %}
           <p>
-            Bitte &uuml;berweisen Sie den Gesamtbetrag innerhalb von 7 Tagen auf folgendes Konto:
-          </p>
-          <p>
-            IBAN: {{ stammdaten['iban'] }}
-          </p>
-          <p>
-            BIC: {{ stammdaten['bic'] }} ({{ stammdaten['bankname'] }})
-          </p>
-          {% endif %}
-          {% if rechnung['zahlungsart'] == 3 %}
-          <p>
-            Der Gesamtbetrag wird innerhalb von 7 Tagen von dem Ihnen bekannten Konto abgebucht.
+            Der Erstattungsbetrag wird Ihnen innerhalb der n&auml;chsten 7 Tage auf das Ihnen bekannte Konto &uuml;berwiesen.
           </p>
           {% endif %}
           {% if stammdaten['kleinunternehmer'] == '1' %}

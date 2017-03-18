@@ -23,7 +23,7 @@ def setup_database(sqlite_file, dbversion):
         pass
 
     try:
-        c.execute("CREATE TABLE rechnungen (rechnungsnummer INT, kunden_id INT, rechnungsdatum TEXT, zahlungsart INT(1), zahlungsstatus INT(1), gedruckt INT(1), storniert INT(1), UNIQUE(rechnungsnummer) ON CONFLICT REPLACE)")
+        c.execute("CREATE TABLE rechnungen (rechnungsnummer INT, kunden_id INT, rechnungsdatum TEXT, zahlungsart INT(1), zahlungsstatus INT(1), gedruckt INT(1), storniert INT(1), storno_rechnungsnummer INT, UNIQUE(rechnungsnummer) ON CONFLICT REPLACE)")
     except Exception as e:
         pass
 

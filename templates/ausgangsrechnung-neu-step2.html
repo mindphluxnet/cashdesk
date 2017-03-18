@@ -40,7 +40,7 @@
               <select name="zahlungsart" id ="zahlungsart" class="form-control">
                   <option value="1"{% if rechnung['zahlungsart'] == 1 %}selected="selected"{% endif %}>Barzahlung</option>
                   <option value="2"{% if rechnung['zahlungsart'] == 2 %}selected="selected"{% endif %}>Überweisung</option>
-                  <option value="3"{% if rechnung['zahlungsart'] == 3 %}selected="selected"{% endif %}>Lastschrift</option>                  
+                  <option value="3"{% if rechnung['zahlungsart'] == 3 %}selected="selected"{% endif %}>Lastschrift</option>
               </select>
             </div>
           </div>
@@ -141,6 +141,7 @@
               </tbody>
           </table>
           <input type="hidden" id="einzelpreis-hidden" />
+          <input type="hidden" name="storniert" value="0" />
           <button type="submit" class="btn btn-default">Positionen speichern</button>
           <input type="hidden" name="rechnungs_id" value="{{ rechnung['rechnungsnummer'] }}" />
       </form>
@@ -189,6 +190,7 @@
                   <input type="hidden" id="bearbeiten-einzelpreis-hidden" />
                 <input type="hidden" name="positions_id" id="positions_id" value="" />
                 <input type="hidden" name="rechnungs_id" value="{{ rechnung['rechnungsnummer'] }}" />
+                <input type="hidden" name="storniert" value="0" />
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
                   <button type="submit" id="kundeneu-speichern" class="btn btn-primary">Speichern</button>

@@ -16,6 +16,7 @@
                   <option value="{{ kunde['rowid'] }}"{% if kunde['rowid'] == rechnung['kunden_id'] %}selected="selected"{% endif %}>{{ kunde['nachname'] }}, {{ kunde['vorname'] }}</option>
                 {% endfor %}
               </select>
+              <input type="hidden" name="kunden_id" value="{{ rechnung['kunden_id'] }}" />
             </div>
           </div>
           <div class="form-group">
@@ -27,8 +28,11 @@
           </div>
           <div class="form-group">
             <label for="rechnungsdatum" class="col-sm-2 control-label">Rechnungsdatum</label>
-            <div class="col-sm-4">
-                <input type="date" class="form-control" name="rechnungsdatum" disabled="disabled" id="rechnungsdatum" value="{{ rechnung['rechnungsdatum'] }}"/>
+            <div class="col-sm-2">
+                <input type="date" class="form-control" name="rechnungsdatum" id="rechnungsdatum" value="{{ rechnung['rechnungsdatum'] }}"/>
+            </div>
+            <div class="col-sm-1">
+              <a class="btn btn-default" href="#" onclick="document.getElementById('rechnungsdatum').valueAsDate = new Date();">Heute</a>
             </div>
           </div>
           <div class="form-group">
@@ -39,6 +43,7 @@
                   <option value="2"{% if rechnung['zahlungsart'] == 2 %}selected="selected"{% endif %}>Überweisung</option>
                   <option value="3"{% if rechnung['zahlungsart'] == 3 %}selected="selected"{% endif %}>Lastschrift</option>
               </select>
+              <input type="hidden" name="zahlungsart" value="{{ rechnung['zahlungsart'] }}" />
             </div>
           </div>
           <div class="form-group">

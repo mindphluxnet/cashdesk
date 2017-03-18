@@ -271,8 +271,8 @@ def ausgangsrechnung_ausgeben(id):
 
     return render_template('ausgangsrechnung-ausgeben.html', page_title = page_title, page_id = page_id, rechnung = rechnung, positionen = positionen)
 
-@app.route('/ausgangsrechnungen/pdfrenderer/<string:action>/<string:id>')
-def ausgangsrechnungen_pdfrenderer(action, id):
+@app.route('/ausgangsrechnungen/pdfrenderer/<string:action>/<string:typ>/<string:id>')
+def ausgangsrechnungen_pdfrenderer(action, typ, id):
 
     rechnung = database.rechnungen.load_rechnung(sqlite_file, id)
     kunde = database.kunden.load_kunde(sqlite_file, rechnung['kunden_id'])
@@ -283,9 +283,20 @@ def ausgangsrechnungen_pdfrenderer(action, id):
 
     database.rechnungen.rechnung_gedruckt(sqlite_file, id)
 
+    if(typ == 'rechnung'):
+        template = 'template-ausgangsrechnung'
+        outfile = 'rechnung-'
+        alte_rechnungs_id = 0
+    elif(typ == 'gutschrift'):
+        template = 'template-gutschrift'
+        outfile = 'gutschrift-'
+        alte_rechnungs_id = rechnung['storno_rechnungsnummer']
+
     gesamtsumme = 0
 
     for pos in positionen:
+        if(typ == 'gutschrift'):
+            pos['vkpreis'] = -pos['vkpreis']
         possumme = (pos['vkpreis'] - ((pos['vkpreis'] / 100) * pos['rabatt'])) * pos['anzahl']
         gesamtsumme = gesamtsumme + possumme
 
@@ -303,17 +314,17 @@ def ausgangsrechnungen_pdfrenderer(action, id):
         firmenlogo = base64.b64encode(logo.read())
 
     env = Environment(loader=FileSystemLoader('templates'))
-    template = env.get_template('template-ausgangsrechnung.html')
-    out = template.render(bootstrap_css = bootstrap_css, firmenlogo = firmenlogo, rechnung = rechnung, positionen = positionen, stammdaten = stammdaten, kunde = kunde, gesamtsumme = gesamtsumme, mwst = mwst)
+    template = env.get_template(template + '.html')
+    out = template.render(bootstrap_css = bootstrap_css, firmenlogo = firmenlogo, rechnung = rechnung, positionen = positionen, stammdaten = stammdaten, kunde = kunde, gesamtsumme = gesamtsumme, mwst = mwst, alte_rechnungs_id = alte_rechnungs_id)
     pdf = pdfkit.from_string(out, False)
 
     response = make_response(pdf)
     response.headers['Content-Type'] = 'application/pdf'
     if(action == 'speichern'):
-        response.headers['Content-Disposition'] = 'attachment; filename=rechnung-' + id + '.pdf'
+        response.headers['Content-Disposition'] = 'attachment; filename=' + outfile + id + '.pdf'
 
     if(action == 'drucken'):
-        response.headers['Content-Disposition'] = 'inline; filename=rechnung-' + id + '.pdf'
+        response.headers['Content-Disposition'] = 'inline; filename=' + outfile + id + '.pdf'
 
     return response
 
@@ -373,6 +384,24 @@ def ausgangsrechnung_stornieren(id):
     ust = (gesamtpreis / 100) * float(settings['ustsatz'])
 
     return render_template('ausgangsrechnung-stornieren.html', page_title = page_title, page_id = page_id, rechnung = rechnung, positionen = positionen, kunden = kunden, einstellungen = settings, ust = ust, gesamtpreis = gesamtpreis, rohgewinn = rohgewinn)
+
+@app.route('/ausgangsrechnungen/stornieren/speichern', methods = ['POST'])
+def ausgangsrechnung_stornieren_speichern():
+
+    neue_rechnungsnummer = database.rechnungen.rechnung_stornieren(sqlite_file, request.form)
+
+    return redirect('/ausgangsrechnungen/stornieren/ausgeben/' + str(neue_rechnungsnummer))
+
+@app.route('/ausgangsrechnungen/stornieren/ausgeben/<string:id>')
+def ausgangsrechnung_stornieren_ausgeben(id):
+
+    page_title = "Gutschrift ausgeben"
+    page_id = "ausgangsrechnungen"
+
+    rechnung = database.rechnungen.load_rechnung(sqlite_file, id)
+
+    return render_template('gutschrift-ausgeben.html', page_title = page_title, page_id = page_id, rechnung = rechnung)
+
 
 @app.route('/kassenbuch')
 def show_kassenbuch():

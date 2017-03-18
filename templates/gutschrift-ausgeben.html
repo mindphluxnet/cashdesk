@@ -1,0 +1,20 @@
+{% include "header.html" %}
+
+    {% include "nav.html" %}
+
+
+    <div class="container">
+
+      <h3>Gutschrift ausgeben</h3>
+      <p>
+        Die Gutschrift kann nun ausgegeben werden:
+      </p>
+      <a class="btn btn-primary" href="/ausgangsrechnungen/pdfrenderer/drucken/gutschrift/{{ rechnung['rechnungsnummer'] }}" target="_rechnungsausgabe">Drucken</a>
+      <a class="btn btn-default" href="/ausgangsrechnungen/pdfrenderer/speichern/gutschrift/{{ rechnung['rechnungsnummer'] }}">Speichern</a>
+      <hr>
+      <a class="btn btn-default" href="/ausgangsrechnungen">Zur&uuml;ck zur Rechnungsverwaltung</a>
+
+
+    </div>
+
+{% include "footer.html" %}
