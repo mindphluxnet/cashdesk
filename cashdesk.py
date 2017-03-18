@@ -27,6 +27,7 @@ import database.settings
 import database.artikel
 import database.rechnungen
 import database.kunden
+import database.konten
 
 import statics.konten
 
@@ -379,6 +380,9 @@ def einstellungen_speichern():
 
 @app.route('/konten')
 def show_konten():
+
+    page_title = "Kontoverwaltung"
+    page_id = "konten"    
 
     konten = database.konten.load_konten(sqlite_file)
 
