@@ -304,7 +304,7 @@ def ausgangsrechnungen_pdfrenderer(action, id):
 
     env = Environment(loader=FileSystemLoader('templates'))
     template = env.get_template('template-ausgangsrechnung.html')
-    out = template.render(bootstrap_css = bootstrap_css, firmenlogo = firmenlogo, bind_host = bind_host, bind_port = bind_port, rechnung = rechnung, positionen = positionen, stammdaten = stammdaten, kunde = kunde, gesamtsumme = gesamtsumme, mwst = mwst)
+    out = template.render(bootstrap_css = bootstrap_css, firmenlogo = firmenlogo, rechnung = rechnung, positionen = positionen, stammdaten = stammdaten, kunde = kunde, gesamtsumme = gesamtsumme, mwst = mwst)
     pdf = pdfkit.from_string(out, False)
 
     response = make_response(pdf)
