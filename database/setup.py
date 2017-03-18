@@ -37,5 +37,10 @@ def setup_database(sqlite_file, dbversion):
     except Exception as e:
         pass
 
+    try:
+        c.execute("CREATE TABLE konten (bezeichnung TEXT(50), iban TEXT(22), bic TEXT(8), is_kasse INT(1))")
+    except Exception as e:
+        pass
+
     conn.commit()
     conn.close()
