@@ -187,6 +187,9 @@ def show_ausgangsrechnungen():
     rechnungen = database.rechnungen.load_rechnungen(sqlite_file)
     konten = database.konten.load_konten(sqlite_file)
 
+    gesamtumsatz = 0
+    gesamtgewinn = 0
+
     for rechnung in rechnungen:
         positionen = database.rechnungen.load_positionen(sqlite_file, rechnung['rechnungsnummer'])
 
@@ -197,10 +200,18 @@ def show_ausgangsrechnungen():
             umsatz = umsatz + pos['anzahl'] * (pos['vkpreis'] - (pos['vkpreis'] / 100 * pos['rabatt']))
             rohgewinn = umsatz - (pos['ekpreis'] * pos['anzahl'])
 
-        rechnung['umsatz'] = umsatz
-        rechnung['rohgewinn'] = rohgewinn
+        if(rechnung['storniert'] == 0):
+            rechnung['umsatz'] = umsatz
+            rechnung['rohgewinn'] = rohgewinn
+        else:
+            rechnung['umsatz'] = -umsatz
+            rechnung['rohgewinn'] = -rohgewinn
 
-    return render_template('ausgangsrechnungen.html', rechnungen = rechnungen, konten = konten, page_title = page_title, page_id = page_id)
+        gesamtumsatz = gesamtumsatz + rechnung['umsatz']
+        gesamtgewinn = gesamtgewinn + rechnung['rohgewinn']
+
+
+    return render_template('ausgangsrechnungen.html', rechnungen = rechnungen, konten = konten, gesamtumsatz = gesamtumsatz, gesamtgewinn = gesamtgewinn, page_title = page_title, page_id = page_id)
 
 @app.route('/ausgangsrechnungen/neu')
 def show_ausgangsrechnungen_neu():
