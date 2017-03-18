@@ -377,5 +377,12 @@ def einstellungen_speichern():
 
     return redirect(url_for('show_einstellungen'))
 
+@app.route('/konten')
+def show_konten():
+
+    konten = database.konten.load_konten(sqlite_file)
+
+    return render_template('konten.html', page_title = page_title, page_id = page_id, konten = konten)
+
 if __name__ == '__main__':
 	app.run(debug = debug, host = bind_host, port = bind_port)
