@@ -396,10 +396,27 @@ def show_konten_neu():
 
     return render_template('konten-neu.html', page_title = page_title, page_id = page_id)
 
+@app.route('/konten/bearbeiten/<string:id>')
+def show_konten_bearbeiten(id):
+
+    page_title = "Konto bearbeiten"
+    page_id = "konten"
+
+    konto = database.konten.load_konto(sqlite_file, id)
+
+    return render_template('konten-bearbeiten.html', konto = konto, page_title = page_title, page_id = page_id)
+
 @app.route('/konten/speichern', methods = ['POST'])
 def konten_speichern():
 
     database.konten.save_konto(sqlite_file, request.form)
+
+    return redirect(url_for('show_konten'))
+
+@app.route('/konten/aktualisieren', methods = ['POST'])
+def konten_aktualisieren():
+
+    database.konten.update_konto(sqlite_file, request.form)
 
     return redirect(url_for('show_konten'))
 
