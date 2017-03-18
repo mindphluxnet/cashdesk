@@ -181,6 +181,7 @@ def show_ausgangsrechnungen():
     page_id = "ausgangsrechnungen"
 
     rechnungen = database.rechnungen.load_rechnungen(sqlite_file)
+    konten = database.konten.load_konten(sqlite_file)
 
     for rechnung in rechnungen:
         positionen = database.rechnungen.load_positionen(sqlite_file, rechnung['rechnungsnummer'])
@@ -195,7 +196,7 @@ def show_ausgangsrechnungen():
         rechnung['umsatz'] = umsatz
         rechnung['rohgewinn'] = rohgewinn
 
-    return render_template('ausgangsrechnungen.html', rechnungen = rechnungen, page_title = page_title, page_id = page_id)
+    return render_template('ausgangsrechnungen.html', rechnungen = rechnungen, konten = konten, page_title = page_title, page_id = page_id)
 
 @app.route('/ausgangsrechnungen/neu')
 def show_ausgangsrechnungen_neu():

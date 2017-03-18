@@ -133,20 +133,20 @@ def get_next_invoice_id(sqlite_file):
 
     return next_id
 
-def ausgangsrechnung_verbuchen(sqlite_file, rechnung):
+def ausgangsrechnung_verbuchen(sqlite_file, buchung):
 
     konto_einnahmen = 111
 
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("UPDATE rechnungen SET zahlungsstatus = 1 WHERE rechnungsnummer = ?", rechnung['rechnungsnummer'])
+    c.execute("UPDATE rechnungen SET zahlungsstatus = 1 WHERE rechnungsnummer = ?", buchung['rechnungsnummer'])
 
-    rechnung = database.rechnungen.load_rechnung(sqlite_file, rechnung['rechnungsnummer'])
+    rechnung = database.rechnungen.load_rechnung(sqlite_file, buchung['rechnungsnummer'])
 
     #: Gesamtbetrag ermitteln
 
-    positionen = database.rechnungen.load_positionen(sqlite_file, rechnung['rechnungsnummer'])
+    positionen = database.rechnungen.load_positionen(sqlite_file, buchung['rechnungsnummer'])
 
     gesamtbetrag = 0
 
@@ -154,18 +154,12 @@ def ausgangsrechnung_verbuchen(sqlite_file, rechnung):
         rabattpreis = pos['vkpreis'] - (pos['vkpreis'] / 100 * pos['rabatt'])
         gesamtbetrag = gesamtbetrag + (pos['anzahl'] * rabattpreis)
 
-
-    if(rechnung['zahlungsart'] == 1):
-        konto_id = 1  #: Kasse
-    else:
-        konto_id = 2  #: Girokonto
-
     if(gesamtbetrag >= 0):
         einaus = 1
     else:
         einaus = 0
 
-    c.execute("INSERT INTO buchungen (konto_id, eurkonto, rechnungs_id, betrag, datum, einaus) VALUES (?, ?, ?, ?, ?, ?)", [ konto_id, konto_einnahmen, rechnung['rechnungsnummer'], gesamtbetrag, rechnung['rechnungsdatum'], einaus ] )
+    c.execute("INSERT INTO buchungen (konto_id, eurkonto, rechnungs_id, betrag, datum, einaus) VALUES (?, ?, ?, ?, ?, ?)", [ buchung['konto'], konto_einnahmen, buchung['rechnungsnummer'], gesamtbetrag, buchung['zahlungsdatum'], einaus ] )
 
     conn.commit()
     conn.close()
