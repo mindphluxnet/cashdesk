@@ -345,6 +345,14 @@ def positionen_ajax_position(id):
 
     return json.dumps(position)
 
+@app.route('/ausgangsrechnungen/stornieren/<string:id>')
+def ausgangsrechnung_stornieren(id):
+
+    rechnung = database.rechnungen.load_rechnung(sqlite_file, id)
+    positionen = database.rechnungen.load_positionen(sqlite_file, id)
+
+    return render_template('ausgangsrechnung-stornieren.html', page_title = page_title, page_id = page_id, rechnung = rechnung, positionen = positionen)
+
 @app.route('/kassenbuch')
 def show_kassenbuch():
 
