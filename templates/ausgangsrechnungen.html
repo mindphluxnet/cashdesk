@@ -29,7 +29,7 @@
             <td>{% if rechnung['gedruckt'] == 1 %}<span class="glyphicon glyphicon-ok text-success"></span></a>{% else %}<span class="glyphicon glyphicon-remove text-danger"></span>{% endif %}</td>
             <td>{% if rechnung['zahlungsstatus'] == 1 %}<span class="glyphicon glyphicon-ok text-success"></span></a>{% else %}<span class="glyphicon glyphicon-remove text-danger"></span>{% endif %}</td>
             <td>
-              {% if rechnung['storniert'] == 0 and rechnung['storno_rechnungsnummer'] == 0 %}
+              {% if rechnung['storniert'] == 0 and rechnung['storno_rechnungsnummer'] == 0 and rechnung['gedruckt'] == 0%}
               <a class="btn btn-xs btn-default" href="/ausgangsrechnungen/neu/step2/{{ rechnung['rechnungsnummer'] }}">Bearbeiten</a>
               {% endif %}
               <a class="btn btn-xs btn-default" target="_rechnungsausgabe" href="/ausgangsrechnungen/pdfrenderer/drucken/{% if rechnung['storniert'] == 0%}rechnung{% else %}gutschrift{% endif %}/{{ rechnung['rechnungsnummer'] }}">Drucken</a>
