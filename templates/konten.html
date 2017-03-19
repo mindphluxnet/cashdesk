@@ -5,7 +5,7 @@
 
     <div class="container">
 
-      <a class="btn btn-primary" href="/konten/neu">Neues Konto anlegen</a>
+      <a class="btn btn-primary" href="/konten/neu"><span class="glyphicon glyphicon-plus"></span> Neues Konto anlegen</a>
       <h3>Kontoverwaltung</h3>
       {% if show_delete %}
       <div class="alert alert-danger">
@@ -28,9 +28,9 @@
             <td>{% if konto['is_kasse'] == 0 %}{{ konto['bic'] }}{% else %}&mdash;{% endif %}</td>
             <td>{% if konto['is_kasse'] == 0 %}{{ konto['bankname'] }}{% else %}&mdash;{% endif %}</td>
             <td>
-              <a class="btn btn-xs btn-default" href="/konten/bearbeiten/{{ konto['rowid'] }}">Bearbeiten</a>
+              <a class="btn btn-xs btn-default" href="/konten/bearbeiten/{{ konto['rowid'] }}"><span class="glyphicon glyphicon-pencil"></span> Bearbeiten</a>
               {% if show_delete %}
-              <a class="btn btn-xs btn-danger" href="/konten/loeschen/{{ konto['rowid'] }}">L&ouml;schen</a>
+              <a class="btn btn-xs btn-danger" href="/konten/loeschen/{{ konto['rowid'] }}"><span class="glyphicon glyphicon-remove"></span> L&ouml;schen</a>
               {% endif %}
             </td>
           {% endfor %}
