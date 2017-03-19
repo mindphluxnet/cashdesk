@@ -205,4 +205,6 @@ def rechnung_stornieren(sqlite_file, rechnung):
 
     rechnung_storniert(sqlite_file, rechnung['rechnungsnummer'])
 
+    #: TODO: Gutschrift verbuchen
+
     return neue_rechnungsnummer
