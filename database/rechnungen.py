@@ -156,6 +156,9 @@ def ausgangsrechnung_verbuchen(sqlite_file, buchung):
         rabattpreis = pos['vkpreis'] - (pos['vkpreis'] / 100 * pos['rabatt'])
         gesamtbetrag = gesamtbetrag + (pos['anzahl'] * rabattpreis)
 
+    if(rechnung['storno_rechnungsnummer'] != 0 and rechnung['storno_rechnungsnummer'] != None):
+        gesamtbetrag = -gesamtbetrag
+
     if(gesamtbetrag >= 0):
         einaus = 1
     else:

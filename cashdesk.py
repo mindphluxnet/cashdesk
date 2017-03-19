@@ -217,7 +217,7 @@ def show_ausgangsrechnungen():
             umsatz = umsatz + pos['anzahl'] * (pos['vkpreis'] - (pos['vkpreis'] / 100 * pos['rabatt']))
             rohgewinn = umsatz - (pos['ekpreis'] * pos['anzahl'])
 
-        if(rechnung['storniert'] == 0):
+        if(rechnung['storno_rechnungsnummer'] == 0 or rechnung['storno_rechnungsnummer'] == None):
             rechnung['umsatz'] = umsatz
             rechnung['rohgewinn'] = rohgewinn
         else:

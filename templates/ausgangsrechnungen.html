@@ -32,7 +32,7 @@
               {% if rechnung['storniert'] == 0 and rechnung['storno_rechnungsnummer'] == 0 and rechnung['gedruckt'] == 0 %}
               <a class="btn btn-xs btn-default" href="/ausgangsrechnungen/neu/step2/{{ rechnung['rechnungsnummer'] }}">Bearbeiten</a>
               {% endif %}
-              <a class="btn btn-xs btn-default" target="_rechnungsausgabe" href="/ausgangsrechnungen/pdfrenderer/drucken/{% if rechnung['storniert'] == 0%}rechnung{% else %}gutschrift{% endif %}/{{ rechnung['rechnungsnummer'] }}"><span class="glyphicon glyphicon-print"></span> Drucken</a>
+              <a class="btn btn-xs btn-default" target="_rechnungsausgabe" href="/ausgangsrechnungen/pdfrenderer/drucken/{% if rechnung['storno_rechnungsnummer'] == 0 or rechnung['storno_rechnungsnummer'] == None%}rechnung{% else %}gutschrift{% endif %}/{{ rechnung['rechnungsnummer'] }}"><span class="glyphicon glyphicon-print"></span> Drucken</a>
               {% if rechnung['zahlungsstatus'] == 0 %}
               <button class="btn btn-xs btn-success" id="btn-rechnung-verbuchen" data-id="{{ rechnung['rechnungsnummer'] }}" data-zahlungsart="{{ rechnung['zahlungsart'] }}"><span class="glyphicon glyphicon-ok"></span> Als bezahlt verbuchen</button>
               {% endif %}
