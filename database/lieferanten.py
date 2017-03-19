@@ -38,6 +38,8 @@ def save_lieferant(sqlite_file, lieferant):
     conn.commit()
     conn.close()
 
+    return c.lastrowid
+
 def delete_lieferant(sqlite_file, id):
 
     conn = sqlite3.connect(sqlite_file)

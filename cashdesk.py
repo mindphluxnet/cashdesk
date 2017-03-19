@@ -237,6 +237,19 @@ def delete_lieferant(id):
 
     return redirect(url_for('show_lieferanten'))
 
+@app.route('/lieferanten/ajax/speichern', methods = ['POST'])
+def lieferanten_ajax_speichern():
+
+    new_id = database.lieferanten.save_lieferant(sqlite_file, request.form)
+    lieferanten = database.lieferanten.load_lieferanten(sqlite_file)
+
+    result = []
+
+    result.append(lieferanten)
+    result.append(new_id)
+
+    return json.dumps(result)
+
 @app.route('/eingangsrechnungen')
 def show_eingangsrechnungen():
 
