@@ -213,6 +213,16 @@ def save_lieferanten():
 
     return redirect(url_for('show_lieferanten'))
 
+@app.route('/lieferanten/bearbeiten/<string:id>')
+def edit_lieferanten(id):
+
+    page_title = "Lieferanten bearbeiten"
+    page_id = "lieferanten"
+
+    lieferant = database.lieferanten.load_lieferant(sqlite_file, id)
+
+    return render_template('lieferanten-bearbeiten.html', lieferant = lieferant, page_title = page_title, page_id = page_id)
+
 @app.route('/lieferanten/loeschen/<string:id>')
 def delete_lieferant(id):
 
