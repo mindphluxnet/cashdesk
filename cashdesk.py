@@ -193,7 +193,16 @@ def show_eingangsrechnungen():
     page_title = "Eingangsrechnungen"
     page_id = "eingangsrechnungen"
 
-    return render_template('eingangsrechnungen.html', page_title = page_title, page_id = page_id)
+    rechnungen = database.rechnungen.load_eingangsrechnungen(sqlite_file)
+
+    gesamtausgabe = 0
+
+    for rechnung in rechnungen:
+        lieferant = database.lieferanten.load_lieferant(sqlite_file, rechnung['lieferant_id'])
+        rechnung['lieferant'] = lieferant['firmenname']
+        gesamtausgabe = gesamtausgabe + rechnung['rechnungsbetrag']
+
+    return render_template('eingangsrechnungen.html', rechnungen = rechnungen, gesamtausgabe = gesamtausgabe, page_title = page_title, page_id = page_id)
 
 @app.route('/ausgangsrechnungen')
 def show_ausgangsrechnungen():
