@@ -28,6 +28,7 @@ import database.artikel
 import database.rechnungen
 import database.kunden
 import database.konten
+import database.lieferanten
 
 import statics.konten
 
@@ -186,6 +187,16 @@ def kunde_ajax_speichern():
     result.append(new_id)
 
     return json.dumps(result)
+
+@app.route('/lieferanten')
+def show_lieferanten():
+
+    page_title = "Lieferanten"
+    page_id = "lieferanten"
+
+    lieferanten = database.lieferanten.load_lieferanten(sqlite_file)
+
+    return render_template('lieferanten.html', lieferanten = lieferanten, page_title = page_title, page_id = page_id)
 
 @app.route('/eingangsrechnungen')
 def show_eingangsrechnungen():
