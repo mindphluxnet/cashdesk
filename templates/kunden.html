@@ -5,7 +5,7 @@
 
     <div class="container">
 
-      <a class="btn btn-primary" href="/kunden/neu">Neuen Kunden anlegen</a>
+      <a class="btn btn-primary" href="/kunden/neu"><span class="glyphicon glyphicon-plus"></span> Neuen Kunden anlegen</a>
       <h3>Kundenverwaltung</h3>
       <table class="table table-striped table-condensed">
         <thead>
@@ -25,7 +25,7 @@
             <td></td>
             <td></td>
             <td>
-              <a class="btn btn-xs btn-default" href="/kunden/bearbeiten/{{ kunde['rowid'] }}">Bearbeiten</a> <a class="btn btn-xs btn-danger" href="/kunden/loeschen/{{ kunde['rowid'] }}">L&ouml;schen</a>
+              <a class="btn btn-xs btn-default" href="/kunden/bearbeiten/{{ kunde['rowid'] }}"><span class="glyphicon glyphicon-pencil"></span> Bearbeiten</a> <a class="btn btn-xs btn-danger" href="/kunden/loeschen/{{ kunde['rowid'] }}"><span class="glyphicon glyphicon-remove"></span> L&ouml;schen</a>
             </td>
           {% endfor %}
         </tbody>
