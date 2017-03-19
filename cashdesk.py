@@ -213,6 +213,13 @@ def save_lieferanten():
 
     return redirect(url_for('show_lieferanten'))
 
+@app.route('/lieferanten/loeschen/<string:id>')
+def delete_lieferant(id):
+
+    database.lieferanten.delete_lieferant(sqlite_file, id)
+
+    return redirect(url_for('show_lieferanten'))
+
 @app.route('/eingangsrechnungen')
 def show_eingangsrechnungen():
 

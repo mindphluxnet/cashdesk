@@ -37,3 +37,13 @@ def save_lieferant(sqlite_file, lieferant):
 
     conn.commit()
     conn.close()
+
+def delete_lieferant(sqlite_file, id):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("DELETE FROM lieferanten WHERE oid = ?", id)
+
+    conn.commit()
+    conn.close()
