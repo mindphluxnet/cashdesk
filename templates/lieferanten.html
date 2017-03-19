@@ -1,0 +1,32 @@
+{% include "header.html" %}
+
+    {% include "nav.html" %}
+
+
+    <div class="container">
+
+      <a class="btn btn-primary" href="/lieferanten/neu"><span class="glyphicon glyphicon-plus"></span> Neuen Lieferanten anlegen</a>
+      <h3>Lieferantenverwaltung</h3>
+      <table class="table table-striped table-condensed">
+        <thead>
+          <th>Firmenname</th>
+          <th>Optionen</th>
+        </thead>
+        <tbody>
+          {% for lieferant in lieferanten %}
+          <tr>
+            <td>{{ lieferant['firmenname'] }}</td>
+            <td>
+              <a class="btn btn-xs btn-default" href="/lieferanten/bearbeiten/{{ lieferant['rowid'] }}"><span class="glyphicon glyphicon-pencil"></span> Bearbeiten</a>
+              <a class="btn btn-xs btn-danger" href="/lieferanten/loeschen/{{ lieferant['rowid'] }}"><span class="glyphicon glyphicon-remove"></span> L&ouml;schen</a>
+            </td>
+          {% endfor %}
+        </tbody>
+
+      </table>
+
+
+
+    </div> <!-- /container -->
+
+{% include "footer.html" %}
