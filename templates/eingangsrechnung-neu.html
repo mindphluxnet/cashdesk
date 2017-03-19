@@ -50,8 +50,7 @@
             <label for="rechnungsbetrag" class="col-sm-2 control-label">Rechnungsbetrag &euro;</label>
             <div class="col-sm-2">
               <input type="number" name="rechnungsbetrag" id="rechnungsbetrag" class="form-control" />
-            </div>
-            <div class="col-sm-4"><label class="control-label">Enthaltene USt: <span id="enthaltene-ust"></span></label></div>
+            </div>            
           </div>
           <div class="form-group">
             <label for="ustsatz" class="col-sm-2 control-label">USt-Satz</label>
@@ -164,23 +163,6 @@
             $('#neuerLieferant').modal('hide');
           }
         });
-
-      });
-
-      $('#rechnungsbetrag').on('blur', function() {
-
-        var rb = $('#rechnungsbetrag').val();
-        var ust = $('#ustsatz').val();
-
-        var ustsatz;
-
-        if(ust>0) {
-          ustsatz = ((100 + ust) / 100) - 99;
-        }
-
-        enthaltene_ust = rb - (rb / ustsatz);
-
-        $('#enthaltene-ust').text("€ " + enthaltene_ust.toFixed(2))
 
       });
 
