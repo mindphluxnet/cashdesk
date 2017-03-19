@@ -14,7 +14,13 @@
       <ul class="nav navbar-nav">
         <li {%if page_id == "index" %}class="active"{% endif %}><a href="/"><i class="glyphicon glyphicon-dashboard"></i> Dashboard</a></li>
         <li><a href="/artikel"><i class="glyphicon glyphicon-barcode"></i> Artikelverwaltung</a></li>
-        <li><a href="/kunden"><i class="glyphicon glyphicon-user"></i> Kundenverwaltung</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-user"></i> Adressverwaltung <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/lieferanten"><i class="glyphicon glyphicon-gift"></i> Lieferanten</a></li>
+            <li><a href="/kunden"><i class="glyphicon glyphicon-user"></i> Kunden</a></li>
+          </ul>
+        </li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-envelope"></i> Rechnungen <span class="caret"></span></a>
           <ul class="dropdown-menu">
