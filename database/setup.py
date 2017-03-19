@@ -33,7 +33,12 @@ def setup_database(sqlite_file, dbversion):
         pass
 
     try:
-        c.execute("CREATE TABLE eingangsrechnungen (rechnungsnummer TEXT, rechnungsdatum TEXT, lieferant_id INT, rechnungsbetrag REAL, bezahlt INT(1))")
+        c.execute("CREATE TABLE eingangsrechnungen (rechnungsnummer TEXT, rechnungsdatum TEXT, lieferant_id INT, eurkonto INT, rechnungsbetrag REAL, bezahlt INT(1))")
+    except Exception as e:
+        pass
+
+    try:
+        c.execute("CREATE TABLE wareneingang (rechnung_id INT, artikel_id INT, anzahl INT, datum TEXT)")
     except Exception as e:
         pass
 
