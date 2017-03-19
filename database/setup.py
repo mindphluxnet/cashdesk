@@ -18,7 +18,7 @@ def setup_database(sqlite_file, dbversion):
         pass
 
     try:
-        c.execute("CREATE TABLE kunden (anrede TEXT, titel TEXT, vorname TEXT, nachname TEXT, strasse TEXT, hausnummer TEXT, plz INT(5), ort TEXT)")
+        c.execute("CREATE TABLE kunden (anrede TEXT, titel TEXT, vorname TEXT, nachname TEXT, strasse TEXT, hausnummer TEXT, plz INT(5), ort TEXT, telefonnummer TEXT, mobilnummer TEXT, faxnummer TEXT, email TEXT)")
     except Exception as e:
         pass
 
