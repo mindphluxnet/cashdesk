@@ -1,0 +1,189 @@
+{% include "header.html" %}
+
+    {% include "nav.html" %}
+
+
+    <div class="container">
+
+      <h3>{{ page_title }}</h3>
+
+      <form class="form-horizontal" method="post" action="/eingangsrechnungen/speichern/step1">
+          <div class="form-group">
+            <label for="kunden_id" class="col-sm-2 control-label">Lieferant</label>
+            <div class="col-sm-4">
+              <select name="lieferant_id" id="lieferant_id" class="form-control">
+                {% for lieferant in lieferanten %}
+                  <option value="{{ lieferant['rowid'] }}">{{ lieferant['firmenname'] }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-sm-4">
+              <a class="btn btn-default" href="#" data-toggle="modal" data-target="#neuerLieferant"><span class="glyphicon glyphicon-plus"></span> Neuer Lieferant</a>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="rechnungsnummer" class="col-sm-2 control-label">Rechnungsnummer</label>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" name="rechnungsnummer" id="rechnungsnummer" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="rechnungsdatum" class="col-sm-2 control-label">Rechnungsdatum</label>
+            <div class="col-sm-2">
+                <input type="date" class="form-control" name="rechnungsdatum" id="rechnungsdatum" />
+            </div>
+            <div class="col-sm-1">
+              <a class="btn btn-default" href="#" onclick="document.getElementById('rechnungsdatum').valueAsDate = new Date();"><span class="glyphicon glyphicon-calendar"></span> Heute</a>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="eurkonto" class="col-sm-2 control-label">E&Uuml;R-Konto</label>
+            <div class="col-sm-4">
+              <select name="eurkonto" id ="eurkonto" class="form-control">
+                {% for key, value in eurkonten.iteritems() %}
+                  <option value="{{ key }}">{{ value }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="rechnungsbetrag" class="col-sm-2 control-label">Rechnungsbetrag &euro;</label>
+            <div class="col-sm-2">
+              <input type="number" name="rechnungsbetrag" id="rechnungsbetrag" class="form-control" />
+            </div>
+            <div class="col-sm-4"><label class="control-label">Enthaltene USt: <span id="enthaltene-ust"></span></label></div>
+          </div>
+          <div class="form-group">
+            <label for="ustsatz" class="col-sm-2 control-label">USt-Satz</label>
+            <div class="col-sm-4">
+              <select name="ustsatz" id ="ustsatz" class="form-control">
+                  <option value="19">Volle USt (19%)</option>
+                  <option value="7">Erm&auml;ssigte USt (7%)</option>
+                  <option value="0">USt-frei (0%)</option>
+              </select>
+            </div>
+          </div>
+          <input type="hidden" name="bezahlt" value="0" />
+          <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Speichern und weiter</button>
+          <a href="/eingangsrechnungen" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Abbruch</a>
+
+      </form>
+
+    </div> <!-- /container -->
+
+    <form class="form-horizontal" method="post" id="lieferantneu-form">
+    <div class="modal fade" id="neuerLieferant" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" <span>&times;</span></button>
+            <h4 class="modal-title" id="neuerKundeLabel">Neuer Kunde</h4>
+          </div>
+          <div class="modal-body">
+              <div class="form-group">
+                <label for="firmenname" class="col-sm-2 control-label">Firmenname</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="nachname" name="nachname" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="nachname" class="col-sm-2 control-label">Strasse</label>
+                <div class="col-sm-7">
+                  <input type="text" class="form-control" id="strasse" name="strasse" />
+                </div>
+                <label for="hausnummer" class="col-sm-1 control-label">Hausnr.</label>
+                <div class="col-sm-2">
+                  <input type="text" class="form-control" id="hausnummer" name="hausnummer" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="plz" class="col-sm-2 control-label">PLZ</label>
+                <div class="col-sm-2">
+                  <input type="number" maxlength="5" class="form-control" id="plz" name="plz" />
+                </div>
+                <label for="ort" class="col-sm-1 control-label">Ort</label>
+                <div class="col-sm-7">
+                  <input type="text" class="form-control" id="ort" name="ort" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="telefonnummer" class="col-sm-2 control-label">Telefon</label>
+                <div class="col-sm-2">
+                  <input type="text" class="form-control" id="telefonnummer" name="telefonnummer" />
+                </div>
+                <label for="telefaxnummer" class="col-sm-1 control-label">Fax</label>
+                <div class="col-sm-2">
+                  <input type="text" class="form-control" id="telefaxnummer" name="telefaxnummer" />
+                </div>
+                <label for="email" class="col-sm-2 control-label">Email</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control" id="email" name="email" />
+                </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+            <button type="submit" id="kundeneu-speichern" class="btn btn-primary">Speichern</button>
+        </div>
+      </div>
+    </form>
+
+    </div>
+
+    <script type="text/javascript">
+
+     var request;
+
+      $('#lieferantneu-form').submit(function(event) {
+        event.preventDefault();
+
+        if(request) {
+          request.abort();
+        }
+
+        var $form = $(this);
+
+        var $inputs = $form.find("input");
+
+        var serData = $form.serialize();
+
+        $inputs.prop("disabled", true);
+
+        request = $.ajax({
+          url: '/lieferanten/ajax/speichern',
+          method: 'POST',
+          data: serData,
+          success: function(data) {
+            $('#lieferant_id').empty();
+            data = JSON.parse(data);
+            for(i=0;i<data[0].length;i++) {
+              $('<option />').val(data[0][i].rowid).text(data[0][i].firmenname).appendTo('#lieferant_id');
+            }
+
+            $('#lieferant_id').val(data[1]);
+            $('#neuerLieferant').modal('hide');
+          }
+        });
+
+      });
+
+      $('#rechnungsbetrag').on('blur', function() {
+
+        var rb = $('#rechnungsbetrag').val();
+        var ust = $('#ustsatz').val();
+
+        var ustsatz;
+
+        if(ust>0) {
+          ustsatz = ((100 + ust) / 100) - 99;
+        }
+
+        enthaltene_ust = rb - (rb / ustsatz);
+
+        $('#enthaltene-ust').text("€ " + enthaltene_ust.toFixed(2))
+
+      });
+
+    </script>
+
+{% include "footer.html" %}

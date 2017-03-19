@@ -257,9 +257,14 @@ def show_eingangsrechnungen():
 @app.route('/eingangsrechnungen/neu')
 def show_eingangsrechnungen_neu():
 
-    lieferanten = database.lieferanten.load_lieferanten(sqlite_file)
+    page_title = "Neue Eingangsrechnung"
+    page_id = "eingangsrechnungen"
 
-    return render_template('eingangsrechnungen-neu.html', lieferanten = lieferanten, page_title = page_title, page_id = page_id)
+    lieferanten = database.lieferanten.load_lieferanten(sqlite_file)
+    eurkonten = statics.konten.get_eurkonten()
+    artikel = database.artikel.load_artikel(sqlite_file)
+
+    return render_template('eingangsrechnung-neu.html', lieferanten = lieferanten, eurkonten = eurkonten, artikel = artikel, page_title = page_title, page_id = page_id)
 
 @app.route('/ausgangsrechnungen')
 def show_ausgangsrechnungen():
