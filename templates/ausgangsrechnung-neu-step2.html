@@ -31,7 +31,7 @@
                 <input type="date" class="form-control" name="rechnungsdatum" id="rechnungsdatum" value="{{ rechnung['rechnungsdatum'] }}"/>
             </div>
             <div class="col-sm-1">
-              <a class="btn btn-default" href="#" onclick="document.getElementById('rechnungsdatum').valueAsDate = new Date();">Heute</a>
+              <a class="btn btn-default" href="#" onclick="document.getElementById('rechnungsdatum').valueAsDate = new Date();"><span class="glyphicon glyphicon-calendar"></span> Heute</a>
             </div>
           </div>
           <div class="form-group">
@@ -53,8 +53,8 @@
               </select>
             </div>
           </div>
-          <button type="submit" class="btn btn-default">Speichern und ausgeben</button>
-          <a href="/ausgangsrechnungen" class="btn btn-danger">Abbruch</a>
+          <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Speichern und ausgeben</button>
+          <a href="/ausgangsrechnungen" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Abbruch</a>
           <hr />
           <h4>Rechnungspositionen</h4>
         </form>
@@ -142,7 +142,7 @@
           </table>
           <input type="hidden" id="einzelpreis-hidden" />
           <input type="hidden" name="storniert" value="0" />
-          <button type="submit" class="btn btn-default">Positionen speichern</button>
+          <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Positionen speichern</button>
           <input type="hidden" name="rechnungs_id" value="{{ rechnung['rechnungsnummer'] }}" />
       </form>
 

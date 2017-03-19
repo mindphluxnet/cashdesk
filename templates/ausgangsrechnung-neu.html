@@ -18,7 +18,7 @@
               </select>
             </div>
             <div class="col-sm-4">
-              <a class="btn btn-default" href="#" data-toggle="modal" data-target="#neuerKunde">Neuer Kunde</a>
+              <a class="btn btn-default" href="#" data-toggle="modal" data-target="#neuerKunde"><span class="glyphicon glyphicon-plus"></span> Neuer Kunde</a>
             </div>
           </div>
           <div class="form-group">
@@ -34,7 +34,7 @@
                 <input type="date" class="form-control" name="rechnungsdatum" id="rechnungsdatum" />
             </div>
             <div class="col-sm-1">
-              <a class="btn btn-default" href="#" onclick="document.getElementById('rechnungsdatum').valueAsDate = new Date();">Heute</a>
+              <a class="btn btn-default" href="#" onclick="document.getElementById('rechnungsdatum').valueAsDate = new Date();"><span class="glyphicon glyphicon-calendar"></span> Heute</a>
             </div>
           </div>
           <div class="form-group">
@@ -58,8 +58,8 @@
           </div>
           <input type="hidden" name="storniert" value="0" />
           <input type="hidden" name="storno_rechnungsnummer" value="0" />
-          <button type="submit" class="btn btn-default">Speichern und weiter</button>
-          <a href="/ausgangsrechnungen" class="btn btn-danger">Abbruch</a>
+          <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Speichern und weiter</button>
+          <a href="/ausgangsrechnungen" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Abbruch</a>
 
       </form>
 
