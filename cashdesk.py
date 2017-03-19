@@ -150,10 +150,27 @@ def show_kunden_neu():
 
     return render_template('kunden-neu.html', page_title = page_title, page_id = page_id)
 
+@app.route('/kunden/bearbeiten/<string:id>')
+def show_kunden_bearbeiten(id):
+
+    page_title = "Kunden bearbeiten"
+    page_id = "kundenbearbeiten"
+
+    kunde = database.kunden.load_kunde(sqlite_file, id)
+
+    return render_template('kunden-bearbeiten.html', kunde = kunde, page_title = page_title, page_id = page_id)
+
 @app.route('/kunden/speichern', methods = ['POST'])
 def kunde_speichern():
 
     database.kunden.save_kunde(sqlite_file, request.form)
+
+    return redirect(url_for('show_kunden'))
+
+@app.route('/kunden/aktualisieren', methods = ['POST'])
+def kunde_aktualisieren():
+
+    database.kunden.update_kunde(sqlite_file, request.form)
 
     return redirect(url_for('show_kunden'))
 

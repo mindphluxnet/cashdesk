@@ -29,6 +29,16 @@ def save_kunde(sqlite_file, customer):
 
     return c.lastrowid
 
+def update_kunde(sqlite_file, customer):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("UPDATE kunden SET anrede = ?, titel = ?, vorname = ?, nachname = ?, strasse = ?, hausnummer = ?, plz = ?, ort = ?", [ customer['anrede'], customer['titel'], customer['vorname'], customer['nachname'], customer['strasse'], customer['hausnummer'], customer['plz'], customer['ort'] ] )
+
+    conn.commit()
+    conn.close()
+
 def load_kunde(sqlite_file, id):
 
     conn = sqlite3.connect(sqlite_file)
