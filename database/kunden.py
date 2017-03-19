@@ -20,7 +20,7 @@ def save_kunde(sqlite_file, customer):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
     try:
-        c.execute("INSERT INTO kunden (vorname, nachname, strasse, hausnummer, plz, ort) VALUES (?, ?, ?, ?, ?, ?)", [ customer['vorname'], customer['nachname'], customer['strasse'], customer['hausnummer'], customer['plz'], customer['ort'] ])
+        c.execute("INSERT INTO kunden (anrede, vorname, nachname, strasse, hausnummer, plz, ort) VALUES (?, ?, ?, ?, ?, ?, ?)", [ customer['anrede'], customer['vorname'], customer['nachname'], customer['strasse'], customer['hausnummer'], customer['plz'], customer['ort'] ])
     except Exception as e:
         pass
 
