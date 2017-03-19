@@ -22,7 +22,7 @@ def load_rechnung(sqlite_file, id):
     conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
 
-    c.execute("SELECT r.oid, r.*, k.oid, k.* FROM rechnungen r LEFT JOIN kunden k ON(k.oid = r.kunden_id) WHERE rechnungsnummer = ?", id)
+    c.execute("SELECT r.oid, r.*, k.oid, k.* FROM rechnungen r LEFT JOIN kunden k ON(k.oid = r.kunden_id) WHERE rechnungsnummer = ?", [ id ])
     rechnung = c.fetchone()
 
     conn.close()
@@ -143,7 +143,7 @@ def ausgangsrechnung_verbuchen(sqlite_file, buchung):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("UPDATE rechnungen SET zahlungsstatus = 1 WHERE rechnungsnummer = ?", buchung['rechnungsnummer'])
+    c.execute("UPDATE rechnungen SET zahlungsstatus = 1 WHERE rechnungsnummer = ?", [ buchung['rechnungsnummer'] ] )
 
     rechnung = database.rechnungen.load_rechnung(sqlite_file, buchung['rechnungsnummer'])
 
@@ -167,12 +167,25 @@ def ausgangsrechnung_verbuchen(sqlite_file, buchung):
     conn.commit()
     conn.close()
 
+def get_buchung(sqlite_file, rechnungs_id):
+
+    conn = sqlite3.connect(sqlite_file)
+    conn.row_factory = database.factory.dict_factory
+    c = conn.cursor()
+
+    c.execute("SELECT * FROM buchungen WHERE rechnungs_id = ?", rechnungs_id)
+    buchung = c.fetchone()
+
+    conn.close()
+
+    return buchung
+
 def rechnung_gedruckt(sqlite_file, id):
 
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("UPDATE rechnungen set gedruckt = 1 WHERE rechnungsnummer = ?", id)
+    c.execute("UPDATE rechnungen set gedruckt = 1 WHERE rechnungsnummer = ?", [ id ])
 
     conn.commit()
     conn.close()
@@ -205,6 +218,10 @@ def rechnung_stornieren(sqlite_file, rechnung):
 
     rechnung_storniert(sqlite_file, rechnung['rechnungsnummer'])
 
-    #: TODO: Gutschrift verbuchen
+    org_buchung = get_buchung(sqlite_file, rechnung['rechnungsnummer'])
+
+    buchung = { 'rechnungsnummer': neue_rechnungsnummer, 'zahlungsdatum': neue_rechnung['rechnungsdatum'], 'konto': org_buchung['konto_id'] }
+
+    ausgangsrechnung_verbuchen(sqlite_file, buchung)
 
     return neue_rechnungsnummer
