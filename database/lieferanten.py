@@ -27,3 +27,13 @@ def load_lieferant(sqlite_file, id):
     conn.close()
 
     return lieferant
+
+def save_lieferant(sqlite_file, lieferant):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("INSERT INTO lieferanten (firmenname, strasse, hausnummer, plz, ort, telefonnummer, telefaxnummer, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [ lieferant['firmenname'], lieferant['strasse'], lieferant['hausnummer'], lieferant['plz'], lieferant['ort'], lieferant['telefonnummer'], lieferant['telefaxnummer'], lieferant['email'] ])
+
+    conn.commit()
+    conn.close()

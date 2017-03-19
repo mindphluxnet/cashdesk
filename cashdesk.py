@@ -198,6 +198,21 @@ def show_lieferanten():
 
     return render_template('lieferanten.html', lieferanten = lieferanten, page_title = page_title, page_id = page_id)
 
+@app.route('/lieferanten/neu')
+def show_lieferanten_neu():
+
+    page_title = "Lieferanten anlegen"
+    page_id = "lieferanten"
+
+    return render_template('lieferanten-neu.html', page_title = page_title, page_id = page_id)
+
+@app.route('/lieferanten/speichern', methods = ['POST'])
+def save_lieferanten():
+
+    database.lieferanten.save_lieferant(sqlite_file, request.form)
+
+    return redirect(url_for('show_lieferanten'))
+
 @app.route('/eingangsrechnungen')
 def show_eingangsrechnungen():
 
