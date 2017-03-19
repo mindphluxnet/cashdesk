@@ -223,6 +223,13 @@ def edit_lieferanten(id):
 
     return render_template('lieferanten-bearbeiten.html', lieferant = lieferant, page_title = page_title, page_id = page_id)
 
+@app.route('/lieferanten/aktualisieren', methods = ['POST'])
+def update_lieferanten():
+
+    database.lieferanten.update_lieferant(sqlite_file, request.form)
+
+    return redirect(url_for('show_lieferanten'))
+
 @app.route('/lieferanten/loeschen/<string:id>')
 def delete_lieferant(id):
 

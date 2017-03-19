@@ -47,3 +47,13 @@ def delete_lieferant(sqlite_file, id):
 
     conn.commit()
     conn.close()
+
+def update_lieferant(sqlite_file, lieferant):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("UPDATE lieferanten SET firmenname = ?, strasse = ?, hausnummer = ?, plz = ?, ort = ?, telefonnummer = ?, telefaxnummer = ?, email = ? WHERE oid = ?", [ lieferant['firmenname'], lieferant['strasse'], lieferant['hausnummer'], lieferant['plz'], lieferant['ort'], lieferant['telefonnummer'], lieferant['telefaxnummer'], lieferant['email'], lieferant['id'] ])
+
+    conn.commit()
+    conn.close()
