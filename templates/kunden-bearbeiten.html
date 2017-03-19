@@ -1,0 +1,72 @@
+{% include "header.html" %}
+
+    {% include "nav.html" %}
+
+
+    <div class="container">
+
+      <h3>Kunden bearbeiten</h3>
+
+      <form class="form-horizontal" method="post" action="/kunden/aktualisieren">
+        <div class="form-group">
+          <label for="anrede" class="col-sm-2 control-label">Anrede</label>
+          <div class="col-sm-2">
+            <select name="anrede" class="form-control">
+              <option value="Frau"{% if kunde['anrede'] == "Frau" %} selected="selected"{% endif %}>Frau</option>
+              <option value="Herr"{% if kunde['anrede'] == "Herr" %} selected="selected"{% endif %}>Herr</option>
+            </select>
+          </div>
+          <label for="titel" class="col-sm-2 control-label">Titel</label>
+          <div class="col-sm-2">
+            <select name="titel" class="form-control">
+              <option value=""{% if kunde['titel'] == "" or kunde['titel'] == None %} selected="selected"{% endif %}></option>
+              <option value="Dr."{% if kunde['titel'] == "Dr." %} selected="selected"{% endif %}>Dr.</option>
+              <option value="Prof."{% if kunde['titel'] == "Prof." %} selected="selected"{% endif %}>Prof.</option>
+              <option value="Prof. Dr."{% if kunde['titel'] == "Prof. Dr." %} selected="selected"{% endif %}>Prof. Dr.</option>
+              <option value="Dr. Dr."{% if kunde['titel'] == "Dr. Dr." %} selected="selected"{% endif %}>Dr. Dr.</option>
+              <option value="Prof Dr. Dr."{% if kunde['titel'] == "Prof. Dr. Dr." %} selected="selected"{% endif %}>Prof. Dr. Dr.</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="nachname" class="col-sm-2 control-label">Nachname</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="nachname" name="nachname" value="{{ kunde['nachname'] }}" />
+          </div>
+          <label for="vorname" class="col-sm-1 control-label">Vorname</label>
+          <div class="col-sm-5">
+            <input type="text" class="form-control" id="vorname" name="vorname" value="{{ kunde['vorname'] }}" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="nachname" class="col-sm-2 control-label">Strasse</label>
+          <div class="col-sm-7">
+            <input type="text" class="form-control" id="strasse" name="strasse" value="{{ kunde['strasse'] }}" />
+          </div>
+          <label for="hausnummer" class="col-sm-1 control-label">Hausnr.</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="hausnummer" name="hausnummer" value="{{ kunde['hausnummer'] }}" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="plz" class="col-sm-2 control-label">PLZ</label>
+          <div class="col-sm-2">
+            <input type="number" maxlength="5" class="form-control" id="plz" name="plz" value="{{ kunde['plz'] }}" />
+          </div>
+          <label for="ort" class="col-sm-1 control-label">Ort</label>
+          <div class="col-sm-7">
+            <input type="text" class="form-control" id="ort" name="ort" value="{{ kunde['ort'] }}" />
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <div>
+              <button type="submit" class="btn btn-primary">Speichern</button>
+              <a class="btn btn-default" href="/artikel">Zur&uuml;ck</a>
+            </div>
+          </div>
+        </div>
+
+    </div> <!-- /container -->
+
+{% include "footer.html" %}
