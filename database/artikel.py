@@ -32,7 +32,7 @@ def save_artikel(sqlite_file, artikel):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("INSERT INTO artikel (artikelnummer, artikelbezeichnung, ekpreis, vkpreis, bestand, artikel) VALUES (?, ?, ?, ?, ?, ?)", [ artikel['artikelnummer'], artikel['artikelbezeichnung'], artikel['ekpreis'], artikel['vkpreis'], artikel['bestand'], artikel['ean'] ])
+    c.execute("INSERT INTO artikel (artikelnummer, artikelbezeichnung, ekpreis, vkpreis, bestand, ean) VALUES (?, ?, ?, ?, ?, ?)", [ artikel['artikelnummer'], artikel['artikelbezeichnung'], artikel['ekpreis'], artikel['vkpreis'], artikel['bestand'], artikel['ean'] ])
 
     conn.commit()
     conn.close()
