@@ -254,6 +254,13 @@ def show_eingangsrechnungen():
 
     return render_template('eingangsrechnungen.html', rechnungen = rechnungen, gesamtausgabe = gesamtausgabe, page_title = page_title, page_id = page_id)
 
+@app.route('/eingangsrechnungen/neu')
+def show_eingangsrechnungen_neu():
+
+    lieferanten = database.lieferanten.load_lieferanten(sqlite_file)
+
+    return render_template('eingangsrechnungen-neu.html', lieferanten = lieferanten, page_title = page_title, page_id = page_id)
+
 @app.route('/ausgangsrechnungen')
 def show_ausgangsrechnungen():
 
