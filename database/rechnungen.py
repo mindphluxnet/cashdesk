@@ -177,24 +177,32 @@ def rechnung_gedruckt(sqlite_file, id):
     conn.commit()
     conn.close()
 
+def rechnung_storniert(sqlite_file, id):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("UPDATE rechnungen SET storniert = 1 WHERE rechnungsnummer = ?", id)
+
+    conn.commit()
+    conn.close()
+
 def rechnung_stornieren(sqlite_file, rechnung):
 
     neue_rechnungsnummer = 0
 
-    try:
+    neue_rechnungsnummer = get_next_invoice_id(sqlite_file)
 
-        neue_rechnungsnummer = get_next_invoice_id(sqlite_file)
+    positionen = load_positionen(sqlite_file, rechnung['rechnungsnummer'])
 
-        positionen = load_positionen(sqlite_file, rechnung['rechnungsnummer'])
+    for pos in positionen:
+        position = { 'rechnungs_id': neue_rechnungsnummer, 'artikel_id': pos['artikel_id'], 'anzahl': pos['anzahl'], 'rabatt': pos['rabatt'], 'storniert': 1 }
+        save_position(sqlite_file, position)
 
-        for pos in positionen:
-            position = { 'rechnungs_id': neue_rechnungsnummer, 'artikel_id': pos['artikel_id'], 'anzahl': pos['anzahl'], 'rabatt': pos['rabatt'], 'storniert': 1 }
-            save_position(sqlite_file, position)
+    neue_rechnung = { 'rechnungsnummer': neue_rechnungsnummer, 'storniert': 0, 'kunden_id': rechnung['kunden_id'], 'rechnungsdatum': rechnung['rechnungsdatum'], 'zahlungsart': rechnung['zahlungsart'], 'zahlungsstatus': 1, 'gedruckt': 0, 'storno_rechnungsnummer': rechnung['rechnungsnummer'] }
 
-        neue_rechnung = { 'rechnungsnummer': neue_rechnungsnummer, 'storniert': 1, 'kunden_id': rechnung['kunden_id'], 'rechnungsdatum': rechnung['rechnungsdatum'], 'zahlungsart': rechnung['zahlungsart'], 'zahlungsstatus': 1, 'gedruckt': 0, 'storno_rechnungsnummer': rechnung['rechnungsnummer'] }
+    save_rechnung_step1(sqlite_file, neue_rechnung)
 
-        save_rechnung_step1(sqlite_file, neue_rechnung)
-    except Exception as e:
-        print(e.message)
+    rechnung_storniert(sqlite_file, rechnung['rechnungsnummer'])
 
     return neue_rechnungsnummer
