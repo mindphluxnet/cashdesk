@@ -228,3 +228,14 @@ def rechnung_stornieren(sqlite_file, rechnung):
     ausgangsrechnung_verbuchen(sqlite_file, buchung)
 
     return neue_rechnungsnummer
+
+def delete_rechnung(sqlite_file, id):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("DELETE FROM rechnungspositionen WHERE rechnungs_id = ?", [ id ])
+    c.execute("DELETE FROM rechnungen WHERE rechnungsnummer = ?", [ id ])
+
+    conn.commit()
+    conn.close()

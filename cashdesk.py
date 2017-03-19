@@ -435,6 +435,13 @@ def ausgangsrechnung_stornieren_ausgeben(id):
     return render_template('gutschrift-ausgeben.html', page_title = page_title, page_id = page_id, rechnung = rechnung)
 
 
+@app.route('/ausgangsrechnungen/loeschen/<string:id>')
+def ausgangsrechnung_loeschen(id):
+
+    database.rechnungen.delete_rechnung(sqlite_file, id)
+
+    return redirect(url_for('show_ausgangsrechnungen'))
+
 @app.route('/kassenbuch')
 def show_kassenbuch():
 
