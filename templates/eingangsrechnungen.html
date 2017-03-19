@@ -1,0 +1,115 @@
+{% include "header.html" %}
+
+    {% include "nav.html" %}
+
+
+    <div class="container">
+
+      <a class="btn btn-primary" href="/eingangsrechnungen/neu"><span class="glyphicon glyphicon-plus"></span> Neue Eingangsrechnung</a>
+      <h3>Eingangsrechnungen</h3>
+      <table class="table table-striped table-condensed">
+        <thead>
+          <th>Rechnungsnummer</th>
+          <th>Datum</th>
+          <th>Lieferant</th>
+          <th>Rechnungsbetrag</th>
+          <th>Bezahlt</th>
+          <th>Optionen</th>
+        </thead>
+        <tbody>
+          {% for rechnung in rechnungen %}
+          <tr>
+            <td>{{ rechnung['rechnungsnummer'] }}</td>
+            <td>{{ rechnung['rechnungsdatum'] }}</td>
+            <td>{{ rechnung['lieferant'] }}</td>
+            <td>&euro; {{ '{0:0.2f}'.format(rechnung['rechnungsbetrag']) }}</td>
+            <td>{% if rechnung['bezahlt'] == 1 %}<span class="glyphicon glyphicon-ok text-success"></span></a>{% else %}<span class="glyphicon glyphicon-remove text-danger"></span>{% endif %}</td>
+            <td>
+                <a class="btn btn-xs btn-danger" href="/eingangsrechnungen/loeschen/{{ rechnung['rechnungsnummer'] }}"><span class="glyphicon glyphicon-remove"></span> L&ouml;schen</a>
+            </td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <td colspan="3">
+              <strong>Gesamt</strong>
+            </td>
+            <td>
+              <strong>&euro; {{ '{0:0.2f}'.format(gesamtausgabe) }}</strong>
+            </td>
+            <td colspan="2">&nbsp;</td>
+          </tr>
+        </tbody>
+
+      </table>
+
+    </div> <!-- /container -->
+
+    <form class="form-horizontal" method="post" id="rechnungverbuchen-form" action="/ausgangsrechnungen/verbuchen">
+    <div class="modal fade" id="rechnung-verbuchen" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" <span>&times;</span></button>
+            <h4 class="modal-title" id="neuerKundeLabel">Rechnung verbuchen</h4>
+          </div>
+          <div class="modal-body">
+
+              <div class="form-group">
+                <label for="zahlungsdatum" class="col-sm-3 control-label">Zahlungsdatum</label>
+                <div class="col-sm-6">
+                  <input type="date" class="form-control" id="zahlungsdatum" name="zahlungsdatum" />
+                </div>
+                <div class="col-sm-3">
+                  <button class="btn btn-default" onclick="event.preventDefault(); document.getElementById('zahlungsdatum').valueAsDate = new Date();"><span class="glyphicon glyphicon-calendar"></span> Heute</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="konto" class="col-sm-3 control-label">Zahlungsart</label>
+                <div class="col-sm-9">
+                  <span id="zahlungsart"></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="konto" class="col-sm-3 control-label">Konto</label>
+                <div class="col-sm-9">
+                  <select name="konto" class="form-control">
+                  {% for konto in konten %}
+                    <option value="{{ konto['rowid'] }}">{{ konto['bezeichnung'] }}</option>
+                  {% endfor %}
+                  </select>
+                </div>
+              </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+                <button type="submit" id="button-rechnung-verbuchen" class="btn btn-primary">Rechnung verbuchen</button>
+                <input type="hidden" id="verbuchen-rechnungsnummer" name="rechnungsnummer" value="" />
+            </div>
+          </div>
+
+      </div>
+
+    </form>
+
+    <script type="text/javascript">
+
+      $('#btn-rechnung-verbuchen').on('click', function() {
+        event.preventDefault();
+        var id = $(this).data('id');
+        var za = $(this).data('zahlungsart');
+        switch(za) {
+          case 1: out = "Barzahlung"; break;
+          case 2: out = "Überweisung"; break;
+          case 3: out = "Lastschrift"; break;
+        }
+        $('#zahlungsart').text(out);
+        $('#verbuchen-rechnungsnummer').val(id);
+        $('#rechnung-verbuchen').modal();
+
+      });
+
+    </script>
+
+
+{% include "footer.html" %}
