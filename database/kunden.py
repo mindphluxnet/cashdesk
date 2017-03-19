@@ -34,7 +34,7 @@ def update_kunde(sqlite_file, customer):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("UPDATE kunden SET anrede = ?, titel = ?, vorname = ?, nachname = ?, strasse = ?, hausnummer = ?, plz = ?, ort = ?", [ customer['anrede'], customer['titel'], customer['vorname'], customer['nachname'], customer['strasse'], customer['hausnummer'], customer['plz'], customer['ort'] ] )
+    c.execute("UPDATE kunden SET anrede = ?, titel = ?, vorname = ?, nachname = ?, strasse = ?, hausnummer = ?, plz = ?, ort = ?, telefonnummer = ?, telefaxnummer = ?, mobilnummer = ?, email = ? WHERE oid = ?", [ customer['anrede'], customer['titel'], customer['vorname'], customer['nachname'], customer['strasse'], customer['hausnummer'], customer['plz'], customer['ort'], customer['telefonnummer'], customer['telefaxnummer'], customer['mobilnummer'], customer['email'], customer['id'] ] )
 
     conn.commit()
     conn.close()
@@ -45,7 +45,7 @@ def load_kunde(sqlite_file, id):
     conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
 
-    c.execute("SELECT * FROM kunden WHERE oid = ?", [ id ] )
+    c.execute("SELECT oid, * FROM kunden WHERE oid = ?", [ id ] )
     kunde = c.fetchone()
 
     conn.close()

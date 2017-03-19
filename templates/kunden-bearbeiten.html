@@ -61,7 +61,7 @@
         <div class="form-group">
           <label for="telefonnummer" class="col-sm-2 control-label">Telefon</label>
           <div class="col-sm-2">
-            <input type="text" maxlength="5" class="form-control" id="telefonnummer" name="telefonnummer" value="{{ kunde['telefonnummer'] }}" />
+            <input type="text" class="form-control" id="telefonnummer" name="telefonnummer" value="{{ kunde['telefonnummer'] }}" />
           </div>
           <label for="telefaxnummer" class="col-sm-1 control-label">Fax</label>
           <div class="col-sm-2">
@@ -83,6 +83,7 @@
             <div>
               <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span> Speichern</button>
               <a class="btn btn-default" href="/kunden"><span class="glyphicon glyphicon-triangle-left"></span> Zur&uuml;ck</a>
+              <input type="hidden" name="id" value="{{ kunde['rowid']}}" />
             </div>
           </div>
         </div>
