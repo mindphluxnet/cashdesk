@@ -57,6 +57,7 @@
       </div>
       <div class="row">
         <div class="col-md-12">
+          <h4>{{ kunde['anrede'] }}{% if kunde['titel'] != None and kunde['titel']|trim != "" %} {{ kunde['titel'] }}{% endif %}</h4>
           <h4>{{ kunde['vorname']}} {{ kunde['nachname'] }}</h4>
           <h4>{{ kunde['strasse']}} {{ kunde['hausnummer'] }}</h4>
           <h4>{{ kunde['plz']}} {{ kunde['ort'] }}</h4>
@@ -80,7 +81,7 @@
       <div class="row">
         <div class="col-md-12">
           <p>
-            Sehr geehrte/r Herr/Frau {{ kunde['nachname'] }},
+            Sehr geehrte{% if kunde['anrede'] == "Herr" %}r{% endif %} {{ kunde['anrede'] }}{% if kunde['titel'] != None and kunde['titel']|trim != "" %} {{ kunde['titel'] }}{% endif %} {{ kunde['nachname'] }},
           </p>
           <p>
             wie gew&uuml;nscht schreibe ich Ihnen folgende Positionen gut:
