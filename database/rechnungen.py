@@ -29,10 +29,12 @@ def load_rechnung(sqlite_file, id):
 
     return rechnung
 
-def save_rechnung_step1(sqlite_file, rechnung):
+def save_rechnung(sqlite_file, rechnung):
 
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
+
+    print(rechnung)
 
     c.execute("INSERT INTO rechnungen (rechnungsnummer, kunden_id, rechnungsdatum, zahlungsart, zahlungsstatus, gedruckt, storniert, storno_rechnungsnummer) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [ rechnung['rechnungsnummer'], rechnung['kunden_id'], rechnung['rechnungsdatum'], rechnung['zahlungsart'], rechnung['zahlungsstatus'], 0, rechnung['storniert'], rechnung['storno_rechnungsnummer'] ] )
 
@@ -41,15 +43,12 @@ def save_rechnung_step1(sqlite_file, rechnung):
 
     return rechnung['rechnungsnummer']
 
-def save_rechnung_step2(sqlite_file, rechnung):
+def update_rechnung(sqlite_file, rechnung):
 
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    try:
-        c.execute("INSERT INTO rechnungen (rechnungsnummer, kunden_id, rechnungsdatum, zahlungsart, zahlungsstatus) VALUES (?, ?, ?, ?, ?)", [ rechnung['rechnungsnummer'], rechnung['kunden_id'], rechnung['rechnungsdatum'], rechnung['zahlungsart'], rechnung['zahlungsstatus'] ] )
-    except Exception:
-        pass
+    c.execute("UPDATE rechnungen SET kunden_id = ?, rechnungsdatum = ?, zahlungsart = ?, zahlungsstatus = ? WHERE rechnungsnummer = ?", [ rechnung['kunden_id'], rechnung['rechnungsdatum'], rechnung['zahlungsart'], rechnung['zahlungsstatus'], rechnung['rechnungsnummer'] ])
 
     conn.commit()
     conn.close()
@@ -214,7 +213,8 @@ def rechnung_stornieren(sqlite_file, rechnung):
 
     neue_rechnung = { 'rechnungsnummer': neue_rechnungsnummer, 'storniert': 0, 'kunden_id': rechnung['kunden_id'], 'rechnungsdatum': rechnung['rechnungsdatum'], 'zahlungsart': rechnung['zahlungsart'], 'zahlungsstatus': 1, 'gedruckt': 0, 'storno_rechnungsnummer': rechnung['rechnungsnummer'] }
 
-    save_rechnung_step1(sqlite_file, neue_rechnung)
+    save_rechnung(sqlite_file, neue_rechnung)
+    update_rechnung(sqlite_file, neue_rechnung)
 
     rechnung_storniert(sqlite_file, rechnung['rechnungsnummer'])
 

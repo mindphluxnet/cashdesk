@@ -244,7 +244,7 @@ def show_ausgangsrechnungen_neu():
 @app.route('/ausgangsrechnungen/speichern/step1', methods = ['POST'])
 def ausgangsrechnung_speichern_step1():
 
-    rechnung_id = database.rechnungen.save_rechnung_step1(sqlite_file, request.form)
+    rechnung_id = database.rechnungen.save_rechnung(sqlite_file, request.form)
 
     return redirect('/ausgangsrechnungen/neu/step2/' + str(rechnung_id))
 
@@ -288,7 +288,7 @@ def ausgangsrechnung_verbuchen():
 @app.route('/ausgangsrechnungen/speichern/step3', methods = ['POST'])
 def ausgangsrechnung_speichern_step3():
 
-    rechnung_id = database.rechnungen.save_rechnung_step2(sqlite_file, request.form)
+    rechnung_id = database.rechnungen.update_rechnung(sqlite_file, request.form)
 
     return redirect('/ausgangsrechnungen/ausgeben/' + str(rechnung_id))
 
