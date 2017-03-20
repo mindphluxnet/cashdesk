@@ -72,6 +72,11 @@ if(debug == False):
 def serve_asset(path):
         return send_from_directory('assets', path)
 
+@app.route('/pdfviewer/<string:id>')
+def pdfviewer(id):
+
+    return send_from_directory('dokumente/eingangsrechnungen', 'eingangsrechnung-' + str(id) + '.pdf')
+
 @app.route('/')
 def show_index():
 
