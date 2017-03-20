@@ -21,7 +21,7 @@ def load_lieferant(sqlite_file, id):
     conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
 
-    c.execute("SELECT oid, * FROM lieferanten WHERE oid = ?", id)
+    c.execute("SELECT oid, * FROM lieferanten WHERE oid = ?", [ id ])
     lieferant = c.fetchone()
 
     conn.close()
@@ -45,7 +45,7 @@ def delete_lieferant(sqlite_file, id):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("DELETE FROM lieferanten WHERE oid = ?", id)
+    c.execute("DELETE FROM lieferanten WHERE oid = ?", [ id ])
 
     conn.commit()
     conn.close()

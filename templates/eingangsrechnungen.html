@@ -25,7 +25,7 @@
             <td>&euro; {{ '{0:0.2f}'.format(rechnung['rechnungsbetrag']) }}</td>
             <td>{% if rechnung['bezahlt'] == 1 %}<span class="glyphicon glyphicon-ok text-success"></span></a>{% else %}<span class="glyphicon glyphicon-remove text-danger"></span>{% endif %}</td>
             <td>
-                <a class="btn btn-xs btn-danger" href="/eingangsrechnungen/loeschen/{{ rechnung['rechnungsnummer'] }}"><span class="glyphicon glyphicon-remove"></span> L&ouml;schen</a>
+                <a class="btn btn-xs btn-danger" href="/eingangsrechnungen/loeschen/{{ rechnung['rowid'] }}"><span class="glyphicon glyphicon-remove"></span> L&ouml;schen</a>
             </td>
           </tr>
           {% endfor %}

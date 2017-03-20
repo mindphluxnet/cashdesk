@@ -1,0 +1,196 @@
+{% include "header.html" %}
+
+    {% include "nav.html" %}
+
+
+    <div class="container">
+
+      <h3>{{ page_title}}</h3>
+
+      <form class="form-horizontal" method="post" action="/eingangsrechnungen/speichern/step3" id="rechnungausgeben-form">
+        <div class="form-group">
+          <label for="kunden_id" class="col-sm-2 control-label">Lieferant</label>
+          <div class="col-sm-4">
+            <select name="lieferant_id" id="lieferant_id" class="form-control">
+              {% for lieferant in lieferanten %}
+                <option value="{{ lieferant['rowid'] }}"{% if rechnung['lieferant_id'] == lieferant['rowid'] %} selected="selected"{% endif %}>{{ lieferant['firmenname'] }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-sm-4">
+            <a class="btn btn-default" href="#" data-toggle="modal" data-target="#neuerLieferant"><span class="glyphicon glyphicon-plus"></span> Neuer Lieferant</a>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="rechnungsnummer" class="col-sm-2 control-label">Rechnungsnummer</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" name="rechnungsnummer" id="rechnungsnummer" value="{{ rechnung['rechnungsnummer'] }}"/>
+          </div>
+          <div class="col-sm-2">
+            <button class="btn btn-default" id="generate-rechnungsnummer">Keine Rechnungsnummer?</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="rechnungsdatum" class="col-sm-2 control-label">Rechnungsdatum</label>
+          <div class="col-sm-2">
+              <input type="date" class="form-control" name="rechnungsdatum" id="rechnungsdatum" value="{{ rechnung['rechnungsdatum'] }}" />
+          </div>
+          <div class="col-sm-1">
+            <a class="btn btn-default" href="#" onclick="document.getElementById('rechnungsdatum').valueAsDate = new Date();"><span class="glyphicon glyphicon-calendar"></span> Heute</a>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="eurkonto" class="col-sm-2 control-label">E&Uuml;R-Konto</label>
+          <div class="col-sm-4">
+            <select name="eurkonto" id ="eurkonto" class="form-control">
+              {% for key, value in eurkonten.iteritems() %}
+                <option value="{{ key }}"{% if key == rechnung['eurkonto'] %} selected="selected"{% endif %}>{{ key }} {{ value }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="rechnungsbetrag" class="col-sm-2 control-label">Rechnungsbetrag &euro;</label>
+          <div class="col-sm-2">
+            <input type="number" name="rechnungsbetrag" id="rechnungsbetrag" class="form-control" value="{{ rechnung['rechnungsbetrag'] }}" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="ustsatz" class="col-sm-2 control-label">USt-Satz</label>
+          <div class="col-sm-4">
+            <select name="ustsatz" id ="ustsatz" class="form-control">
+                <option value="19"{% if rechnung['ustsatz'] == '19'%} selected="selected"{% endif %}>Volle USt (19%)</option>
+                <option value="7"{% if rechnung['ustsatz'] == '7'%} selected="selected"{% endif %}>Erm&auml;ssigte USt (7%)</option>
+                <option value="0"{% if rechnung['ustsatz'] == '0'%} selected="selected"{% endif %}>USt-frei (0%)</option>
+            </select>
+          </div>
+        </div>
+        <input type="hidden" name="bezahlt" value="0" />
+        <input type="hidden" name="rechnungs_id" value="{{ rechnung['rowid'] }}" />
+        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Speichern und weiter</button>
+        <a href="/eingangsrechnungen" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Abbruch</a>
+          <hr />
+          <h4>Wareneingang mit dieser Rechnung</h4>
+        </form>
+        <form class="form-inline" action="/eingangsrechnungen/position/speichern" method="post">
+          <table class="table">
+              <thead>
+                <th class="col-xs-1">#</th>
+                <th class="col-xs-1">Anzahl</th>
+                <th class="col-xs-4">Artikelbezeichnung</th>
+                <th class="col-xs-4">Optionen</th>
+              </thead>
+              <tbody>
+              {% for we in wareneingang %}
+                <tr>
+                  <td>{{ loop.index }}</td>
+                  <td>
+                    {{ we['anzahl'] }}
+                  </td>
+                  <td>
+                    {{ we['artikelbezeichnung'] }}
+                  </td>
+                  <td>
+                      <button class="btn btn-default btn-xs editbutton" data-id="{{ we['weid'] }}">Bearbeiten</button>
+                      <a class="btn btn-danger btn-xs" href="/eingangsrechnungen/position/loeschen/{{ we['weid'] }}">L&ouml;schen</a>
+                  </td>
+                </tr>
+              {% endfor %}
+              <tr>
+                <td>{{ idx }}</td>
+                <td>
+                  <select name="anzahl" id="anzahl" class="form-control">
+                    {% for i in range(1,100) %}
+                      <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+                <td>
+                  <select name="artikel_id" id="artikelselect" class="form-control">
+                    <option value="0"></option>
+                  {% for art in artikel %}
+                    <option value="{{ art['rowid'] }}">{{ art['artikelbezeichnung'] }}</option>
+                  {% endfor %}
+                </select>
+                </td>
+                <td>&nbsp;</td>
+              </tr>
+              </tbody>
+          </table>
+          <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Positionen speichern</button>
+          <input type="hidden" name="rechnungs_id" value="{{ rechnung['rowid'] }}" />
+      </form>
+
+    </div> <!-- /container -->
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="position-bearbeiten">
+      <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Position bearbeiten</h4>
+              </div>
+              <div class="modal-body">
+                <form class="form" action="/eingangsrechnungen/position/bearbeiten" id="form-position-bearbeiten" method="post">
+                  <table class="table">
+                    <thead>
+                      <th class="col-xs-1">Anzahl</th>
+                      <th class="col-xs-4">Artikelbezeichnung</th>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <select name="anzahl" id="bearbeiten-anzahl" class="form-control">
+                            {% for i in range(1,100) %}
+                              <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                          </select>
+                        </td>
+                        <td>
+                          <select name="artikel_id" id="bearbeiten-artikelselect" class="form-control">
+                          {% for art in artikel %}
+                            <option value="{{ art['rowid'] }}">{{ art['artikelbezeichnung'] }}</option>
+                          {% endfor %}
+                        </select>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                <input type="hidden" name="positions_id" id="positions_id" value="" />
+                <input type="hidden" name="rechnungs_id" value="{{ rechnung['rowid'] }}" />
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+                  <button type="submit" id="position-speichern" class="btn btn-primary">Speichern</button>
+              </div>
+                </form>
+
+              </div>
+            </div>
+    </div>
+
+
+    <script type="text/javascript">
+
+      $('.editbutton').on('click', function() {
+        event.preventDefault();
+        var id = $(this).data('id');
+        $.ajax({
+          url: '/wareneingang/ajax/position/' + id,
+          method: 'GET',
+          success: function(data) {
+              data = JSON.parse(data);
+              $('#positions_id').val(data.rowid);
+              $('#bearbeiten-anzahl').val(data.anzahl);
+              $('#bearbeiten-artikelselect').val(data.artikel_id);
+              $('#bearbeiten-artikelselect').blur();
+              $('#position-bearbeiten').modal();
+          }
+
+        });
+
+        $(this).blur();
+      });
+
+    </script>
+
+{% include "footer.html" %}

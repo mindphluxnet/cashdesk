@@ -259,9 +259,21 @@ def load_eingangsrechnung(sqlite_file, id):
     conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
 
-    c.execute("SELECT oid, * FROM eingangsrechnungen WHERE oid = ?", [ id])
+    c.execute("SELECT oid, * FROM eingangsrechnungen WHERE oid = ?", [ id ])
     rechnung = c.fetchone()
 
     conn.close()
 
     return rechnung
+
+def save_eingangsrechnung(sqlite_file, rechnung):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("INSERT INTO eingangsrechnungen (rechnungsnummer, rechnungsdatum, lieferant_id, eurkonto, rechnungsbetrag, bezahlt, ustsatz) VALUES (?, ?, ?, ?, ?, ?, ?)", [ rechnung['rechnungsnummer'], rechnung['rechnungsdatum'], rechnung['lieferant_id'], rechnung['eurkonto'], rechnung['rechnungsbetrag'], 0, rechnung['ustsatz'] ])
+
+    conn.commit()
+    conn.close()
+
+    return c.lastrowid

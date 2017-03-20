@@ -44,7 +44,7 @@
             <div class="col-sm-4">
               <select name="eurkonto" id ="eurkonto" class="form-control">
                 {% for key, value in eurkonten.iteritems() %}
-                  <option value="{{ key }}">{{ value }}</option>
+                  <option value="{{ key }}">{{ key }} {{ value }}</option>
                 {% endfor %}
               </select>
             </div>

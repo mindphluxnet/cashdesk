@@ -290,14 +290,49 @@ def eingangsrechnung_speichern_step1():
 @app.route('/eingangsrechnungen/neu/step2/<string:id>')
 def show_eingangsrechnungen_neu_step2(id):
 
+    page_title = "Eingangsrechnung bearbeiten"
+    page_id = "eingangsrechnungen"
+
     rechnung = database.rechnungen.load_eingangsrechnung(sqlite_file, id)
     lieferanten = database.lieferanten.load_lieferanten(sqlite_file)
     eurkonten = statics.konten.get_eurkonten()
     artikel = database.artikel.load_artikel(sqlite_file)
     wareneingang = database.wareneingang.load_wareneingang(sqlite_file, id)
+    einstellungen = database.settings.load_settings()
 
-    return render_template('eingangsrechnung-neu-step2.html', rechnung = rechnung, lieferanten = lieferanten, eurkonten = eurkonten, artikel = artikel, page_title = page_title, page_id = page_id)
+    return render_template('eingangsrechnung-neu-step2.html', rechnung = rechnung, lieferanten = lieferanten, eurkonten = eurkonten, artikel = artikel, wareneingang = wareneingang, einstellungen = einstellungen, page_title = page_title, page_id = page_id)
 
+@app.route('/eingangsrechnungen/position/speichern', methods = ['POST'])
+def eingangsrechnungen_position_speichern():
+
+    rechnung_id = request.form['rechnungs_id']
+
+    database.wareneingang.save_position(sqlite_file, request.form)
+
+    return redirect('/eingangsrechnungen/neu/step2/' + str(rechnung_id))
+
+@app.route('/eingangsrechnungen/position/bearbeiten', methods = ['POST'])
+def eingangsrechnungen_position_bearbeiten():
+
+    rechnung_id = request.form['rechnungs_id']
+
+    database.wareneingang.update_position(sqlite_file, request.form)
+
+    return redirect('/eingangsrechnungen/neu/step2/' + str(rechnung_id))
+
+@app.route('/wareneingang/ajax/position/<string:id>')
+def wareneingang_ajax_position(id):
+
+    position = database.wareneingang.load_position(sqlite_file, id)
+
+    return json.dumps(position)
+
+@app.route('/eingangsrechnungen/position/loeschen/<string:id>')
+def eingangsrechnungen_position_loeschen(id):
+
+    rechnung_id = database.wareneingang.delete_position(sqlite_file, id)
+
+    return redirect('/eingangsrechnungen/neu/step2/' + str(rechnung_id))
 
 @app.route('/ausgangsrechnungen')
 def show_ausgangsrechnungen():
