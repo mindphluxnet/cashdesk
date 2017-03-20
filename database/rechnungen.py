@@ -252,3 +252,16 @@ def load_eingangsrechnungen(sqlite_file):
     conn.close()
 
     return rechnungen
+
+def load_eingangsrechnung(sqlite_file, id):
+
+    conn = sqlite3.connect(sqlite_file)
+    conn.row_factory = database.factory.dict_factory
+    c = conn.cursor()
+
+    c.execute("SELECT oid, * FROM eingangsrechnungen WHERE oid = ?", [ id])
+    rechnung = c.fetchone()
+
+    conn.close()
+
+    return rechnung

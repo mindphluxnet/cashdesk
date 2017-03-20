@@ -29,6 +29,7 @@ import database.rechnungen
 import database.kunden
 import database.konten
 import database.lieferanten
+import database.wareneingang
 
 import statics.konten
 
@@ -278,6 +279,25 @@ def show_eingangsrechnungen_neu():
     artikel = database.artikel.load_artikel(sqlite_file)
 
     return render_template('eingangsrechnung-neu.html', lieferanten = lieferanten, eurkonten = eurkonten, artikel = artikel, page_title = page_title, page_id = page_id)
+
+@app.route('/eingangsrechnungen/speichern/step1', methods = ['POST'])
+def eingangsrechnung_speichern_step1():
+
+    rechnung_id = database.rechnungen.save_eingangsrechnung(sqlite_file, request.form)
+
+    return redirect('/eingangsrechnungen/neu/step2/' + str(rechnung_id))
+
+@app.route(/'eingangsrechnungen/neu/step2/<string:id>')
+def show_eingangsrechnungen_neu_step2(id):
+
+    rechnung = database.rechnungen.load_eingangsrechnung(sqlite_file, id)
+    lieferanten = database.lieferanten.load_lieferanten(sqlite_file)
+    eurkonten = statics.konten.get_eurkonten()
+    artikel = database.artikel.load_artikel(sqlite_file)
+    wareneingang = database.wareneingang.load_wareneingang(sqlite_file, id)
+
+    return render_template('eingangsrechnung-neu-step2.html', rechnung = rechnung, lieferanten = lieferanten, eurkonten = eurkonten, artikel = artikel, page_title = page_title, page_id = page_id)
+
 
 @app.route('/ausgangsrechnungen')
 def show_ausgangsrechnungen():
