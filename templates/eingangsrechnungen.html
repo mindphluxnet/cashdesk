@@ -9,9 +9,9 @@
       <h3>Eingangsrechnungen</h3>
       <table class="table table-striped table-condensed">
         <thead>
-          <th>Rechnungsnummer</th>
           <th>Datum</th>
           <th>Lieferant</th>
+          <th>Rechnungsnummer</th>
           <th>Rechnungsbetrag</th>
           <th>Bezahlt</th>
           <th>Optionen</th>
@@ -19,9 +19,9 @@
         <tbody>
           {% for rechnung in rechnungen %}
           <tr>
-            <td>{{ rechnung['rechnungsnummer'] }}</td>
             <td>{{ rechnung['rechnungsdatum'] }}</td>
             <td>{{ rechnung['lieferant'] }}</td>
+            <td>{{ rechnung['rechnungsnummer'] }}</td>
             <td>&euro; {{ '{0:0.2f}'.format(rechnung['rechnungsbetrag']) }}</td>
             <td>{% if rechnung['bezahlt'] == 1 %}<span class="glyphicon glyphicon-ok text-success"></span></a>{% else %}<span class="glyphicon glyphicon-remove text-danger"></span>{% endif %}</td>
             <td class="text-right">
@@ -29,9 +29,9 @@
                 <a class="btn btn-xs btn-default" target="_rechnungsausgabe" href="/pdfviewer/{{ rechnung['rowid'] }}"><span class="glyphicon glyphicon-file"></span> PDF</a>
                 {% endif %}
                 {% if rechnung['bezahlt'] == 0 %}
-                <a class="btn btn-xs btn-success" href="/eingangsrechnungen/bezahlt/{{ rechnung['rowid'] }}"><span class="glyphicon glyphicon-ok"></span> Bezahlt</a>
-                {% endif %}
+                <button class="btn btn-xs btn-success" id="eingangsrechnung-bezahlt" data-rechnungsbetrag="{{ rechnung['rechnungsbetrag'] }}" data-eur="{{ rechnung['eurkonto'] }}" data-id="{{ rechnung['rowid'] }}"><span class="glyphicon glyphicon-ok"></span> Bezahlt</button>
                 <a class="btn btn-xs btn-danger" href="/eingangsrechnungen/loeschen/{{ rechnung['rowid'] }}"><span class="glyphicon glyphicon-remove"></span> L&ouml;schen</a>
+                {% endif %}
             </td>
           </tr>
           {% endfor %}
@@ -50,13 +50,13 @@
 
     </div> <!-- /container -->
 
-    <form class="form-horizontal" method="post" id="rechnungverbuchen-form" action="/ausgangsrechnungen/verbuchen">
-    <div class="modal fade" id="rechnung-verbuchen" role="dialog">
+    <form class="form-horizontal" method="post" id="rechnungverbuchen-form" action="/eingangsrechnungen/bezahlt">
+    <div class="modal fade" id="rechnung-bezahlt-modal" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" <span>&times;</span></button>
-            <h4 class="modal-title" id="neuerKundeLabel">Rechnung verbuchen</h4>
+            <h4 class="modal-title" id="neuerKundeLabel">Rechnung als bezahlt markieren</h4>
           </div>
           <div class="modal-body">
 
@@ -67,12 +67,6 @@
                 </div>
                 <div class="col-sm-3">
                   <button class="btn btn-default" onclick="event.preventDefault(); document.getElementById('zahlungsdatum').valueAsDate = new Date();"><span class="glyphicon glyphicon-calendar"></span> Heute</button>
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="konto" class="col-sm-3 control-label">Zahlungsart</label>
-                <div class="col-sm-9">
-                  <span id="zahlungsart"></span>
                 </div>
               </div>
               <div class="form-group">
@@ -91,6 +85,8 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
                 <button type="submit" id="button-rechnung-verbuchen" class="btn btn-primary">Rechnung verbuchen</button>
                 <input type="hidden" id="verbuchen-rechnungsnummer" name="rechnungsnummer" value="" />
+                <input type="hidden" id="verbuchen-eurkonto" name="eurkonto" value="" />
+                <input type="hidden" id="verbuchen-rechnungsbetrag" name="rechnungsbetrag" value="" />
             </div>
           </div>
 
@@ -100,18 +96,18 @@
 
     <script type="text/javascript">
 
-      $('#btn-rechnung-verbuchen').on('click', function() {
+      $('#eingangsrechnung-bezahlt').on('click', function() {
+
         event.preventDefault();
+
         var id = $(this).data('id');
-        var za = $(this).data('zahlungsart');
-        switch(za) {
-          case 1: out = "Barzahlung"; break;
-          case 2: out = "Überweisung"; break;
-          case 3: out = "Lastschrift"; break;
-        }
-        $('#zahlungsart').text(out);
+        var eur = $(this).data('eur');
+        var betrag = $(this).data('rechnungsbetrag');
+
         $('#verbuchen-rechnungsnummer').val(id);
-        $('#rechnung-verbuchen').modal();
+        $('#verbuchen-eurkonto').val(eur);
+        $('#verbuchen-rechnungsbetrag').val(betrag);
+        $('#rechnung-bezahlt-modal').modal();
 
       });
 

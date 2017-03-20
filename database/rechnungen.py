@@ -315,3 +315,22 @@ def delete_eingangsrechnung(sqlite_file, id):
 
     conn.commit()
     conn.close()
+
+def eingangsrechnung_bezahlt(sqlite_file, rechnung):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    rb = rechnung['rechnungsbetrag']
+    rb = float(rb)
+    rb = -rb
+
+    c.execute("UPDATE eingangsrechnungen SET bezahlt = 1 WHERE oid = ?", [ rechnung['rechnungsnummer'] ])
+
+    try:
+        c.execute("INSERT INTO buchungen (konto_id, eurkonto, rechnungs_id, betrag, datum, einaus) VALUES (?, ?, ?, ?, ?, ?)", [ rechnung['konto'], rechnung['eurkonto'], rechnung['rechnungsnummer'], rb, rechnung['zahlungsdatum'], 0 ] )
+    except Exception as e:
+        print(e.message)
+
+    conn.commit()
+    conn.close()

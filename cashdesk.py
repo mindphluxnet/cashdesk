@@ -268,6 +268,7 @@ def show_eingangsrechnungen():
     page_id = "eingangsrechnungen"
 
     rechnungen = database.rechnungen.load_eingangsrechnungen(sqlite_file)
+    konten = database.konten.load_konten(sqlite_file)
 
     gesamtausgabe = 0
 
@@ -278,7 +279,7 @@ def show_eingangsrechnungen():
         if(os.path.isfile('dokumente/eingangsrechnungen/eingangsrechnung-' + str(rechnung['rowid']) + '.pdf')):
             rechnung['pdf'] = True;
 
-    return render_template('eingangsrechnungen.html', rechnungen = rechnungen, gesamtausgabe = gesamtausgabe, page_title = page_title, page_id = page_id)
+    return render_template('eingangsrechnungen.html', rechnungen = rechnungen, konten = konten, gesamtausgabe = gesamtausgabe, page_title = page_title, page_id = page_id)
 
 @app.route('/eingangsrechnungen/neu')
 def show_eingangsrechnungen_neu():
@@ -366,6 +367,13 @@ def eingangsrechnungen_verbuchen():
 def eingangsrechnungen_loeschen(id):
 
     database.rechnungen.delete_eingangsrechnung(sqlite_file, id)
+
+    return redirect(url_for('show_eingangsrechnungen'))
+
+@app.route('/eingangsrechnungen/bezahlt', methods = ['POST'])
+def eingangsrechnungen_bezahlt():
+
+    database.rechnungen.eingangsrechnung_bezahlt(sqlite_file, request.form)
 
     return redirect(url_for('show_eingangsrechnungen'))
 
