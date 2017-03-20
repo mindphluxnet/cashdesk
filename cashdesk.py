@@ -353,6 +353,7 @@ def eingangsrechnungen_verbuchen():
     page_id = "eingangsrechnungen"
 
     id = database.rechnungen.update_eingangsrechnung(sqlite_file, request.form)
+    database.wareneingang.wareneingang_verbuchen(sqlite_file, id)
 
     #: FIXME: sollte natuerlich auch fuer andere Dateien funktionieren
     uploaded_file = request.files['pdf']

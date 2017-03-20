@@ -63,3 +63,19 @@ def update_position(sqlite_file, position):
 
     conn.commit()
     conn.close()
+
+def wareneingang_verbuchen(sqlite_file, id):
+
+    conn = sqlite3.connect(sqlite_file)
+    conn.row_factory = database.factory.dict_factory
+    c = conn.cursor()
+
+    c.execute("SELECT oid, * FROM wareneingang WHERE rechnung_id = ?", [ id ])
+    positionen = c.fetchall()
+
+    for pos in positionen:
+        c.execute("UPDATE artikel SET bestand = bestand + ? WHERE oid = ?", [ pos['anzahl'], pos['artikel_id'] ])
+        c.execute("UPDATE wareneingang SET verbucht = 1 WHERE oid = ?", [ pos['rowid'] ])
+
+    conn.commit()
+    conn.close()

@@ -24,7 +24,7 @@
             <td>{{ rechnung['lieferant'] }}</td>
             <td>&euro; {{ '{0:0.2f}'.format(rechnung['rechnungsbetrag']) }}</td>
             <td>{% if rechnung['bezahlt'] == 1 %}<span class="glyphicon glyphicon-ok text-success"></span></a>{% else %}<span class="glyphicon glyphicon-remove text-danger"></span>{% endif %}</td>
-            <td>
+            <td class="text-right">
                 {% if rechnung['pdf'] %}
                 <a class="btn btn-xs btn-default" target="_rechnungsausgabe" href="/pdfviewer/{{ rechnung['rowid'] }}"><span class="glyphicon glyphicon-file"></span> PDF</a>
                 {% endif %}
