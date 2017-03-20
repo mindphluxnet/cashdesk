@@ -32,7 +32,7 @@ def load_position(sqlite_file, id):
     conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
 
-    c.execute("SELECT artikel_id, anzahl FROM wareneingang WHERE oid = ?", [ id ])
+    c.execute("SELECT oid, artikel_id, anzahl FROM wareneingang WHERE oid = ?", [ id ])
     position = c.fetchone()
 
     conn.close()
@@ -53,3 +53,13 @@ def delete_position(sqlite_file, id):
     conn.close()
 
     return rechnung_id[0]
+
+def update_position(sqlite_file, position):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("UPDATE wareneingang SET anzahl = ?, artikel_id = ? WHERE oid = ?", [ position['anzahl'], position['artikel_id'], position['positions_id'] ])
+
+    conn.commit()
+    conn.close()
