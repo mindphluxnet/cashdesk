@@ -7,7 +7,7 @@
 
       <h3>{{ page_title}}</h3>
 
-      <form class="form-horizontal" method="post" action="/eingangsrechnungen/speichern/step3" id="rechnungausgeben-form">
+      <form class="form-horizontal" method="post" action="/eingangsrechnungen/verbuchen" id="rechnungausgeben-form">
         <div class="form-group">
           <label for="kunden_id" class="col-sm-2 control-label">Lieferant</label>
           <div class="col-sm-4">
@@ -16,9 +16,6 @@
                 <option value="{{ lieferant['rowid'] }}"{% if rechnung['lieferant_id'] == lieferant['rowid'] %} selected="selected"{% endif %}>{{ lieferant['firmenname'] }}</option>
               {% endfor %}
             </select>
-          </div>
-          <div class="col-sm-4">
-            <a class="btn btn-default" href="#" data-toggle="modal" data-target="#neuerLieferant"><span class="glyphicon glyphicon-plus"></span> Neuer Lieferant</a>
           </div>
         </div>
         <div class="form-group">
@@ -67,7 +64,7 @@
         </div>
         <input type="hidden" name="bezahlt" value="0" />
         <input type="hidden" name="rechnungs_id" value="{{ rechnung['rowid'] }}" />
-        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Speichern und weiter</button>
+        <button type="button" class="btn btn-default" id="speichern-verbuchen"><span class="glyphicon glyphicon-floppy-disk"></span> Speichern und verbuchen</button>
         <a href="/eingangsrechnungen" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Abbruch</a>
           <hr />
           <h4>Wareneingang mit dieser Rechnung</h4>
@@ -123,6 +120,26 @@
 
     </div> <!-- /container -->
 
+    <div class="modal fade" role="dialog" id="verbuchen-bestaetigen">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Rechnung wirklich verbuchen?</h4>
+          </div>
+          <div class="modal-body">
+            <p>
+              Soll diese Eingangsrechnung und ggfs. der zugeh&ouml;rige Wareneingang wirklich verbucht werden?
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Nein</button>
+            <button type="button" id="rechnung-verbuchen-ok" class="btn btn-primary">Ja</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="modal fade" tabindex="-1" role="dialog" id="position-bearbeiten">
       <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -167,6 +184,7 @@
               </div>
             </div>
     </div>
+  </div>
 
 
     <script type="text/javascript">
@@ -189,6 +207,20 @@
         });
 
         $(this).blur();
+      });
+
+      $('#speichern-verbuchen').on('click', function() {
+
+        event.preventDefault();
+        $('#verbuchen-bestaetigen').modal();
+
+      });
+
+      $('#rechnung-verbuchen-ok').on('click', function() {
+
+        event.preventDefault();
+        $('#rechnungausgeben-form').submit();
+
       });
 
     </script>

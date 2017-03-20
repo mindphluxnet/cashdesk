@@ -277,3 +277,13 @@ def save_eingangsrechnung(sqlite_file, rechnung):
     conn.close()
 
     return c.lastrowid
+
+def update_eingangsrechnung(sqlite_file, rechnung):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("UPDATE eingangsrechnungen SET rechnungsnummer = ?, rechnungsdatum = ?, lieferant_id = ?, eurkonto = ?, rechnungsbetrag = ?, ustsatz = ? WHERE oid = ?", [ rechnung['rechnungsnummer'], rechnung['rechnungsdatum'], rechnung['lieferant_id'], rechnung['eurkonto'], rechnung['rechnungsbetrag'], rechnung['ustsatz'], rechnung['rechnungs_id'] ])
+
+    conn.commit()
+    conn.close()

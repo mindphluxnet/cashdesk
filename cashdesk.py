@@ -334,15 +334,15 @@ def eingangsrechnungen_position_loeschen(id):
 
     return redirect('/eingangsrechnungen/neu/step2/' + str(rechnung_id))
 
-@app.route('/eingangsrechnungen/speichern/step3', methods = ['POST'])
-def eingangsrechnungen_speichern_step3:
+@app.route('/eingangsrechnungen/verbuchen', methods = ['POST'])
+def eingangsrechnungen_verbuchen():
 
     page_title = "Eingangsrechnung verbuchen"
     page_id = "eingangsrechnungen"
 
-    rechnung_id = database.rechnungen.update_eingangsrechnung(sqlite_file, request.form)
+    database.rechnungen.update_eingangsrechnung(sqlite_file, request.form)
 
-    return render_template('eingangsrechnung-verbuchen.html', rechnung_id = rechnung_id, page_title = page_title, page_id = page_id)
+    return redirect(url_for('show_eingangsrechnungen'))
 
 @app.route('/ausgangsrechnungen')
 def show_ausgangsrechnungen():
