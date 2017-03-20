@@ -362,6 +362,13 @@ def eingangsrechnungen_verbuchen():
 
     return redirect(url_for('show_eingangsrechnungen'))
 
+@app.route('/eingangsrechnungen/loeschen/<string:id>')
+def eingangsrechnungen_loeschen(id):
+
+    database.rechnungen.delete_eingangsrechnung(sqlite_file, id)
+
+    return redirect(url_for('show_eingangsrechnungen'))
+
 @app.route('/ausgangsrechnungen')
 def show_ausgangsrechnungen():
 

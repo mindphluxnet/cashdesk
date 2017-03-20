@@ -2,6 +2,8 @@ import sqlite3
 
 import database.factory
 import statics.konten
+import database.wareneingang
+import os
 
 def load_rechnungen(sqlite_file):
 
@@ -289,3 +291,27 @@ def update_eingangsrechnung(sqlite_file, rechnung):
     conn.close()
 
     return rechnung['rechnungs_id']
+
+def delete_eingangsrechnung(sqlite_file, id):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("DELETE FROM eingangsrechnungen WHERE oid = ?", [ id ])
+
+    positionen = database.wareneingang.load_wareneingang(sqlite_file, id)
+
+    #: Wareneingang rueckgaengig machen
+    for pos in positionen:
+        c.execute("UPDATE artikel SET bestand = bestand - ? WHERE oid = ?", [ pos['anzahl'], pos['artikel_id']])
+        c.execute("DELETE FROM wareneingang WHERE oid = ?", [ pos['rowid'] ])
+
+    #: PDF loeschen wenn vorhanden
+
+    try:
+        os.remove('/dokumente/eingangsrechnungen/eingangsrechnung-' + str(id) + '.pdf')
+    except OSError:
+        pass
+
+    conn.commit()
+    conn.close()
