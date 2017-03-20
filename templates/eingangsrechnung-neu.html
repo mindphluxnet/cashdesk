@@ -23,8 +23,11 @@
           </div>
           <div class="form-group">
             <label for="rechnungsnummer" class="col-sm-2 control-label">Rechnungsnummer</label>
-            <div class="col-sm-2">
+            <div class="col-sm-4">
               <input type="text" class="form-control" name="rechnungsnummer" id="rechnungsnummer" />
+            </div>
+            <div class="col-sm-2">
+              <button class="btn btn-default" id="generate-rechnungsnummer">Keine Rechnungsnummer?</button>
             </div>
           </div>
           <div class="form-group">
@@ -128,7 +131,7 @@
     </form>
 
     </div>
-
+    <script type="text/javascript" src="/assets/js/UUID.js"></script>
     <script type="text/javascript">
 
      var request;
@@ -163,6 +166,14 @@
             $('#neuerLieferant').modal('hide');
           }
         });
+
+      });
+
+      $('#generate-rechnungsnummer').on('click', function() {
+
+        event.preventDefault();
+
+        $('#rechnungsnummer').val(UUID.generate());
 
       });
 
