@@ -287,3 +287,5 @@ def update_eingangsrechnung(sqlite_file, rechnung):
 
     conn.commit()
     conn.close()
+
+    return rechnung['rechnungs_id']

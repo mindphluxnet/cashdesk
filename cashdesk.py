@@ -48,7 +48,7 @@ settings = database.settings.load_settings()
 try:
     os.makedirs('dokumente/eingangsrechnungen')
 except OSError as Exception:
-    pass    
+    pass
 
 if(raspi.raspi.is_raspi()):
     lcd = lcddriver.lcd()
@@ -270,6 +270,8 @@ def show_eingangsrechnungen():
         lieferant = database.lieferanten.load_lieferant(sqlite_file, rechnung['lieferant_id'])
         rechnung['lieferant'] = lieferant['firmenname']
         gesamtausgabe = gesamtausgabe + rechnung['rechnungsbetrag']
+        if(os.path.isfile('dokumente/eingangsrechnungen/eingangsrechnung-' + str(rechnung['rowid']) + '.pdf')):
+            rechnung['pdf'] = True;
 
     return render_template('eingangsrechnungen.html', rechnungen = rechnungen, gesamtausgabe = gesamtausgabe, page_title = page_title, page_id = page_id)
 
@@ -345,7 +347,12 @@ def eingangsrechnungen_verbuchen():
     page_title = "Eingangsrechnung verbuchen"
     page_id = "eingangsrechnungen"
 
-    database.rechnungen.update_eingangsrechnung(sqlite_file, request.form)
+    id = database.rechnungen.update_eingangsrechnung(sqlite_file, request.form)
+
+    #: FIXME: sollte natuerlich auch fuer andere Dateien funktionieren
+    uploaded_file = request.files['pdf']
+    if(uploaded_file):
+        uploaded_file.save('dokumente/eingangsrechnungen/eingangsrechnung-' + str(id) + '.pdf')
 
     return redirect(url_for('show_eingangsrechnungen'))
 
