@@ -30,6 +30,7 @@ import database.kunden
 import database.konten
 import database.lieferanten
 import database.wareneingang
+import database.buchungen
 
 import statics.konten
 
@@ -624,13 +625,21 @@ def ausgangsrechnung_loeschen(id):
 
     return redirect(url_for('show_ausgangsrechnungen'))
 
-@app.route('/kassenbuch')
-def show_kassenbuch():
+@app.route('/buchungskonten')
+@app.route('/buchungskonten/<usekonto>')
+def show_kassenbuch(usekonto = 0):
 
-    page_title = "Kassenbuch"
-    page_id = "kassenbuch"
+    page_title = "Buchungskonten"
+    page_id = "buchungskonten"
 
-    return render_template('kassenbuch.html', page_title = page_title, page_id = page_id)
+    konten = database.konten.load_konten(sqlite_file)
+
+    if(usekonto == 0):
+        usekonto = konten[0]['rowid']
+
+    buchungen = database.buchungen.load_buchungen(sqlite_file, usekonto)
+
+    return render_template('buchungskonten.html', konten = konten, buchungen = buchungen, usekonto = int(usekonto), page_title = page_title, page_id = page_id)
 
 @app.route('/einstellungen')
 def show_einstellungen():

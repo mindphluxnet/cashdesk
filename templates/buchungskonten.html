@@ -1,0 +1,29 @@
+{% include "header.html" %}
+
+    {% include "nav.html" %}
+
+
+    <div class="container">
+
+      <h3>Buchungskonten</h3>
+
+      <ul class="nav nav-pills">
+        {% for konto in konten %}
+        <li{% if usekonto == konto['rowid'] %} class="active"{% endif %}><a href="/buchungskonten/{{ konto['rowid'] }}"><span class="glyphicon glyphicon-{% if konto['is_kasse'] %}euro{% else %}credit-card{% endif %}"></span> {{ konto['bezeichnung'] }}</a></li>
+        {% endfor %}
+      </ul>
+      <hr />
+      <table class="table table-condensed table-striped">
+        <thead>
+          <th>Datum</th>
+          <th>Empf&auml;nger</th>
+          <th>Verwendungszweck</th>
+          <th>Betrag</th>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+    </div>
+
+{% include "footer.html" %}
