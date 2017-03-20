@@ -287,7 +287,7 @@ def eingangsrechnung_speichern_step1():
 
     return redirect('/eingangsrechnungen/neu/step2/' + str(rechnung_id))
 
-@app.route(/'eingangsrechnungen/neu/step2/<string:id>')
+@app.route('/eingangsrechnungen/neu/step2/<string:id>')
 def show_eingangsrechnungen_neu_step2(id):
 
     rechnung = database.rechnungen.load_eingangsrechnung(sqlite_file, id)
