@@ -37,7 +37,7 @@
             <td>
               {% if buchung['pdf'] %}<a class="btn btn-default btn-xs" href="/pdfviewer/{{ buchung['eingangsrechnungs_id'] }}" target="_rechnungsausgabe"><span class="glyphicon glyphicon-file"></span> PDF</a> {% endif %}{{ buchung['verwendungszweck']}}
             </td>
-            <td class="text-right">{{ buchung['betrag'] }}</td>
+            <td class="text-right">{{ '{0:0.2f}'.format(buchung['betrag']) }}</td>
             <td class="text-right"></td>
           </tr>
           {% endfor %}
