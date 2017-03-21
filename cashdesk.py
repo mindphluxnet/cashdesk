@@ -633,11 +633,55 @@ def show_kassenbuch(usekonto = 0):
     page_id = "buchungskonten"
 
     konten = database.konten.load_konten(sqlite_file)
+    stammdaten = database.settings.load_settings()
 
     if(usekonto == 0):
         usekonto = konten[0]['rowid']
 
     buchungen = database.buchungen.load_buchungen(sqlite_file, usekonto)
+
+    #: Buchungen aufbereiten
+    for buchung in buchungen:
+
+        #: Umbuchungen zwischen Geschaeftskonten
+        if(buchung['gegenkonto_id'] != 0 and buchung['gegenkonto_id'] != None):
+            buchung['umbuchung'] = True
+            gk = database.konten.load_konto(sqlite_file, buchung['gegenkonto_id'])
+            dk = database.konten.load_konto(sqlite_file, usekonto)
+            buchung['empfaenger'] = dk['bezeichnung']
+            buchung['verwendungszweck'] = "Umbuchung von " + gk['bezeichnung']
+        else:
+            buchung['umbuchung'] = False
+
+        #: Privateinlagen
+        if(buchung['gegenkonto_id'] == 0 and buchung['gegenkonto_id'] == None and buchung['ausgangsrechnungs_id'] == 0 and buchung['ausgangsrechnungs_id'] == None and buchung['eingangsrechnungs_id'] == 0 and buchung['eingangsrechnungs_id'] == None and buchung['einaus'] == 1):
+            dk = database.konten.load_konto(sqlite_file, usekonto)
+            buchung['empfaenger'] = dk['bezeichnung']
+            buchung['verwendungszweck'] = "Privateinlage"
+
+        #: Privatentnahmen
+        if(buchung['gegenkonto_id'] == 0 and buchung['gegenkonto_id'] == None and buchung['ausgangsrechnungs_id'] == 0 and buchung['ausgangsrechnungs_id'] == None and buchung['eingangsrechnungs_id'] == 0 and buchung['eingangsrechnungs_id'] == None and buchung['einaus'] == 0):
+            dk = database.konten.load_konto(sqlite_file, usekonto)
+            buchung['empfaenger'] = stammdaten['inhaber']
+            buchung['verwendungszweck'] = "Privatentnahme"
+
+        #: Ausgangsrechnungen
+        if(buchung['ausgangsrechnungs_id'] != 0 and buchung['ausgangsrechnungs_id'] != None):
+            re = database.rechnungen.load_rechnung(sqlite_file, buchung['ausgangsrechnungs_id'])
+            if(buchung['einaus'] == 1):
+                buchung['empfaenger'] = stammdaten['firmenname']
+                buchung['verwendungszweck'] = "Zahlung Ausgangsrechnung Nr. " + re['rechnungsnummer'] + " durch Kunde"
+            else:
+                buchung['empfaenger'] = re['nachname'] + ', ' + re['vorname']
+                buchung['verwendungszweck'] = "Erstattung Gutschrift " + re['rechnungsnummer'] + " an Kunde"
+
+        #: Eingangsrechnungen
+        if(buchung['eingangsrechnungs_id'] != 0 and buchung['eingangsrechnungs_id'] != None):
+            re = database.rechnungen.load_eingangsrechnung(sqlite_file, buchung['eingangsrechnungs_id'])
+            li = database.lieferanten.load_lieferant(sqlite_file, re['lieferant_id'])
+            buchung['empfaenger'] = li['firmenname']
+            buchung['verwendungszweck'] = "Zahlung Eingangsrechnung Nr. " + re['rechnungsnummer']
+
 
     return render_template('buchungskonten.html', konten = konten, buchungen = buchungen, usekonto = int(usekonto), page_title = page_title, page_id = page_id)
 

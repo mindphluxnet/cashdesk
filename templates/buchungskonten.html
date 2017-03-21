@@ -21,7 +21,18 @@
           <th>Betrag</th>
         </thead>
         <tbody>
-
+          {% for buchung in buchungen %}
+          <tr{% if buchung['einaus'] == 0 %} class="text-danger"{% elif buchung['einaus'] == 1 %} class="text-success"{% endif %}>
+            <td>{{ buchung['datum'] }}</td>
+            <td>
+              {{ buchung['empfaenger'] }}
+            </td>
+            <td>
+              {{ buchung['verwendungszweck']}}
+            </td>
+            <td>{{ buchung['betrag'] }}</td>
+          </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>
