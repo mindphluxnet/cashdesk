@@ -45,3 +45,17 @@ def privateinlage(sqlite_file, pe):
 
     conn.commit()
     conn.close()
+
+def privatentnahme(sqlite_file, pe):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    betrag = float(pe['betrag'])
+    if(betrag > 0):
+        betrag = -betrag
+
+    c.execute("INSERT INTO buchungen (konto_id, betrag, datum, einaus) VALUES (?, ?, ?, ?)", [ pe['quellkonto'], betrag, pe['datum'], 0 ])
+
+    conn.commit()
+    conn.close()

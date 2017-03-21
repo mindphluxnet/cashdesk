@@ -639,6 +639,13 @@ def buchungskonten_privateinlage():
 
     return redirect(url_for('show_buchungskonten'))
 
+@app.route('/buchungskonten/privatentnahme', methods = ['POST'])
+def buchungskonten_privatentnahme():
+
+    database.buchungen.privatentnahme(sqlite_file, request.form)
+
+    return redirect(url_for('show_buchungskonten'))
+
 @app.route('/buchungskonten')
 @app.route('/buchungskonten/<usekonto>')
 def show_buchungskonten(usekonto = 0):
