@@ -632,6 +632,13 @@ def buchungskonten_umbuchung():
 
     return redirect(url_for('show_buchungskonten'))
 
+@app.route('/buchungskonten/privateinlage', methods = ['POST'])
+def buchungskonten_privateinlage():
+
+    database.buchungen.privateinlage(sqlite_file, request.form)
+
+    return redirect(url_for('show_buchungskonten'))
+
 @app.route('/buchungskonten')
 @app.route('/buchungskonten/<usekonto>')
 def show_buchungskonten(usekonto = 0):
@@ -664,13 +671,13 @@ def show_buchungskonten(usekonto = 0):
             buchung['umbuchung'] = False
 
         #: Privateinlagen
-        if(buchung['gegenkonto_id'] == 0 and buchung['gegenkonto_id'] == None and buchung['ausgangsrechnungs_id'] == 0 and buchung['ausgangsrechnungs_id'] == None and buchung['eingangsrechnungs_id'] == 0 and buchung['eingangsrechnungs_id'] == None and buchung['einaus'] == 1):
+        if((buchung['gegenkonto_id'] == 0 or buchung['gegenkonto_id'] == None) and (buchung['ausgangsrechnungs_id'] == 0 or buchung['ausgangsrechnungs_id'] == None) and (buchung['eingangsrechnungs_id'] == 0 or buchung['eingangsrechnungs_id'] == None) and buchung['einaus'] == 1):
             dk = database.konten.load_konto(sqlite_file, usekonto)
             buchung['empfaenger'] = dk['bezeichnung']
             buchung['verwendungszweck'] = "Privateinlage"
 
         #: Privatentnahmen
-        if(buchung['gegenkonto_id'] == 0 and buchung['gegenkonto_id'] == None and buchung['ausgangsrechnungs_id'] == 0 and buchung['ausgangsrechnungs_id'] == None and buchung['eingangsrechnungs_id'] == 0 and buchung['eingangsrechnungs_id'] == None and buchung['einaus'] == 0):
+        if((buchung['gegenkonto_id'] == 0 or buchung['gegenkonto_id'] == None) and (buchung['ausgangsrechnungs_id'] == 0 or buchung['ausgangsrechnungs_id'] == None) and (buchung['eingangsrechnungs_id'] == 0 or buchung['eingangsrechnungs_id'] == None) and buchung['einaus'] == 0):
             dk = database.konten.load_konto(sqlite_file, usekonto)
             buchung['empfaenger'] = stammdaten['inhaber']
             buchung['verwendungszweck'] = "Privatentnahme"
