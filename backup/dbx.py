@@ -4,11 +4,16 @@ import datetime
 import pyminizip
 import os
 
-def compress_backup(filename, password):
+def compress_backup(filename, password, dbversion):
 
-    pyminizip.compress(filename, 'tmp.zip', password, 9)
+    with file("dbver", 'w') as f:
+        f.write(str(dbversion))
 
-def run_backup(filename):
+    pyminizip.compress_multiple( [ filename, 'dbver'], 'tmp.zip', password, 9)
+
+    os.remove('dbver')
+
+def run_backup(filename, dbversion):
 
     settings = database.settings.load_settings()
 
@@ -16,7 +21,7 @@ def run_backup(filename):
 
     dbx = dropbox.Dropbox(apikey)
 
-    compress_backup(filename, settings['backup_passwort'])
+    compress_backup(filename, settings['backup_passwort'], dbversion)
 
     fname = filename + '-' + '{:%Y-%m-%d-%H:%M:%S}'.format(datetime.datetime.now())
     fname = fname + '.zip'

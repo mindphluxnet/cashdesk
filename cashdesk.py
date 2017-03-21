@@ -116,7 +116,9 @@ def backups():
 @app.route('/manual_backup')
 def manual_backup():
 
-    backup.dbx.run_backup(sqlite_file)
+    settings = database.settings.load_settings()
+
+    backup.dbx.run_backup(sqlite_file, dbversion)
 
     return redirect(url_for('backups'))
 
