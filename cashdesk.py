@@ -92,6 +92,34 @@ def show_index():
 
     return render_template('index.html', page_title = page_title, page_id = page_id, has_logo = has_logo)
 
+@app.route('/backups')
+def backups():
+
+    page_title = "Backups"
+    page_id = "backups"
+
+    backups = backup.dbx.list_backups()
+
+    backupfiles = []
+
+    for b in backups.entries:
+        out = [ b.name, b.client_modified ]
+        backupfiles.append(out)
+
+    #: Liste umdrehen (neueste zuerst)
+    backups = backupfiles[::-1]
+
+    del backups[25:]
+
+    return render_template('backups.html', backups = backups, page_title = page_title, page_id = page_id)
+
+@app.route('/manual_backup')
+def manual_backup():
+
+    backup.dbx.run_backup(sqlite_file)
+
+    return redirect(url_for('backups'))
+
 @app.route('/artikel')
 def show_artikel():
 

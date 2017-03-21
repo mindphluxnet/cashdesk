@@ -143,6 +143,19 @@
             </div>
           </div>
           <div class="form-group">
+            <label for="backupfrequenz" class="col-sm-2 control-label">Backup-Frequenz</label>
+            <div class="col-sm-10">
+              <select name="backupfrequenz" id="backupfrequenz" class="form-control">
+                <option value="0"{% if einstellungen['backupfrequenz'] == '0' %} selected="selected"{% endif %}>aus (nicht empfohlen!)</option>
+                <option value="60"{% if einstellungen['backupfrequenz'] == '60' %} selected="selected"{% endif %}>alle 60 Minuten</option>
+                <option value="120"{% if einstellungen['backupfrequenz'] == '120' %} selected="selected"{% endif %}>alle 2 Stunden</option>
+                <option value="240"{% if einstellungen['backupfrequenz'] == '240' %} selected="selected"{% endif %}>alle 4 Stunden</option>
+                <option value="360"{% if einstellungen['backupfrequenz'] == '360' %} selected="selected"{% endif %}>alle 6 Stunden</option>
+                <option value="480"{% if einstellungen['backupfrequenz'] == '480' %} selected="selected"{% endif %}>alle 8 Stunden</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
             <p>
                 * Backup-Dateien werden mit diesem Passwort verschl&uuml;sselt. <strong>Verlieren Sie dieses Passwort nicht</strong> - die Backup-Dateien k&ouml;nnen sonst nicht wieder entschl&uuml;sselt werden!
             </p>

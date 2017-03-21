@@ -1,0 +1,33 @@
+{% include "header.html" %}
+
+    {% include "nav.html" %}
+
+    <div class="container">
+
+      <h3>{{ page_title }} <small>(angezeigt werden die letzten 25)</small></h3>
+      <div class="clearfix">&nbsp;</div>
+      <a href="/manual_backup" class="btn btn-success"><span class="glyphicon glyphicon-cloud-upload"></span> Backup jetzt erstellen</a>
+      <div class="clearfix">&nbsp;</div>
+      <table class="table table-striped table-condensed">
+        <thead>
+          <th>Dateiname</th>
+          <th>Datum/Uhrzeit</th>
+          <th>Optionen</th>
+        </thead>
+        <tbody>
+          {% for backup in backups %}
+          <tr>
+            <td>{{ backup[0] }}</td>
+            <td>{{ backup[1] }}</td>
+            <td>
+              <button class="btn btn-default btn-xs" data-filename="{{ backup[0] }}"><span class="glyphicon glyphicon-cloud-download"></span> Wiederherstellen</button>
+              <button class="btn btn-danger btn-xs" data-filename="{{ backup[0] }}"><span class="glyphicon glyphicon-remove"></span> L&ouml;schen</button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    </div>
+
+{% include "footer.html" %}

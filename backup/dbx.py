@@ -39,4 +39,4 @@ def list_backups():
     except Exception:
         pass
 
-    return backups.entries
+    return backups
