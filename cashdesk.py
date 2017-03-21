@@ -36,6 +36,8 @@ import statics.konten
 
 import raspi.raspi
 
+import backup.dbx
+
 sqlite_file = "cashdesk.sqlite"
 upload_dir = "assets/"
 debug = True

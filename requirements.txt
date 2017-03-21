@@ -1,3 +1,5 @@
 flask
 python-dateutil
 pdfkit
+dropbox
+pyminizip
