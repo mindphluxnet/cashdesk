@@ -23,7 +23,7 @@ def run_backup(filename, dbversion):
 
     compress_backup(filename, settings['backup_passwort'], dbversion)
 
-    fname = filename + '-' + '{:%Y-%m-%d-%H:%M:%S}'.format(datetime.datetime.now())
+    fname = 'backup-' + '{:%Y-%m-%d-%H:%M:%S}'.format(datetime.datetime.now())
     fname = fname + '.zip'
 
     with open('tmp.zip', 'rb') as f:
