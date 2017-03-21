@@ -166,7 +166,7 @@ def ausgangsrechnung_verbuchen(sqlite_file, buchung):
     else:
         einaus = 0
 
-    c.execute("INSERT INTO buchungen (konto_id, eurkonto, rechnungs_id, betrag, datum, einaus) VALUES (?, ?, ?, ?, ?, ?)", [ buchung['konto'], konto_einnahmen, buchung['rechnungsnummer'], gesamtbetrag, buchung['zahlungsdatum'], einaus ] )
+    c.execute("INSERT INTO buchungen (konto_id, eurkonto, ausgangsrechnungs_id, betrag, datum, einaus) VALUES (?, ?, ?, ?, ?, ?)", [ buchung['konto'], konto_einnahmen, buchung['rechnungsnummer'], gesamtbetrag, buchung['zahlungsdatum'], einaus ] )
 
     conn.commit()
     conn.close()
@@ -328,7 +328,7 @@ def eingangsrechnung_bezahlt(sqlite_file, rechnung):
     c.execute("UPDATE eingangsrechnungen SET bezahlt = 1 WHERE oid = ?", [ rechnung['rechnungsnummer'] ])
 
     try:
-        c.execute("INSERT INTO buchungen (konto_id, eurkonto, rechnungs_id, betrag, datum, einaus) VALUES (?, ?, ?, ?, ?, ?)", [ rechnung['konto'], rechnung['eurkonto'], rechnung['rechnungsnummer'], rb, rechnung['zahlungsdatum'], 0 ] )
+        c.execute("INSERT INTO buchungen (konto_id, eurkonto, eingangsrechnungs_id, betrag, datum, einaus) VALUES (?, ?, ?, ?, ?, ?)", [ rechnung['konto'], rechnung['eurkonto'], rechnung['rechnungsnummer'], rb, rechnung['zahlungsdatum'], 0 ] )
     except Exception as e:
         print(e.message)
 
