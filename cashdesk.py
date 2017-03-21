@@ -45,6 +45,8 @@ bind_host = '0.0.0.0'
 bind_port = 5000
 dbversion = 1
 
+app = Flask(__name__, static_url_path = '')
+
 database.setup.setup_database(sqlite_file)
 settings = database.settings.load_settings()
 
@@ -65,8 +67,6 @@ if(raspi.raspi.is_raspi()):
         except Exception as e:
             print(e.message)
             pass
-
-app = Flask(__name__, static_url_path = '')
 
 if(debug == False):
     webbrowser.open(('http://' + bind_host + ':' + str(bind_port)))
