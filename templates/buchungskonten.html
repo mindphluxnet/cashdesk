@@ -13,28 +13,105 @@
         {% endfor %}
       </ul>
       <hr />
+      <button class="btn btn-default" id="umbuchung" data-konto="{{ usekonto }}"><span class="glyphicon glyphicon-transfer"></span> Umbuchung</button>
+      <button class="btn btn-success" id="privateinlage" data-konto="{{ usekonto }}"><span class="glyphicon glyphicon-log-in"></span> Privateinlage</button>
+      <button class="btn btn-danger" id="privatentnahme" data-konto="{{ usekonto }}"><span class="glyphicon glyphicon-log-out"></span> Privatentnahme</button>
+      <hr />
       <table class="table table-condensed table-striped">
         <thead>
           <th>Datum</th>
+          <th>EÜR-Kto.</th>
           <th>Empf&auml;nger</th>
           <th>Verwendungszweck</th>
           <th>Betrag</th>
+          <th>Saldo</th>
         </thead>
         <tbody>
           {% for buchung in buchungen %}
           <tr{% if buchung['einaus'] == 0 %} class="text-danger"{% elif buchung['einaus'] == 1 %} class="text-success"{% endif %}>
             <td>{{ buchung['datum'] }}</td>
+            <td>{{ buchung['eurkonto'] }}</td>
             <td>
               {{ buchung['empfaenger'] }}
             </td>
             <td>
-              {{ buchung['verwendungszweck']}}
+              {% if buchung['pdf'] %}<a class="btn btn-default btn-xs" href="/pdfviewer/{{ buchung['eingangsrechnungs_id'] }}" target="_rechnungsausgabe"><span class="glyphicon glyphicon-file"></span> PDF</a> {% endif %}{{ buchung['verwendungszweck']}}
             </td>
-            <td>{{ buchung['betrag'] }}</td>
+            <td class="text-right">{{ buchung['betrag'] }}</td>
+            <td class="text-right"></td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
+
+    <form action="/buchungskonten/umbuchung" class="form" method="post">
+      <div class="modal fade" tabindex="-1" role="dialog" id="modal-umbuchung">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title"><span class="glyphicon glyphicon-transfer"></span> Umbuchung</h4>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="quellkonto">Quellkonto</label>
+                <select name="quellkonto" id="quellkonto" class="form-control">
+                  {% for konto in konten %}
+                    {% if konto['rowid'] == usekonto %}
+                    <option value="{{ konto['rowid'] }}">{{ konto['bezeichnung'] }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="quellkonto">Zielkonto</label>
+                <select name="zielkonto" id="zielkonto" class="form-control">
+                  {% for konto in konten %}
+                    {% if konto['rowid'] != usekonto %}
+                    <option value="{{ konto['rowid'] }}">{{ konto['bezeichnung'] }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="datum">Datum</label>
+                <input type="date" class="form-control" id="datum" name="datum" />
+              </div>
+              <div class="form-group">
+                <label for="betrag">Betrag</label>
+                <input type="number" class="form-control" id="betrag" name="betrag" />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Abbruch</button>
+              <button type="submit" class="btn btn-primary">Speichern</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <script type="text/javascript">
+
+      $('#umbuchung').on('click', function() {
+        event.preventDefault();
+        konto_id = $(this).data('konto');
+        $('#modal-umbuchung').modal();
+      });
+
+      $('#privateinlage').on('click', function() {
+        event.preventDefault();
+        konto_id = $(this).data('konto');
+        $('#modal-privateinlage').modal();
+      });
+
+      $('#privatentnahme').on('click', function() {
+        event.preventDefault();
+        konto_id = $(this).data('konto');
+        $('#modal-privatentnahme').modal();
+      });
+
+    </script>
 
 {% include "footer.html" %}

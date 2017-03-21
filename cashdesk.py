@@ -625,9 +625,16 @@ def ausgangsrechnung_loeschen(id):
 
     return redirect(url_for('show_ausgangsrechnungen'))
 
+@app.route('/buchungskonten/umbuchung', methods = ['POST'])
+def buchungskonten_umbuchung():
+
+    database.buchungen.umbuchung(sqlite_file, request.form)
+
+    return redirect(url_for('show_buchungskonten'))
+
 @app.route('/buchungskonten')
 @app.route('/buchungskonten/<usekonto>')
-def show_kassenbuch(usekonto = 0):
+def show_buchungskonten(usekonto = 0):
 
     page_title = "Buchungskonten"
     page_id = "buchungskonten"
@@ -649,7 +656,10 @@ def show_kassenbuch(usekonto = 0):
             gk = database.konten.load_konto(sqlite_file, buchung['gegenkonto_id'])
             dk = database.konten.load_konto(sqlite_file, usekonto)
             buchung['empfaenger'] = dk['bezeichnung']
-            buchung['verwendungszweck'] = "Umbuchung von " + gk['bezeichnung']
+            if(buchung['einaus'] == 1):
+                buchung['verwendungszweck'] = "Umbuchung von " + gk['bezeichnung']
+            else:
+                buchung['verwendungszweck'] = "Umbuchung auf " + gk['bezeichnung']
         else:
             buchung['umbuchung'] = False
 
@@ -681,7 +691,8 @@ def show_kassenbuch(usekonto = 0):
             li = database.lieferanten.load_lieferant(sqlite_file, re['lieferant_id'])
             buchung['empfaenger'] = li['firmenname']
             buchung['verwendungszweck'] = "Zahlung Eingangsrechnung Nr. " + re['rechnungsnummer']
-
+            if(os.path.isfile('/dokumente/eingangsrechnung/eingangsrechnung-' + str(buchung['eingangsrechnungs_id']) + '.pdf')):
+                buchung['pdf'] = True
 
     return render_template('buchungskonten.html', konten = konten, buchungen = buchungen, usekonto = int(usekonto), page_title = page_title, page_id = page_id)
 

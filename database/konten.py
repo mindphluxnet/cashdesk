@@ -21,7 +21,7 @@ def load_konto(sqlite_file, id):
     conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
 
-    c.execute("SELECT oid, * FROM konten WHERE oid = ?", id)
+    c.execute("SELECT oid, * FROM konten WHERE oid = ?", [ id ])
     konto = c.fetchone()
 
     conn.close()
