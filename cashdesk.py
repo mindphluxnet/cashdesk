@@ -45,7 +45,7 @@ bind_host = '0.0.0.0'
 bind_port = 5000
 dbversion = 1
 
-database.setup.setup_database(sqlite_file, dbversion)
+database.setup.setup_database(sqlite_file)
 settings = database.settings.load_settings()
 
 try:

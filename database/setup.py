@@ -1,16 +1,9 @@
 import sqlite3
 
-def setup_database(sqlite_file, dbversion):
+def setup_database(sqlite_file):
 
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
-
-    try:
-        c.execute("CREATE TABLE dbversion (version INT)")
-    except Exception as e:
-        pass
-
-    c.execute("INSERT OR IGNORE INTO dbversion (version) VALUES (?)", [ dbversion ])
 
     try:
         c.execute("CREATE TABLE artikel (artikelnummer TEXT(50), artikelbezeichnung TEXT, bestand INT(5), ekpreis REAL, vkpreis REAL, ean TEXT(13))")
@@ -58,4 +51,20 @@ def setup_database(sqlite_file, dbversion):
         pass
 
     conn.commit()
+    conn.close()
+
+def upgrade_database(sqlite_file, dbversion):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("PRAGMA user_version")
+    uv = c.fetchone()
+
+    print(uv)
+
+    if(uv < dbversion):
+        #: upgrade database
+        pass
+
     conn.close()
