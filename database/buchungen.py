@@ -8,7 +8,7 @@ def load_buchungen(sqlite_file, konto_id):
     conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
 
-    c.execute("SELECT oid, * FROM buchungen WHERE konto_id = ? ORDER BY -datum, oid DESC", [ konto_id ])
+    c.execute("SELECT oid, * FROM buchungen WHERE konto_id = ? ORDER BY datum, -oid DESC", [ konto_id ])
     buchungen = c.fetchall()
 
     conn.close()
