@@ -25,7 +25,7 @@ def get_eurkonten():
                   234: "Uebrige Schuldzinsen",
                   185: "Gezahlte Vorsteuerbetraege",
                   186: "An das Finanzamt gezahlte/verrechnete USt.",
-                  183: "uebrige unbeschraenkt abziehbare Betriebsausgaben",
+                  183: "Uebrige unbeschraenkt abziehbare Betriebsausgaben",
                   164: "Geschenke",
                   165: "Bewirtungsaufwendungen",
                   162: "Aufwendungen fuer ein haeusliches Arbeitszimmer",
