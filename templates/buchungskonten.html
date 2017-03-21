@@ -20,7 +20,6 @@
       <table class="table table-condensed table-striped">
         <thead>
           <th>Datum</th>
-          <th>EÜR-Kto.</th>
           <th>Empf&auml;nger</th>
           <th>Verwendungszweck</th>
           <th>Betrag</th>
@@ -30,7 +29,6 @@
           {% for buchung in buchungen %}
           <tr{% if buchung['einaus'] == 0 %} class="text-danger"{% elif buchung['einaus'] == 1 %} class="text-success"{% endif %}>
             <td>{{ buchung['datum'] }}</td>
-            <td>{{ buchung['eurkonto'] }}</td>
             <td>
               {{ buchung['empfaenger'] }}
             </td>
@@ -38,9 +36,12 @@
               {% if buchung['pdf'] %}<a class="btn btn-default btn-xs" href="/pdfviewer/{{ buchung['eingangsrechnungs_id'] }}" target="_rechnungsausgabe"><span class="glyphicon glyphicon-file"></span> PDF</a> {% endif %}{{ buchung['verwendungszweck']}}
             </td>
             <td class="text-right">{{ '{0:0.2f}'.format(buchung['betrag']) }}</td>
-            <td class="text-right"></td>
+            <td class="text-right">{{ '{0:0.2f}'.format(buchung['saldo']) }}</td>
           </tr>
           {% endfor %}
+          <tr>
+            <td colspan="4"><strong>Endbestand:</strong></td>
+            <td class="text-right{% if saldo >= 0 %} text-success{% else %} text-danger{% endif %}"><strong>{{ '{0:0.2f}'.format(saldo) }}</strong></td>
         </tbody>
       </table>
     </div>

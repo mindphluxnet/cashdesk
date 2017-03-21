@@ -693,6 +693,8 @@ def show_buchungskonten(usekonto = 0):
 
     buchungen = database.buchungen.load_buchungen(sqlite_file, usekonto)
 
+    saldo = 0
+
     #: Buchungen aufbereiten
     for buchung in buchungen:
 
@@ -740,7 +742,12 @@ def show_buchungskonten(usekonto = 0):
             if(os.path.isfile('/dokumente/eingangsrechnung/eingangsrechnung-' + str(buchung['eingangsrechnungs_id']) + '.pdf')):
                 buchung['pdf'] = True
 
-    return render_template('buchungskonten.html', konten = konten, buchungen = buchungen, usekonto = int(usekonto), page_title = page_title, page_id = page_id)
+        #: Saldo
+
+        saldo = saldo + buchung['betrag']
+        buchung['saldo'] = saldo
+
+    return render_template('buchungskonten.html', konten = konten, buchungen = buchungen, usekonto = int(usekonto), saldo = saldo, page_title = page_title, page_id = page_id)
 
 @app.route('/einstellungen')
 def show_einstellungen():
