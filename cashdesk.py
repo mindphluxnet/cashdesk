@@ -69,7 +69,7 @@ if(raspi.raspi.is_raspi()):
 app = Flask(__name__, static_url_path = '')
 
 if(debug == False):
-    webbrowser.open('http://localhost:5000')
+    webbrowser.open(('http://' + bind_host + ':' + str(bind_port)))
 
 @app.route('/assets/<path:path>')
 def serve_asset(path):
