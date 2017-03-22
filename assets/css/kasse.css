@@ -1,0 +1,14 @@
+.bonrolle {
+  overflow-y: scroll;
+  height: 500px;
+  width: auto;
+  font-family: 'Ubuntu Mono', monospace;
+  margin-top: 20px;
+  background-color: #eee;
+  border: 1px solid black;
+}
+
+.bonrolle p {
+    margin-bottom: -5px;
+    padding-left: 30px;
+}

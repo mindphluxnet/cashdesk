@@ -15,6 +15,19 @@ def load_single_artikel(sqlite_file, id):
 
     return artikel
 
+def load_artikel_by_ean(sqlite_file, ean):
+
+    conn = sqlite3.connect(sqlite_file)
+    conn.row_factory = database.factory.dict_factory
+    c = conn.cursor()
+
+    c.execute("SELECT oid, * FROM artikel WHERE ean = ?", [ ean ])
+    artikel = c.fetchone()
+
+    conn.close()
+
+    return artikel
+
 def load_artikel(sqlite_file):
 
     conn = sqlite3.connect(sqlite_file)

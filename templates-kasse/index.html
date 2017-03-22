@@ -1,0 +1,77 @@
+{% include "header.html" %}
+
+  <div class="container">
+
+    <div class="row">
+      <div class="col-md-4">
+        <div id="bonrolle" class="bonrolle"></div>
+      </div>
+      <div class="col-md-8">
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="clearfix">&nbsp;</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <input type="text" id="ean" name="ean" class="form-control" />
+      </div>
+      <div class="col-md-8">
+      </div>
+    </div>
+
+
+  </div>
+
+  <script type="text/javascript">
+
+  function scrollDown() {
+    $("#bonrolle").scrollTop($("#bonrolle")[0].scrollHeight);
+  }
+
+  function addLine(line) {
+    $('#bonrolle').append('<p>' + line + '</p>');
+
+  }
+
+  $('#ean').focus();
+
+  $('#ean').on('keydown', function(e) {
+
+    var keycode = e.keyCode || e.which;
+
+    if(keycode == 13) {
+
+      var ean = $(this).val();
+
+      $.ajax({
+        url: '/ajax/artikel/byean',
+        method: 'POST',
+        data: { 'ean': ean },
+        success: function(result) {
+          data = JSON.parse(result);
+          leer = "&nbsp;";
+          artbez = data.artikelbezeichnung;
+          artbez = artbez.substring(0, 16).toUpperCase();
+          preis = data.vkpreis.toString();
+          pad = 40 - artbez.length - preis.length
+
+          line = artbez + leer.repeat(pad) + preis;
+
+          addLine(line);
+          scrollDown();
+          $('#ean').focus();
+
+        }
+      });
+    }
+
+  })
+
+  </script>
+
+
+{% include "footer.html" %}
