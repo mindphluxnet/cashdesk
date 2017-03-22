@@ -7,18 +7,22 @@
         <div id="bonrolle" class="bonrolle"></div>
       </div>
       <div class="col-md-8 pushdown">
-        <h4>Anzahl</h4>
-        <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="1">1</button>
-        <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="2">2</button>
-        <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="3">3</button>
-        <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="4">4</button>
-        <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="5">5</button>
-        <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="6">6</button>
-        <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="7">7</button>
-        <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="8">8</button>
-        <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="9">9</button>
-        <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="10">10</button>
-        <button class="btn btn-lg btn-default" id="mehrals10">&gt; 10</button>
+        <div class="panel panel-info">
+          <div class="panel-heading">Anzahl</div>
+          <div class="panel-body">
+            <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="1">1</button>
+            <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="2">2</button>
+            <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="3">3</button>
+            <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="4">4</button>
+            <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="5">5</button>
+            <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="6">6</button>
+            <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="7">7</button>
+            <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="8">8</button>
+            <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="9">9</button>
+            <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="10">10</button>
+            <button class="btn btn-lg btn-default" id="mehrals10">&gt; 10</button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="row">
@@ -28,14 +32,19 @@
     </div>
     <div class="row">
       <div class="col-md-4">
-        <input type="text" id="ean" name="ean" class="form-control" />
+        <div class="panel panel-info">
+          <div class="panel-heading">EAN</div>
+          <div class="panel-body">
+            <input type="text" id="ean" name="ean" class="form-control" />
+          </div>
+        </div>
       </div>
       <div class="col-md-8">
       </div>
     </div>
     <div class="row">
       <div class="col-md-4">
-        <input type="hidden" id="anzahl" name="anzahl" class="form-control" />
+        <input type="hidden" id="anzahl" name="anzahl" value="1" class="form-control" />
       </div>
       <div class="col-md-8">
       </div>
@@ -56,9 +65,31 @@
           <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Abbruch</button>
           <button type="button" class="btn btn-success" data-dismiss="modal" id="mehr-anzahl-ok"><span class="glyphicon glyphicon-ok"></span> OK</button>
         </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" tabindex="-1" role="dialog" id="modal-artikel-nicht-gefunden">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Artikel nicht gefunden</h4>
+        </div>
+        <div class="modal-body">
+          <select name="artikelselect" id="artikelselect" class="form-control">
+            {% for art in artikel %}
+            <option value="{{ art['rowid'] }}">{{ art['artikelbezeichnung'] }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Abbruch</button>
+          <button type="button" class="btn btn-success" data-dismiss="modal" id="artikelselect-ok"><span class="glyphicon glyphicon-ok"></span> OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script type="text/javascript">
 
@@ -68,6 +99,45 @@
 
   function addLine(line) {
     $('#bonrolle').append('<p>' + line + '</p>');
+  }
+
+  function buildItemLine(data) {
+
+    leer = "&nbsp;";
+    artbez = data.artikelbezeichnung;
+    artbez = artbez.substring(0, 16).toUpperCase();
+    preis = data.vkpreis.toString();
+
+    if(anzahl >= 999) {
+      anzahl = 999;
+    }
+
+    if(anzahl <= 0) {
+      anzahl = 1;
+    }
+
+    if(anzahl > 1) {
+      gesamtpreis = anzahl * preis;
+      gp = gesamtpreis.toFixed(2).toString();
+    }
+
+    if(anzahl > 1) {
+      pad = 40 - artbez.length - gp.length;
+      line = artbez + leer.repeat(pad) + gp;
+      addLine(line);
+
+      anz = anzahl.toString();
+      line = leer.repeat(3 - anz.length) + anz + leer.repeat(1) + "x" + leer.repeat(16 - preis.length) + preis;
+      addLine(line);
+
+    }
+    else {
+        pad = 40 - artbez.length - preis.length;
+        line = artbez + leer.repeat(pad) + preis;
+        addLine(line);
+    }
+
+
   }
 
   $('#ean').focus();
@@ -86,40 +156,22 @@
         method: 'POST',
         data: { 'ean': ean },
         success: function(result) {
-          data = JSON.parse(result);
-          leer = "&nbsp;";
-          artbez = data.artikelbezeichnung;
-          artbez = artbez.substring(0, 16).toUpperCase();
-          preis = data.vkpreis.toString();
+          if(result != 'null') {
 
-          if(anzahl >= 999) {
-            anzahl = 999;
-          }
+            data = JSON.parse(result);
 
-          if(anzahl > 1) {
-            gesamtpreis = anzahl * preis;
-            gp = gesamtpreis.toFixed(2).toString();
-          }
+            buildItemLine(data);
 
-          if(anzahl > 1) {
-            pad = 40 - artbez.length - gp.length;
-            line = artbez + leer.repeat(pad) + gp;
-            addLine(line);
-
-            anz = anzahl.toString();
-            line = leer.repeat(3 - anz.length) + anz + leer.repeat(1) + "x" + leer.repeat(16 - preis.length) + preis;
-            addLine(line);
-
+            $('.btn-anzahl').removeClass('btn-success');
+            $('#mehrals10').removeClass('btn-success');
+            $('#anzahl').val('');
+            scrollDown();
+            $('#ean').val('');
+            $('#ean').focus();
           }
           else {
-              pad = 40 - artbez.length - preis.length;
-              line = artbez + leer.repeat(pad) + preis;
-              addLine(line);
+            $('#modal-artikel-nicht-gefunden').modal();
           }
-
-          $('#anzahl').val('');
-          scrollDown();
-          $('#ean').focus();
 
         }
       });
@@ -129,8 +181,10 @@
 
   $('.btn-anzahl').on('click', function() {
 
+    $('.btn-anzahl').removeClass('btn-success');
     anzahl = $(this).data('anzahl');
     $('#anzahl').val(anzahl);
+    $(this).addClass('btn-success');
     $('#ean').focus();
 
   });
@@ -140,18 +194,32 @@
   });
 
   $('#anzahl-eingeben').on('shown.bs.modal', function() {
-
+    $('#mehr-anzahl').val('');
     $('#mehr-anzahl').focus();
-
   });
 
   $('#anzahl-eingeben').on('hidden.bs.modal', function() {
     $('#ean').focus();
-  })
+  });
+
+  $('#modal-artikel-nicht-gefunden').on('hidden.bs.modal', function() {
+    $('#ean').val('');
+    $('#ean').focus();
+  });
 
   $('#mehr-anzahl-ok').on('click', function() {
     anzahl = $('#mehr-anzahl').val();
     $('#anzahl').val(anzahl);
+    if(anzahl > 10)
+    {
+      $('.btn-anzahl').removeClass('btn-success');
+      $('#mehrals10').addClass('btn-success');
+    }
+    else {
+      $('#mehrals10').removeClass('btn-success');
+      $('.btn-anzahl').removeClass('btn-success');
+      $(".btn-anzahl[data-anzahl='" + anzahl + "']").addClass('btn-success');
+    }
   });
 
   $('#mehr-anzahl').on('keydown', function(e) {
@@ -160,6 +228,28 @@
     if(keycode == 13) {
         $('#mehr-anzahl-ok').click();
     }
+  });
+
+  $('#artikelselect-ok').on('click', function() {
+
+    artikel_id = $('#artikelselect').val();
+    $.ajax({
+      url: '/ajax/artikel/byid',
+      method: 'POST',
+      data: { 'id': artikel_id },
+      success: function(result) {
+        data = JSON.parse(result);
+
+        buildItemLine(data);
+
+        $('.btn-anzahl').removeClass('btn-success');
+        $('#mehrals10').removeClass('btn-success');
+        $('#anzahl').val('');
+        scrollDown();
+        $('#ean').val('');
+        $('#ean').focus();
+      }
+    });
 
   });
 

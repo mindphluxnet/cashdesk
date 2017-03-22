@@ -73,12 +73,21 @@ def serve_asset(path):
 @app.route('/')
 def show_index():
 
-    return render_template('index.html')
+    artikel = database.artikel.load_artikel(sqlite_file)
+
+    return render_template('index.html', artikel = artikel)
 
 @app.route('/ajax/artikel/byean', methods = ['POST'])
 def ajax_artikel_byean():
 
     artikel = database.artikel.load_artikel_by_ean(sqlite_file, request.form['ean'])
+
+    return json.dumps(artikel)
+
+@app.route('/ajax/artikel/byid', methods = ['POST'])
+def ajax_artikel_byid():
+
+    artikel = database.artikel.load_single_artikel(sqlite_file, request.form['id'])
 
     return json.dumps(artikel)
 
