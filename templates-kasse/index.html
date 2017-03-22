@@ -134,6 +134,12 @@
 
   <script type="text/javascript">
 
+    var stammdaten = {{ stammdaten|safe }};
+
+  </script>
+
+  <script type="text/javascript">
+
   var wechselgeld = 0;
 
   function scrollDown() {
@@ -142,6 +148,64 @@
 
   function addLine(line) {
     $('#bonrolle').append('<p>' + line + '</p>');
+  }
+
+  function addBlankLine() {
+    $('#bonrolle').append('<p>&nbsp;</p>');
+  }
+
+  function addSpacer() {
+      star = "*";
+      spacer = star.repeat(40);
+      addLine(spacer);
+  }
+
+  function addDivisor() {
+    dash = "-";
+    div = dash.repeat(40);
+    addLine(div);
+  }
+
+  function addTotalSumDivisor() {
+    dash = "=";
+    div = dash.repeat(40);
+    addLine(div);
+  }
+
+  function addLineCentered(line) {
+
+    var l = line.length;
+    var leer = "&nbsp;";
+    var pad = (40 - l) / 2;
+
+    if(pad % 2 == 0) {
+      out = leer.repeat(pad) + line + leer.repeat(pad);
+    }
+    else {
+      out = leer.repeat(Math.round(pad)) + line + leer.repeat(Math.round(pad));
+    }
+
+    addLine(out);
+
+  }
+
+  function zeroPad(num) {
+
+    if(num >= 0 && num < 10) {
+      num = '0' + num;
+    }
+    return num;
+  }
+
+  function bonHeader() {
+
+    addLineCentered(stammdaten.firmenname);
+    addBlankLine();
+    addLineCentered(stammdaten.inhaber);
+    addLineCentered(stammdaten.strasse + ' ' + stammdaten.hausnummer);
+    addLineCentered(stammdaten.plz.toString() + ' ' + stammdaten.ort);
+    addBlankLine();
+
   }
 
   function buildItemLine(data) {
@@ -220,6 +284,19 @@
     if(wechselgeld > 0) {
       $('#kasse-wechselgeld').attr('disabled', 'disabled');
       $('#kasse-starten').removeAttr('disabled');
+
+      var now = new Date();
+
+      bonHeader();
+      addDivisor();
+      addBlankLine();
+      addLineCentered("Kassenstartbeleg");
+      addBlankLine();
+      addLineCentered('WECHSELGELD: EUR ' + wg.toFixed(2).toString());
+      addBlankLine();
+      addLineCentered('DATUM: ' + zeroPad(now.getDate()) + '.' + zeroPad(now.getMonth()) + '.' + now.getFullYear() + ' UHRZEIT: ' + zeroPad(now.getHours()) + ':' + zeroPad(now.getMinutes()));
+      addBlankLine();
+      addDivisor();
 
     }
 

@@ -74,8 +74,11 @@ def serve_asset(path):
 def show_index():
 
     artikel = database.artikel.load_artikel(sqlite_file)
+    settings = database.settings.load_settings()
 
-    return render_template('index.html', artikel = artikel)
+    stammdaten = { 'firmenname': settings['firmenname'], 'inhaber': settings['inhaber'], 'strasse': settings['strasse'], 'hausnummer': settings['hausnummer'], 'plz': settings['plz'], 'ort': settings['ort'], 'telefonnummer': settings['telefonnummer'], 'email': settings['email'], 'ustid': settings['ustid'], 'kleinunternehmer': settings['kleinunternehmer'], 'ustsatz': settings['ustsatz'] }
+
+    return render_template('index.html', artikel = artikel, stammdaten = json.dumps(stammdaten))
 
 @app.route('/ajax/artikel/byean', methods = ['POST'])
 def ajax_artikel_byean():
