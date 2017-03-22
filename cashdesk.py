@@ -113,6 +113,13 @@ def backups():
 
     return render_template('backups.html', backups = backups, page_title = page_title, page_id = page_id)
 
+@app.route('/prune_backups')
+def prune_backups():
+
+    backup.dbx.prune_backups()
+
+    return redirect(url_for('backups'))
+
 @app.route('/manual_backup')
 def manual_backup():
 

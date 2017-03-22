@@ -7,6 +7,7 @@
       <h3>{{ page_title }} <small>(angezeigt werden die letzten 25)</small></h3>
       <div class="clearfix">&nbsp;</div>
       <a href="/manual_backup" class="btn btn-success"><span class="glyphicon glyphicon-cloud-upload"></span> Backup jetzt erstellen</a>
+      <a href="/prune_backups" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Backups aufr&auml;men</a>
       <div class="clearfix">&nbsp;</div>
       <table class="table table-striped table-condensed">
         <thead>
@@ -20,8 +21,7 @@
             <td>{{ backup[0] }}</td>
             <td>{{ backup[1] }}</td>
             <td>
-              <button class="btn btn-default btn-xs" data-filename="{{ backup[0] }}"><span class="glyphicon glyphicon-cloud-download"></span> Wiederherstellen</button>
-              <button class="btn btn-danger btn-xs" data-filename="{{ backup[0] }}"><span class="glyphicon glyphicon-remove"></span> L&ouml;schen</button>
+              <button class="btn btn-default btn-xs" data-filename="{{ backup[0] }}"><span class="glyphicon glyphicon-cloud-download"></span> Wiederherstellen</button>              
             </td>
           </tr>
           {% endfor %}

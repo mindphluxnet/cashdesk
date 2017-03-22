@@ -15,6 +15,8 @@ def compress_backup(filename, password, dbversion):
 
 def run_backup(filename, dbversion):
 
+    prune_backups()
+
     settings = database.settings.load_settings()
 
     apikey = settings['dropbox_api_key']
@@ -45,3 +47,20 @@ def list_backups():
         pass
 
     return backups
+
+def prune_backups():
+
+    settings = database.settings.load_settings()
+
+    backups = list_backups()
+
+    apikey = settings['dropbox_api_key']
+    max_backups = int(settings['max_backups'])
+
+    dbx = dropbox.Dropbox(apikey)
+
+    backups = backups.entries[::-1]
+
+    for idx, b in enumerate(backups):
+        if(idx >= max_backups):
+            dbx.files_delete('/cashdesk-backups/' + b.name)

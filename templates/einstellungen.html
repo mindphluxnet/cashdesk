@@ -131,20 +131,20 @@
         <div role="tabpanel" class="tab-pane" id="backup">
           <div class="clearfix">&nbsp;</div>
           <div class="form-group">
-            <label for="dropbox_api_key" class="col-sm-2 control-label">Dropbox API-Key</label>
-            <div class="col-sm-10">
+            <label for="dropbox_api_key" class="col-sm-3 control-label">Dropbox API-Key</label>
+            <div class="col-sm-9">
               <input type="text" name="dropbox_api_key" class="form-control" value="{{ einstellungen['dropbox_api_key'] }}"/>
             </div>
           </div>
           <div class="form-group">
-            <label for="backup_passwort" class="col-sm-2 control-label">Passwort*</label>
-            <div class="col-sm-10">
+            <label for="backup_passwort" class="col-sm-3 control-label">Passwort*</label>
+            <div class="col-sm-9">
               <input type="text" name="backup_passwort" class="form-control" value="{{ einstellungen['backup_passwort'] }}"/>
             </div>
           </div>
           <div class="form-group">
-            <label for="backupfrequenz" class="col-sm-2 control-label">Backup-Frequenz</label>
-            <div class="col-sm-10">
+            <label for="backupfrequenz" class="col-sm-3 control-label">Backup-Frequenz</label>
+            <div class="col-sm-9">
               <select name="backupfrequenz" id="backupfrequenz" class="form-control">
                 <option value="0"{% if einstellungen['backupfrequenz'] == '0' %} selected="selected"{% endif %}>aus (nicht empfohlen!)</option>
                 <option value="60"{% if einstellungen['backupfrequenz'] == '60' %} selected="selected"{% endif %}>alle 60 Minuten</option>
@@ -152,6 +152,19 @@
                 <option value="240"{% if einstellungen['backupfrequenz'] == '240' %} selected="selected"{% endif %}>alle 4 Stunden</option>
                 <option value="360"{% if einstellungen['backupfrequenz'] == '360' %} selected="selected"{% endif %}>alle 6 Stunden</option>
                 <option value="480"{% if einstellungen['backupfrequenz'] == '480' %} selected="selected"{% endif %}>alle 8 Stunden</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="max_backups" class="col-sm-3 control-label">Backup-Dateien aufbewahren</label>
+            <div class="col-sm-9">
+              <select name="max_backups" id="max_backups" class="form-control">
+                <option value="1"{% if einstellungen['max_backups'] == '0' %} selected="selected"{% endif %}>1 Datei (nicht empfohlen!)</option>
+                <option value="5"{% if einstellungen['max_backups'] == '5' %} selected="selected"{% endif %}>5 Dateien</option>
+                <option value="10"{% if einstellungen['max_backups'] == '10' %} selected="selected"{% endif %}>10 Dateien</option>
+                <option value="15"{% if einstellungen['max_backups'] == '15' %} selected="selected"{% endif %}>15 Dateien</option>
+                <option value="20"{% if einstellungen['max_backups'] == '20' %} selected="selected"{% endif %}>20 Dateien</option>
+                <option value="25"{% if einstellungen['max_backups'] == '25' %} selected="selected"{% endif %}>25 Dateien</option>
               </select>
             </div>
           </div>
