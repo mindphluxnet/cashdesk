@@ -4,11 +4,15 @@
   width: auto;
   font-family: 'Ubuntu Mono', monospace;
   margin-top: 20px;
-  background-color: #eee;
+  background-color: #fafafa;
   border: 1px solid black;
 }
 
 .bonrolle p {
     margin-bottom: -5px;
     padding-left: 30px;
+}
+
+body {
+    background-color: #ccc;
 }
