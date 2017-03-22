@@ -4,10 +4,21 @@
 
     <div class="row">
       <div class="col-md-4">
+        <h2><em>Cashdesk</em> Kasse</h2>
+      </div>
+      <div class="col-md-8 pushdown">
+        <button class="btn btn-primary" id="kasse-wechselgeld">Wechselgeld eingeben</button>
+        <button class="btn btn-success" id="kasse-starten" disabled="disabled">Kasse starten</button>
+        <button class="btn btn-danger" id="kasse-abrechnen" disabled="disabled">Kasse abrechnen</button>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
         <div id="bonrolle" class="bonrolle"></div>
       </div>
       <div class="col-md-8 pushdown">
-        <div class="panel panel-info">
+        <div class="panel panel-info hidden" id="anzahl-panel">
           <div class="panel-heading">Anzahl</div>
           <div class="panel-body">
             <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="1">1</button>
@@ -30,9 +41,9 @@
         <div class="clearfix">&nbsp;</div>
       </div>
     </div>
-    <div class="row">
+    <div class="row hidden">
       <div class="col-md-4">
-        <div class="panel panel-info">
+        <div class="panel panel-info" id="ean-panel">
           <div class="panel-heading">EAN</div>
           <div class="panel-body">
             <input type="text" id="ean" name="ean" class="form-control" />
@@ -69,6 +80,36 @@
     </div>
   </div>
 
+  <div class="modal" tabindex="-1" role="dialog" id="modal-wechselgeld">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Wechselgeld eingeben</h4>
+        </div>
+        <div class="modal-body">
+          <div>
+            <input type="number" id="wechselgeld" class="form-control" />
+          </div>
+          <div class="pushdown">
+            <button class="btn btn-default btn-wechselgeld" data-wg="50">&euro; 50</button>
+            <button class="btn btn-default btn-wechselgeld" data-wg="100">&euro; 100</button>
+            <button class="btn btn-default btn-wechselgeld" data-wg="150">&euro; 150</button>
+            <button class="btn btn-default btn-wechselgeld" data-wg="200">&euro; 200</button>
+            <button class="btn btn-default btn-wechselgeld" data-wg="250">&euro; 250</button>
+            <button class="btn btn-default btn-wechselgeld" data-wg="300">&euro; 300</button>
+            <button class="btn btn-default btn-wechselgeld" data-wg="350">&euro; 350</button>
+            <button class="btn btn-default btn-wechselgeld" data-wg="400">&euro; 400</button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Abbruch</button>
+          <button type="button" class="btn btn-success" data-dismiss="modal" id="wechselgeld-ok"><span class="glyphicon glyphicon-ok"></span> OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="modal" tabindex="-1" role="dialog" id="modal-artikel-nicht-gefunden">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -92,6 +133,8 @@
   </div>
 
   <script type="text/javascript">
+
+  var wechselgeld = 0;
 
   function scrollDown() {
     $("#bonrolle").scrollTop($("#bonrolle")[0].scrollHeight);
@@ -139,6 +182,48 @@
 
 
   }
+
+  $('#kasse-wechselgeld').on('click', function() {
+
+    $('#modal-wechselgeld').modal();
+
+  });
+
+  $('.btn-wechselgeld').on('click', function() {
+
+    wg = $(this).data('wg');
+    $('#wechselgeld').val(wg);
+
+  });
+
+  $('#wechselgeld-ok').on('click', function() {
+    wechselgeld = $('#wechselgeld').val();
+  })
+
+  $('#wechselgeld').on('keydown', function(e) {
+
+    var keycode = e.keyCode || e.which;
+
+    if(keycode == 13) {
+      $('#wechselgeld-ok').click();
+
+    }
+
+  });
+
+  $('#modal-wechselgeld').on('shown.bs.modal', function() {
+    $('#wechselgeld').focus();
+  });
+
+  $('#modal-wechselgeld').on('hidden.bs.modal', function() {
+
+    if(wechselgeld > 0) {
+      $('#kasse-wechselgeld').attr('disabled', 'disabled');
+      $('#kasse-starten').removeAttr('disabled');
+
+    }
+
+  });
 
   $('#ean').focus();
 
