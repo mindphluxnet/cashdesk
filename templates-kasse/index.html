@@ -6,8 +6,19 @@
       <div class="col-md-4">
         <div id="bonrolle" class="bonrolle"></div>
       </div>
-      <div class="col-md-8">
-
+      <div class="col-md-8 pushdown">
+        <h4>Anzahl</h4>
+        <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="1">1</button>
+        <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="2">2</button>
+        <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="3">3</button>
+        <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="4">4</button>
+        <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="5">5</button>
+        <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="6">6</button>
+        <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="7">7</button>
+        <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="8">8</button>
+        <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="9">9</button>
+        <button class="btn btn-lg btn-default btn-anzahl" data-anzahl="10">10</button>
+        <button class="btn btn-lg btn-default" id="mehrals10">&gt; 10</button>
       </div>
     </div>
     <div class="row">
@@ -24,14 +35,30 @@
     </div>
     <div class="row">
       <div class="col-md-4">
-        <input type="text" id="anzahl" name="anzahl" class="form-control" />
+        <input type="hidden" id="anzahl" name="anzahl" class="form-control" />
       </div>
       <div class="col-md-8">
       </div>
     </div>
-
-
   </div>
+
+  <div class="modal" tabindex="-1" role="dialog" id="anzahl-eingeben">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Anzahl eingeben</h4>
+        </div>
+        <div class="modal-body">
+          <input type="number" id="mehr-anzahl" class="form-control" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Abbruch</button>
+          <button type="button" class="btn btn-success" data-dismiss="modal" id="mehr-anzahl-ok"><span class="glyphicon glyphicon-ok"></span> OK</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 
   <script type="text/javascript">
 
@@ -90,6 +117,7 @@
               addLine(line);
           }
 
+          $('#anzahl').val('');
           scrollDown();
           $('#ean').focus();
 
@@ -97,7 +125,43 @@
       });
     }
 
+  });
+
+  $('.btn-anzahl').on('click', function() {
+
+    anzahl = $(this).data('anzahl');
+    $('#anzahl').val(anzahl);
+    $('#ean').focus();
+
+  });
+
+  $('#mehrals10').on('click', function() {
+    $('#anzahl-eingeben').modal();
+  });
+
+  $('#anzahl-eingeben').on('shown.bs.modal', function() {
+
+    $('#mehr-anzahl').focus();
+
+  });
+
+  $('#anzahl-eingeben').on('hidden.bs.modal', function() {
+    $('#ean').focus();
   })
+
+  $('#mehr-anzahl-ok').on('click', function() {
+    anzahl = $('#mehr-anzahl').val();
+    $('#anzahl').val(anzahl);
+  });
+
+  $('#mehr-anzahl').on('keydown', function(e) {
+    var keycode = e.keyCode || e.which;
+
+    if(keycode == 13) {
+        $('#mehr-anzahl-ok').click();
+    }
+
+  });
 
   </script>
 
