@@ -20,3 +20,7 @@ body {
 .pushdown {
     margin-top: 20px;
 }
+
+h2 {
+  font-family: 'Ubuntu Mono', monospace;
+}
