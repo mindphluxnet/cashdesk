@@ -100,7 +100,7 @@ def load_positionen(sqlite_file, rechnungs_id):
     conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
 
-    c.execute("SELECT p.oid AS positions_id, p.*, a.oid AS artikel_id, a.* FROM rechnungspositionen p LEFT JOIN artikel a ON(a.oid = p.artikel_id) WHERE rechnungs_id = ?", [ rechnungs_id ])
+    c.execute("SELECT p.oid AS positions_id, p.*, a.oid AS artikel_id, a.* FROM rechnungspositionen p LEFT JOIN artikel a ON(a.oid = p.artikel_id) WHERE rechnungs_id = ? ORDER BY oid ASC", [ rechnungs_id ])
     positionen = c.fetchall()
 
     conn.close()

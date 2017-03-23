@@ -8,7 +8,7 @@ def load_wareneingang(sqlite_file, rechnung_id):
     conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
 
-    c.execute("SELECT w.oid AS weid, w.*, a.oid, a.artikelbezeichnung FROM wareneingang w LEFT JOIN artikel a ON(a.oid = w.artikel_id) WHERE w.rechnung_id = ? ORDER BY w.oid DESC", [ rechnung_id ])
+    c.execute("SELECT w.oid AS weid, w.*, a.oid, a.artikelbezeichnung FROM wareneingang w LEFT JOIN artikel a ON(a.oid = w.artikel_id) WHERE w.rechnung_id = ? ORDER BY w.oid ASC", [ rechnung_id ])
 
     wareneingang = c.fetchall()
 

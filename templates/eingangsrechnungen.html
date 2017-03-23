@@ -29,6 +29,7 @@
                 <a class="btn btn-xs btn-default" target="_rechnungsausgabe" href="/pdfviewer/{{ rechnung['rowid'] }}"><span class="glyphicon glyphicon-file"></span> PDF</a>
                 {% endif %}
                 {% if rechnung['bezahlt'] == 0 %}
+                <a class="btn btn-xs btn-default" href="/eingangsrechnungen/neu/step2/{{ rechnung['rowid'] }}"><span class="glyphicon glyphicon-edit"></span> Bearbeiten</a>
                 <button class="btn btn-xs btn-success" id="eingangsrechnung-bezahlt" data-rechnungsbetrag="{{ rechnung['rechnungsbetrag'] }}" data-eur="{{ rechnung['eurkonto'] }}" data-id="{{ rechnung['rowid'] }}"><span class="glyphicon glyphicon-ok"></span> Bezahlt</button>
                 <a class="btn btn-xs btn-danger" href="/eingangsrechnungen/loeschen/{{ rechnung['rowid'] }}"><span class="glyphicon glyphicon-remove"></span> L&ouml;schen</a>
                 {% endif %}
