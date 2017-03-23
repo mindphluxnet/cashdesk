@@ -6,7 +6,7 @@ def setup_database(sqlite_file):
     c = conn.cursor()
 
     try:
-        c.execute("CREATE TABLE artikel (artikelnummer TEXT(50), artikelbezeichnung TEXT, bestand INT(5), ekpreis REAL, vkpreis REAL, ean TEXT(13))")
+        c.execute("CREATE TABLE artikel (artikelnummer TEXT(50), artikelbezeichnung TEXT, bestand INT(5), vkpreis REAL, ean TEXT(13))")
     except Exception as e:
         pass
 
