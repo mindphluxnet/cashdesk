@@ -18,6 +18,12 @@
         <div id="bonrolle" class="bonrolle"></div>
       </div>
       <div class="col-md-8 pushdown">
+        <div class="panel panel-info hidden" id="bonsumme-panel">
+          <div class="panel-heading">Bonsumme</div>
+          <div class="panel-body">
+            <span class="bonsumme">&euro; <span id="bonsumme">0,00</span></span>
+          </div>
+        </div>
         <div class="panel panel-info hidden" id="anzahl-panel">
           <div class="panel-heading">Anzahl</div>
           <div class="panel-body">
@@ -41,9 +47,9 @@
         <div class="clearfix">&nbsp;</div>
       </div>
     </div>
-    <div class="row hidden">
+    <div class="row">
       <div class="col-md-4">
-        <div class="panel panel-info" id="ean-panel">
+        <div class="panel panel-info hidden" id="ean-panel">
           <div class="panel-heading">EAN</div>
           <div class="panel-body">
             <input type="text" id="ean" name="ean" class="form-control" />
@@ -136,6 +142,10 @@
 
     var stammdaten = {{ stammdaten|safe }};
 
+    var running = false;
+    var kassiervorgang = false;
+    var bonsumme = 0;
+
   </script>
 
   <script type="text/javascript">
@@ -189,6 +199,14 @@
 
   }
 
+  function addLineWaehrung() {
+
+    var leer = "&nbsp;";
+    var line = leer.repeat(37) + "EUR";
+    addLine(line);
+
+  }
+
   function zeroPad(num) {
 
     if(num >= 0 && num < 10) {
@@ -197,7 +215,16 @@
     return num;
   }
 
-  function bonHeader() {
+  function updateBonSumme(data) {
+
+    var anzahl = $('#anzahl').val();
+    var summe = anzahl * data.vkpreis;
+    bonsumme += summe;
+    $('#bonsumme').html(bonsumme.toFixed(2).toString());
+
+  }
+
+  function bonHeader(kassiervorgang = false) {
 
     addLineCentered(stammdaten.firmenname);
     addBlankLine();
@@ -205,6 +232,10 @@
     addLineCentered(stammdaten.strasse + ' ' + stammdaten.hausnummer);
     addLineCentered(stammdaten.plz.toString() + ' ' + stammdaten.ort);
     addBlankLine();
+
+    if(kassiervorgang) {
+      addLineWaehrung();
+    }
 
   }
 
@@ -250,6 +281,25 @@
   function printReceipt() {
 
   }
+
+  // ============================================================ kasse starten ================================================
+
+  $('#kasse-starten').on('click', function() {
+
+    if(running) return;
+
+    $('#kasse-wechselgeld').attr('disabled', 'disabled');
+    $('#kasse-starten').attr('disabled', 'disabled');
+    $('#kasse-abrechnen').removeAttr('disabled');
+    $('#anzahl-panel').removeClass('hidden');
+    $('#ean-panel').removeClass('hidden');
+    $('#bonsumme-panel').removeClass('hidden');
+    $('#bonrolle').html('');
+    $('#ean').focus();
+
+    running = true;
+
+  });
 
   // ============================================================ wechselgeld ===================================================
 
@@ -329,9 +379,7 @@
 
   });
 
-  // =========================================================== artikelscanner================================================================
-
-  $('#ean').focus();
+  // =========================================================== kassiervorgang ================================================================
 
   $('#ean').on('keydown', function(e) {
 
@@ -351,6 +399,12 @@
 
             data = JSON.parse(result);
 
+            if(!kassiervorgang) {
+              bonHeader(true);
+              kassiervorgang = true;
+            }
+
+            updateBonSumme(data);
             buildItemLine(data);
 
             $('.btn-anzahl').removeClass('btn-success');
@@ -431,6 +485,12 @@
       success: function(result) {
         data = JSON.parse(result);
 
+        if(!kassiervorgang) {
+          bonHeader();
+          kassiervorgang = true;
+        }
+
+        updateBonSumme(data);
         buildItemLine(data);
 
         $('.btn-anzahl').removeClass('btn-success');

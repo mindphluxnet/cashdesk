@@ -24,3 +24,8 @@ body {
 h2 {
   font-family: 'Ubuntu Mono', monospace;
 }
+
+.bonsumme {
+    font-size: 20pt;
+    font-family: 'Ubuntu Mono', monospace;
+}
