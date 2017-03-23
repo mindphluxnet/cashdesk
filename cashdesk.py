@@ -131,31 +131,43 @@ def manual_backup():
     return redirect(url_for('backups'))
 
 @app.route('/artikel')
-def show_artikel():
+@app.route('/artikel/<string:id>')
+def show_artikel(id = None):
+
+    selwgr = id
+
+    if(selwgr != None):
+        artikel = database.artikel.load_artikel_by_wgr(sqlite_file, selwgr)
+    else:
+        artikel = database.artikel.load_artikel(sqlite_file)
+
+    warengruppen = database.warengruppen.load_warengruppen(sqlite_file)
+    selwgr = database.warengruppen.load_warengruppe(sqlite_file, selwgr)
 
     page_title = "Artikelverwaltung"
     page_id = "artikel"
 
-    artikel = database.artikel.load_artikel(sqlite_file)
+    return render_template('artikel.html', artikel = artikel, warengruppen = warengruppen, selwgr = selwgr, page_title = page_title, page_id = page_id)
 
-    return render_template('artikel.html', artikel = artikel, page_title = page_title, page_id = page_id)
-
-@app.route('/artikel/neu')
-def show_artikel_neu():
+@app.route('/artikel/neu/<string:id>')
+def show_artikel_neu(id):
 
     page_title = "Neuen Artikel anlegen"
     page_id = "artikelneu"
 
-    warengruppen = database.warengruppen.load_warengruppen(sqlite_file)
+    selwgr = id
 
-    return render_template('artikel-neu.html', warengruppen = warengruppen, page_title = page_title, page_id = page_id)
+    warengruppen = database.warengruppen.load_warengruppen(sqlite_file)
+    selwgr = database.warengruppen.load_warengruppe(sqlite_file, selwgr)
+
+    return render_template('artikel-neu.html', warengruppen = warengruppen, selwgr = selwgr, page_title = page_title, page_id = page_id)
 
 @app.route('/artikel/speichern', methods = ['POST'])
 def artikel_speichern():
 
     database.artikel.save_artikel(sqlite_file, request.form)
 
-    return redirect(url_for('show_artikel'))
+    return redirect('/artikel/' + request.form['warengruppe'])
 
 @app.route('/artikel/kopieren/<string:id>')
 def artikel_kopieren(id):
@@ -185,14 +197,14 @@ def artikel_aktualisieren():
 
     database.artikel.update_artikel(sqlite_file, request.form)
 
-    return redirect(url_for('show_artikel'))
+    return redirect('/artikel/' + request.form['warengruppe'])
 
 @app.route('/artikel/loeschen/<string:id>')
 def artikel_loeschen(id):
 
-        database.artikel.delete_artikel(sqlite_file, id)
+        wgr = database.artikel.delete_artikel(sqlite_file, id)
 
-        return redirect(url_for('show_artikel'))
+        return redirect('/artikel/' + wgr)
 
 @app.route('/artikel/ajax/preis/<string:id>')
 def artikel_ajax_preis(id):
