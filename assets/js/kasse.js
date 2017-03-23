@@ -1,7 +1,12 @@
 var running = false;
 var kassiervorgang = false;
+var abrechnung = false;
 var bonsumme = 0;
 var wechselgeld = 0;
+var positionen = {};
+
+loadState();
+restoreState();
 
 function scrollDown() {
   $("#bonrolle").scrollTop($("#bonrolle")[0].scrollHeight);
@@ -133,6 +138,66 @@ function printReceipt() {
 
 }
 
+function saveState() {
+
+  $.remember({ name: 'kassiervorgang', value: kassiervorgang});
+  $.remember({ name: 'running', value: running});
+  $.remember({ name: 'bonsumme', value: bonsumme});
+  $.remember({ name: 'wechselgeld', value: wechselgeld});
+  $.remember({ name: 'abrechnung', value: abrechnung});
+  $.remember({ name: 'positionen', value: positionen});
+
+}
+
+function loadState() {
+
+    kassiervorgang = $.remember( { name: 'kassiervorgang' } );
+    running = $.remember( { name: 'running' } );
+    bonsumme = parseFloat($.remember( { name: 'bonsumme' } ));
+    wechselgeld = parseFloat($.remember( { name: 'wechselgeld' } ));
+    abrechnung = $.remember( { name: 'abrechnung' } );
+    positionen = $.remember( { name: 'positionen' } );
+
+    if(isNaN(bonsumme)) bonsumme = 0;
+    if(isNaN(wechselgeld)) wechselgeld = 0;
+
+}
+
+function restoreState() {
+
+  if(kassiervorgang && running && wechselgeld > 0) {
+
+    $('#kasse-wechselgeld').attr('disabled', 'disabled');
+    $('#kasse-starten').attr('disabled', 'disabled');
+    $('#kasse-abrechnen').removeAttr('disabled');
+    $('#anzahl-panel').removeClass('hidden');
+    $('#ean-panel').removeClass('hidden');
+    $('#bonsumme-panel').removeClass('hidden');
+    $('#bonsumme').html(bonsumme.toFixed(2));
+    $('#ean').focus();
+
+  }
+
+  if(!running && !kassiervorgang && wechselgeld == 0) {
+
+    $('#kasse-wechselgeld').removeAttr('disabled')
+    $('#kasse-starten').attr('disabled', 'disabled');
+    $('#kasse-abrechnen').attr('disabled', 'disabled');
+    $('#anzahl-panel').addClass('hidden');
+    $('#ean-panel').addClass('hidden');
+    $('#bonsumme-panel').addClass('hidden');
+
+  }
+
+
+}
+
+function addPosition(data) {
+
+  
+
+}
+
 // ============================================================ kasse starten ================================================
 
 $('#kasse-starten').on('click', function() {
@@ -149,6 +214,7 @@ $('#kasse-starten').on('click', function() {
   $('#ean').focus();
 
   running = true;
+  saveState();
 
 });
 
@@ -226,6 +292,8 @@ $('#modal-wechselgeld').on('hidden.bs.modal', function() {
     $('#kasse-wechselgeld').attr('disabled', 'disabled');
     $('#kasse-starten').removeAttr('disabled');
 
+    saveState();
+
   }
 
 });
@@ -257,6 +325,7 @@ $('#ean').on('keydown', function(e) {
 
           updateBonSumme(data);
           buildItemLine(data);
+          addPosition(data);
 
           $('.btn-anzahl').removeClass('btn-success');
           $('#mehrals10').removeClass('btn-success');
@@ -264,6 +333,7 @@ $('#ean').on('keydown', function(e) {
           scrollDown();
           $('#ean').val('');
           $('#ean').focus();
+          saveState();
         }
         else {
           $('#modal-artikel-nicht-gefunden').modal();
@@ -343,6 +413,7 @@ $('#artikelselect-ok').on('click', function() {
 
       updateBonSumme(data);
       buildItemLine(data);
+      addPosition(data);
 
       $('.btn-anzahl').removeClass('btn-success');
       $('#mehrals10').removeClass('btn-success');
@@ -350,6 +421,7 @@ $('#artikelselect-ok').on('click', function() {
       scrollDown();
       $('#ean').val('');
       $('#ean').focus();
+      saveState();
     }
   });
 
