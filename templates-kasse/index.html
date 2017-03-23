@@ -247,6 +247,29 @@
 
   }
 
+  function printReceipt() {
+
+  }
+
+  // ============================================================ wechselgeld ===================================================
+
+  function wechselgeldBuchen() {
+
+    wechselgeld = $('#wechselgeld').val();
+
+    var now = new Date();
+
+    $.ajax({
+      url: '/ajax/kasse/buchung',
+      method: 'POST',
+      data: { 'event': 'wechselgeld', 'betrag': wechselgeld, 'artikel_id': 0, 'datum': now, 'anzahl': 0 },
+      success: function(result) {
+        result = JSON.parse(result);
+      }
+    });
+
+  }
+
   $('#kasse-wechselgeld').on('click', function() {
 
     $('#modal-wechselgeld').modal();
@@ -282,8 +305,6 @@
   $('#modal-wechselgeld').on('hidden.bs.modal', function() {
 
     if(wechselgeld > 0) {
-      $('#kasse-wechselgeld').attr('disabled', 'disabled');
-      $('#kasse-starten').removeAttr('disabled');
 
       var now = new Date();
 
@@ -298,9 +319,17 @@
       addBlankLine();
       addDivisor();
 
+      wechselgeldBuchen();
+
+      printReceipt();
+      $('#kasse-wechselgeld').attr('disabled', 'disabled');
+      $('#kasse-starten').removeAttr('disabled');
+
     }
 
   });
+
+  // =========================================================== artikelscanner================================================================
 
   $('#ean').focus();
 
@@ -414,6 +443,8 @@
     });
 
   });
+
+  // ========================================================================================================================================
 
   </script>
 

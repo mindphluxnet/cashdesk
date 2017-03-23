@@ -50,6 +50,11 @@ def setup_database(sqlite_file):
     except Exception as e:
         pass
 
+    try:
+        c.execute("CREATE TABLE kassenlog (event TEXT, datum TEXT, betrag REAL, artikel_id INT, anzahl INT)")
+    except Exception as e:
+        pass
+
     conn.commit()
     conn.close()
 

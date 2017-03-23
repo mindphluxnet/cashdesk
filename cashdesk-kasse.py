@@ -31,6 +31,7 @@ import database.konten
 import database.lieferanten
 import database.wareneingang
 import database.buchungen
+import database.kasse
 
 import statics.konten
 
@@ -93,6 +94,13 @@ def ajax_artikel_byid():
     artikel = database.artikel.load_single_artikel(sqlite_file, request.form['id'])
 
     return json.dumps(artikel)
+
+@app.route('/ajax/kasse/buchung', methods = ['POST'])
+def ajax_kasse_buchung():
+
+    result = database.kasse.buchung(sqlite_file, request.form)
+
+    return json.dumps(result)
 
 if __name__ == '__main__':
 	app.run(debug = debug, host = bind_host, port = bind_port)
