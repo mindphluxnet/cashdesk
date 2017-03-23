@@ -12,7 +12,6 @@
           <th>Artikelnummer</th>
           <th>Artikelbezeichnung</th>
           <th>Bestand</th>
-          <th>EK-Preis</th>
           <th>VK-Preis</th>
           <th>Optionen</th>
         </thead>
@@ -21,8 +20,7 @@
           <tr>
             <td>{{ art['artikelnummer'] }}</td>
             <td>{{ art['artikelbezeichnung'] }}</td>
-            <td>{{ art['bestand'] }}</td>
-            <td>&euro; {{ '{0:0.2f}'.format(art['ekpreis']) }}</td>
+            <td>{{ art['bestand'] }}</td>            
             <td>&euro; {{ '{0:0.2f}'.format(art['vkpreis']) }}</td>
             <td>
               <a class="btn btn-xs btn-default" href="/artikel/bearbeiten/{{ art['rowid'] }}"><span class="glyphicon glyphicon-pencil"></span> Bearbeiten</a> <a class="btn btn-xs btn-danger" href="/artikel/loeschen/{{ art['rowid'] }}"><span class="glyphicon glyphicon-remove"></span> L&ouml;schen</a>
