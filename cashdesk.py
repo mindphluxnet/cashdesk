@@ -146,7 +146,9 @@ def show_artikel_neu():
     page_title = "Neuen Artikel anlegen"
     page_id = "artikelneu"
 
-    return render_template('artikel-neu.html', page_title = page_title, page_id = page_id)
+    warengruppen = database.warengruppen.load_warengruppen(sqlite_file)
+
+    return render_template('artikel-neu.html', warengruppen = warengruppen, page_title = page_title, page_id = page_id)
 
 @app.route('/artikel/speichern', methods = ['POST'])
 def artikel_speichern():
@@ -174,8 +176,9 @@ def show_artikel_bearbeiten(id):
     page_id = "artikelbearbeiten"
 
     artikel = database.artikel.load_single_artikel(sqlite_file, id)
+    warengruppen = database.warengruppen.load_warengruppen(sqlite_file)
 
-    return render_template('artikel-bearbeiten.html', page_title = page_title, page_id = page_id, artikel = artikel)
+    return render_template('artikel-bearbeiten.html', warengruppen = warengruppen, page_title = page_title, page_id = page_id, artikel = artikel)
 
 @app.route('/artikel/aktualisieren', methods = ['POST'])
 def artikel_aktualisieren():

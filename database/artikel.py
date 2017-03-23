@@ -45,7 +45,7 @@ def save_artikel(sqlite_file, artikel):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("INSERT INTO artikel (artikelnummer, artikelbezeichnung, vkpreis, bestand, ean) VALUES (?, ?, ?, ?, ?)", [ artikel['artikelnummer'], artikel['artikelbezeichnung'], artikel['vkpreis'], artikel['bestand'], artikel['ean'] ])
+    c.execute("INSERT INTO artikel (artikelnummer, artikelbezeichnung, vkpreis, bestand, ean, warengruppe) VALUES (?, ?, ?, ?, ?, ?)", [ artikel['artikelnummer'], artikel['artikelbezeichnung'], artikel['vkpreis'], artikel['bestand'], artikel['ean'], artikel['warengruppe'] ])
 
     conn.commit()
     conn.close()
@@ -55,7 +55,7 @@ def update_artikel(sqlite_file, artikel):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("UPDATE artikel SET artikelnummer = ?, artikelbezeichnung = ?, vkpreis = ?, bestand = ?, ean = ? WHERE oid = ?", [ artikel['artikelnummer'], artikel['artikelbezeichnung'], artikel['vkpreis'], artikel['bestand'], artikel['ean'], artikel['id'] ])
+    c.execute("UPDATE artikel SET artikelnummer = ?, artikelbezeichnung = ?, vkpreis = ?, bestand = ?, ean = ?, warengruppe = ? WHERE oid = ?", [ artikel['artikelnummer'], artikel['artikelbezeichnung'], artikel['vkpreis'], artikel['bestand'], artikel['ean'], artikel['warengruppe'], artikel['id'] ])
 
     conn.commit()
     conn.close()
