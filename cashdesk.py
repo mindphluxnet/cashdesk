@@ -154,6 +154,18 @@ def artikel_speichern():
 
     return redirect(url_for('show_artikel'))
 
+@app.route('/artikel/kopieren/<string:id>')
+def artikel_kopieren(id):
+
+    page_title = "Artikel bearbeiten"
+    page_id = "artikelbearbeiten"
+
+
+    neue_id = database.artikel.copy_artikel(sqlite_file, id)
+    artikel = database.artikel.load_single_artikel(sqlite_file, neue_id)
+
+    return redirect('/artikel/bearbeiten/' + str(neue_id))
+
 @app.route('/artikel/bearbeiten/<string:id>')
 def show_artikel_bearbeiten(id):
 

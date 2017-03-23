@@ -8,7 +8,7 @@ def load_single_artikel(sqlite_file, id):
     conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
 
-    c.execute("SELECT oid, * FROM artikel WHERE oid = ?", id)
+    c.execute("SELECT oid, * FROM artikel WHERE oid = ?", [ id ])
     artikel = c.fetchone()
 
     conn.close()
@@ -60,12 +60,28 @@ def update_artikel(sqlite_file, artikel):
     conn.commit()
     conn.close()
 
+def copy_artikel(sqlite_file, id):
+
+    conn = sqlite3.connect(sqlite_file)
+    conn.row_factory = database.factory.dict_factory
+    c = conn.cursor()
+
+    c.execute("SELECT * FROM artikel WHERE oid = ?", [ id ])
+    artikel = c.fetchone()
+
+    c.execute("INSERT INTO artikel (artikelnummer, artikelbezeichnung, vkpreis, bestand, ean) VALUES (?, ?, ?, ?, ?)", [ artikel['artikelnummer'], artikel['artikelbezeichnung'] + ' (Kopie)', artikel['vkpreis'], artikel['bestand'], artikel['ean'] ])
+
+    conn.commit()
+    conn.close()
+
+    return c.lastrowid
+
 def delete_artikel(sqlite_file, id):
 
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("DELETE FROM artikel WHERE oid = ?", id)
+    c.execute("DELETE FROM artikel WHERE oid = ?", [ id ])
 
     conn.commit()
     conn.close()
