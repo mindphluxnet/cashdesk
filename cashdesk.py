@@ -31,6 +31,7 @@ import database.konten
 import database.lieferanten
 import database.wareneingang
 import database.buchungen
+import database.warengruppen
 
 import statics.konten
 
@@ -195,6 +196,55 @@ def artikel_ajax_preis(id):
 
     artikel = database.artikel.load_single_artikel(sqlite_file, id)
     return str(artikel['vkpreis'])
+
+@app.route('/warengruppen')
+def show_warengruppen():
+
+    page_title = "Warengruppen"
+    page_id = "warengruppen"
+
+    warengruppen = database.warengruppen.load_warengruppen(sqlite_file)
+
+    return render_template('warengruppen.html', warengruppen = warengruppen, page_title = page_title, page_id = page_id)
+
+@app.route('/warengruppen/neu')
+def show_warengruppen_neu():
+
+    page_title = "Neue Warengruppe anlegen"
+    page_id = "warengruppen"
+
+    return render_template('warengruppen-neu.html', page_title = page_title, page_id = page_id)
+
+@app.route('/warengruppen/bearbeiten/<string:id>')
+def show_warengruppen_bearbeiten(id):
+
+    page_title = "Warengruppe bearbeiten"
+    page_id = "warengruppen"
+
+    warengruppe = database.warengruppen.load_warengruppe(sqlite_file, id)
+
+    return render_template('warengruppen-bearbeiten.html', warengruppe = warengruppe, page_title = page_title, page_id = page_id)
+
+@app.route('/warengruppen/speichern', methods = ['POST'])
+def warengruppen_speichern():
+
+    database.warengruppen.save_warengruppe(sqlite_file, request.form)
+
+    return redirect(url_for('show_warengruppen'))
+
+@app.route('/warengruppen/aktualisieren', methods = ['POST'])
+def warengruppen_aktualisieren():
+
+    database.warengruppen.update_warengruppe(sqlite_file, request.form)
+
+    return redirect(url_for('show_warengruppen'))
+
+@app.route('/warengruppen/loeschen/<string:id>')
+def warengruppen_loeschen(id):
+
+    database.warengruppen.delete_warengruppe(sqlite_file, id)
+
+    return redirect(url_for('show_warengruppen'))
 
 @app.route('/kunden')
 def show_kunden():

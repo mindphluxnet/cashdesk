@@ -1,0 +1,32 @@
+{% include "header.html" %}
+
+    {% include "nav.html" %}
+
+
+    <div class="container">
+
+      <a class="btn btn-primary" href="/warengruppen/neu"><span class="glyphicon glyphicon-plus"></span> Neue Warengruppe anlegen</a>
+      <h3>{{ page_title }}</h3>
+      <table class="table table-striped table-condensed">
+        <thead>
+          <th>Warengruppe</th>
+          <th>Optionen</th>
+        </thead>
+        <tbody>
+          {% for wgr in warengruppen %}
+          <tr>
+            <td>{{ wgr['bezeichnung'] }}</td>
+            <td>
+              <a class="btn btn-xs btn-default" href="/warengruppen/bearbeiten/{{ wgr['rowid'] }}"><span class="glyphicon glyphicon-pencil"></span> Bearbeiten</a>
+              <a class="btn btn-xs btn-danger" href="/warengruppen/loeschen/{{ wgr['rowid'] }}"><span class="glyphicon glyphicon-remove"></span> L&ouml;schen</a>
+            </td>
+          {% endfor %}
+        </tbody>
+
+      </table>
+
+
+
+    </div> <!-- /container -->
+
+{% include "footer.html" %}
