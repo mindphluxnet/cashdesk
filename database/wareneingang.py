@@ -21,7 +21,7 @@ def save_position(sqlite_file, position):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("INSERT INTO wareneingang (rechnung_id, artikel_id, anzahl) VALUES (?, ?, ?)", [ position['rechnungs_id'], position['artikel_id'], position['anzahl'] ])
+    c.execute("INSERT INTO wareneingang (rechnung_id, artikel_id, anzahl, ekpreis) VALUES (?, ?, ?, ?)", [ position['rechnungs_id'], position['artikel_id'], position['anzahl'], position['ekpreis'] ])
 
     conn.commit()
     conn.close()
@@ -32,7 +32,7 @@ def load_position(sqlite_file, id):
     conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
 
-    c.execute("SELECT oid, artikel_id, anzahl FROM wareneingang WHERE oid = ?", [ id ])
+    c.execute("SELECT oid, * FROM wareneingang WHERE oid = ?", [ id ])
     position = c.fetchone()
 
     conn.close()
@@ -59,7 +59,7 @@ def update_position(sqlite_file, position):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("UPDATE wareneingang SET anzahl = ?, artikel_id = ? WHERE oid = ?", [ position['anzahl'], position['artikel_id'], position['positions_id'] ])
+    c.execute("UPDATE wareneingang SET anzahl = ?, artikel_id = ?, ekpreis = ? WHERE oid = ?", [ position['anzahl'], position['artikel_id'], position['ekpreis'], position['positions_id'] ])
 
     conn.commit()
     conn.close()
