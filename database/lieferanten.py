@@ -8,7 +8,7 @@ def load_lieferanten(sqlite_file):
     conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
 
-    c.execute("SELECT oid, * FROM lieferanten ORDER BY firmenname DESC")
+    c.execute("SELECT oid, * FROM lieferanten ORDER BY firmenname ASC")
     lieferanten = c.fetchall()
 
     conn.close()
