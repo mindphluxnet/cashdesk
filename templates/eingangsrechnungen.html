@@ -25,6 +25,7 @@
             <td>&euro; {{ '{0:0.2f}'.format(rechnung['rechnungsbetrag']) }}</td>
             <td>{% if rechnung['bezahlt'] == 1 %}<span class="glyphicon glyphicon-ok text-success"></span></a>{% else %}<span class="glyphicon glyphicon-remove text-danger"></span>{% endif %}</td>
             <td class="text-right">
+                <button class="btn btn-xs btn-default" id="pdfupload-button" data-id="{{ rechnung['rowid'] }}"><span class="glyphicon glyphicon-upload"></span> PDF hinzuf&uuml;gen</button>
                 {% if rechnung['pdf'] %}
                 <a class="btn btn-xs btn-default" target="_rechnungsausgabe" href="/pdfviewer/{{ rechnung['rowid'] }}"><span class="glyphicon glyphicon-file"></span> PDF</a>
                 {% endif %}
@@ -92,6 +93,36 @@
           </div>
 
       </div>
+    </div>
+
+    </form>
+
+    <form class="form-horizontal" method="post" id="pdfupload-form" enctype="multipart/form-data" action="/eingangsrechnungen/pdfupload">
+    <div class="modal fade" id="pdfupload-modal" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" <span>&times;</span></button>
+            <h4 class="modal-title">PDF-Datei zu Rechnung hinzuf&uuml;gen</h4>
+          </div>
+          <div class="modal-body">
+              <div class="form-group">
+                <label for="pdfdatei" class="col-sm-2 control-label">PDF-Datei</label>
+                <div class="col-sm-6">
+                  <input type="file" class="form-control" id="pdfdatei" name="pdfdatei" />
+                </div>
+              </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+                <button type="submit" id="button-pdfupload" class="btn btn-primary">Datei hochladen</button>
+                <input type="hidden" id="pdfupload-id" name="id" value="" />
+            </div>
+          </div>
+
+      </div>
+    </div>
 
     </form>
 
@@ -109,6 +140,17 @@
         $('#verbuchen-eurkonto').val(eur);
         $('#verbuchen-rechnungsbetrag').val(betrag);
         $('#rechnung-bezahlt-modal').modal();
+
+      });
+
+      $('#pdfupload-button').on('click', function() {
+
+        event.preventDefault();
+
+        var id = $(this).data('id');
+
+        $('#pdfupload-id').val(id);
+        $('#pdfupload-modal').modal();
 
       });
 

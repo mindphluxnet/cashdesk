@@ -204,7 +204,7 @@ def artikel_loeschen(id):
 
         wgr = database.artikel.delete_artikel(sqlite_file, id)
 
-        return redirect('/artikel/' + wgr)
+        return redirect('/artikel/' + str(wgr))
 
 @app.route('/artikel/ajax/preis/<string:id>')
 def artikel_ajax_preis(id):
@@ -397,6 +397,16 @@ def show_eingangsrechnungen():
             rechnung['pdf'] = True;
 
     return render_template('eingangsrechnungen.html', rechnungen = rechnungen, konten = konten, gesamtausgabe = gesamtausgabe, page_title = page_title, page_id = page_id)
+
+@app.route('/eingangsrechnungen/pdfupload', methods = ['POST'])
+def eingangsrechnungen_pdfupload():
+
+    #: FIXME: sollte natuerlich auch fuer andere Dateien funktionieren
+    uploaded_file = request.files['pdfdatei']
+    if(uploaded_file):
+        uploaded_file.save('dokumente/eingangsrechnungen/eingangsrechnung-' + str(request.form['id']) + '.pdf')
+
+    return redirect(url_for('show_eingangsrechnungen'))
 
 @app.route('/eingangsrechnungen/neu')
 def show_eingangsrechnungen_neu():
