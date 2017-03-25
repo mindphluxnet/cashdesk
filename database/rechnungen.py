@@ -4,6 +4,8 @@ import database.factory
 import statics.konten
 import database.wareneingang
 import os
+import timestring
+from datetime import datetime
 
 def load_rechnungen(sqlite_file):
 
@@ -119,6 +121,30 @@ def load_position(sqlite_file, positions_id):
     conn.close()
 
     return position
+
+def get_invoice_id_from_date(sqlite_file, date):
+
+    conn = sqlite3.connect(sqlite_file)
+    conn.row_factory = database.factory.dict_factory
+    c = conn.cursor()
+
+    datum = timestring.Date(date).date
+    datum = datetime.strftime(datum, '%Y%m%d')
+
+    datum = datum + "00"
+
+    tmp = int(datum)
+
+    ar = 1
+
+    while ar == 1:
+        c.execute("SELECT COUNT(*) as c FROM rechnungen WHERE rechnungsnummer = ?", [ tmp ])
+        count = c.fetchone()
+        ar = count['c']
+
+        tmp = tmp + 1
+
+    return tmp
 
 def get_next_invoice_id(sqlite_file):
 
