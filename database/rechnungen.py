@@ -38,14 +38,17 @@ def save_rechnung(sqlite_file, rechnung):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    print(rechnung)
 
-    c.execute("INSERT INTO rechnungen (rechnungsnummer, kunden_id, rechnungsdatum, zahlungsart, zahlungsstatus, gedruckt, storniert, storno_rechnungsnummer) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [ rechnung['rechnungsnummer'], rechnung['kunden_id'], rechnung['rechnungsdatum'], rechnung['zahlungsart'], rechnung['zahlungsstatus'], 0, rechnung['storniert'], rechnung['storno_rechnungsnummer'] ] )
+    try:
+        rechnungsnummer = database.rechnungen.get_invoice_id_from_date(sqlite_file, rechnung['rechnungsdatum'])
+        c.execute("INSERT INTO rechnungen (rechnungsnummer, kunden_id, rechnungsdatum, zahlungsart, zahlungsstatus, gedruckt, storniert, storno_rechnungsnummer) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [ rechnungsnummer, rechnung['kunden_id'], rechnung['rechnungsdatum'], rechnung['zahlungsart'], rechnung['zahlungsstatus'], 0, rechnung['storniert'], rechnung['storno_rechnungsnummer'] ] )
+    except Exception as e:
+        print(e.message)
 
     conn.commit()
     conn.close()
 
-    return rechnung['rechnungsnummer']
+    return rechnungsnummer
 
 def update_rechnung(sqlite_file, rechnung):
 
@@ -102,7 +105,7 @@ def load_positionen(sqlite_file, rechnungs_id):
     conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
 
-    c.execute("SELECT p.oid AS positions_id, p.*, a.oid AS artikel_id, a.* FROM rechnungspositionen p LEFT JOIN artikel a ON(a.oid = p.artikel_id) WHERE rechnungs_id = ? ORDER BY oid ASC", [ rechnungs_id ])
+    c.execute("SELECT p.oid AS positions_id, p.*, a.oid AS artikel_id, a.* FROM rechnungspositionen p LEFT JOIN artikel a ON(a.oid = p.artikel_id) WHERE rechnungs_id = ? ORDER BY p.oid ASC", [ rechnungs_id ])
     positionen = c.fetchall()
 
     conn.close()
@@ -138,11 +141,10 @@ def get_invoice_id_from_date(sqlite_file, date):
     ar = 1
 
     while ar == 1:
-        c.execute("SELECT COUNT(*) as c FROM rechnungen WHERE rechnungsnummer = ?", [ tmp ])
-        count = c.fetchone()
-        ar = count['c']
-
         tmp = tmp + 1
+        c.execute("SELECT COUNT(*) as c FROM rechnungen WHERE rechnungsnummer = ?", [ tmp ])
+        count = c.fetchone()        
+        ar = count['c']
 
     return tmp
 
