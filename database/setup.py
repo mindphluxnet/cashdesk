@@ -47,7 +47,7 @@ def setup_database(sqlite_file):
 
     try:
         c.execute("CREATE TABLE buchungen (konto_id INT, gegenkonto_id INT, eurkonto INT, ausgangsrechnungs_id INT, eingangsrechnungs_id INT, betrag REAL, datum TEXT, einaus INT)")
-    except Exception as e:        
+    except Exception as e:
         pass
 
     try:
@@ -57,6 +57,11 @@ def setup_database(sqlite_file):
 
     try:
         c.execute("CREATE TABLE kassenlog (event TEXT, datum TEXT, betrag REAL, artikel_id INT, anzahl INT)")
+    except Exception as e:
+        pass
+
+    try:
+        c.execute("CREATE TABLE bundles (bundle_artikel_id INT, artikel_id INT, anzahl INT)")
     except Exception as e:
         pass
 

@@ -144,6 +144,12 @@ def show_artikel(id = None):
     warengruppen = database.warengruppen.load_warengruppen(sqlite_file)
     selwgr = database.warengruppen.load_warengruppe(sqlite_file, selwgr)
 
+    for art in artikel:
+        if(database.artikel.artikel_is_bundle(sqlite_file, art['rowid'])):
+            art['bundle'] = True
+        else:
+            art['bundle'] = False
+
     page_title = "Artikelverwaltung"
     page_id = "artikel"
 
@@ -189,8 +195,17 @@ def show_artikel_bearbeiten(id):
 
     artikel = database.artikel.load_single_artikel(sqlite_file, id)
     warengruppen = database.warengruppen.load_warengruppen(sqlite_file)
+    alle_artikel = database.artikel.load_artikel(sqlite_file)
 
-    return render_template('artikel-bearbeiten.html', warengruppen = warengruppen, page_title = page_title, page_id = page_id, artikel = artikel)
+    for art in alle_artikel:
+        if(database.artikel.artikel_is_bundle(sqlite_file, art['rowid'])):
+            art['bundle'] = True
+        else:
+            art['bundle'] = False
+
+    bundle_artikel = database.artikel.load_bundle(sqlite_file, id)
+
+    return render_template('artikel-bearbeiten.html', warengruppen = warengruppen, bundle_artikel = bundle_artikel, alle_artikel = alle_artikel, page_title = page_title, page_id = page_id, artikel = artikel)
 
 @app.route('/artikel/aktualisieren', methods = ['POST'])
 def artikel_aktualisieren():
@@ -211,6 +226,41 @@ def artikel_ajax_preis(id):
 
     artikel = database.artikel.load_single_artikel(sqlite_file, id)
     return str(artikel['vkpreis'])
+
+@app.route('/artikel/bundle/speichern', methods = ['POST'])
+def artikel_bundle_speichern():
+
+    database.artikel.save_bundle(sqlite_file, request.form)
+
+    return redirect('/artikel/bearbeiten/' + str(request.form['bundle_artikel_id']))
+
+@app.route('/artikel/bundle/bearbeiten', methods = ['POST'])
+def artikel_bundle_bearbeiten():
+
+    database.artikel.update_bundle(sqlite_file, request.form)
+
+    return redirect('/artikel/bearbeiten/' + str(request.form['bundle_artikel_id']))
+
+@app.route('/artikel/bundle/loeschen/<string:id>')
+def artikel_bundle_loeschen(id):
+
+    id = database.artikel.delete_bundle(sqlite_file, id)
+
+    return redirect('/artikel/bearbeiten/' + str(id))
+
+@app.route('/artikel/bundle/auspacken/<string:id>')
+def artikel_bundle_auspacken(id):
+
+    id = database.artikel.unbundle(sqlite_file, id)
+
+    return redirect('/artikel/' + str(id))
+
+@app.route('/artikel/ajax/bundle/<string:id>')
+def artikel_ajax_bundle(id):
+
+    bundle = database.artikel.load_bundle_position(sqlite_file, id)
+
+    return json.dumps(bundle)
 
 @app.route('/warengruppen')
 def show_warengruppen():

@@ -20,12 +20,12 @@
       </div>
       <h3>Artikelverwaltung</h3>
       <table class="table table-striped table-condensed">
-        <thead>          
+        <thead>
           <th>Artikelnummer</th>
           <th>Artikelbezeichnung</th>
           <th>Bestand</th>
           <th>VK-Preis</th>
-          <th>Optionen</th>
+          <th class="text-right">Optionen</th>
         </thead>
         <tbody>
           {% for art in artikel %}
@@ -34,7 +34,10 @@
             <td>{{ art['artikelbezeichnung'] }}</td>
             <td>{{ art['bestand'] }}</td>
             <td>&euro; {{ '{0:0.2f}'.format(art['vkpreis']) }}</td>
-            <td>
+            <td class="text-right">
+              {% if art['bundle'] and art['bestand'] > 0 %}
+              <a class="btn btn-xs btn-primary" href="/artikel/bundle/auspacken/{{ art['rowid'] }}"><span class="glyphicon glyphicon-gift"></span> Auspacken</a>
+              {% endif %}
               <a class="btn btn-xs btn-default" href="/artikel/kopieren/{{ art['rowid'] }}"><span class="glyphicon glyphicon-copy"></span> Kopieren</a>
               <a class="btn btn-xs btn-default" href="/artikel/bearbeiten/{{ art['rowid'] }}"><span class="glyphicon glyphicon-pencil"></span> Bearbeiten</a>
               <a class="btn btn-xs btn-danger" href="/artikel/loeschen/{{ art['rowid'] }}"><span class="glyphicon glyphicon-remove"></span> L&ouml;schen</a>
