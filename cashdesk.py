@@ -366,6 +366,13 @@ def kunde_ajax_speichern():
 
     return json.dumps(result)
 
+@app.route('/kunden/loeschen/<string:id>')
+def kunden_loeschen(id):
+
+    database.kunden.delete_kunde(sqlite_file, id)
+
+    return redirect('/kunden')
+
 @app.route('/lieferanten')
 def show_lieferanten():
 

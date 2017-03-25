@@ -49,3 +49,13 @@ def load_kunde(sqlite_file, id):
     conn.close()
 
     return kunde
+
+def delete_kunde(sqlite_file, id):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("DELETE FROM kunden WHERE oid = ?", [ id ])
+
+    conn.commit()
+    conn.close()
