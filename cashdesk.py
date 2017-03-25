@@ -371,7 +371,7 @@ def kunden_loeschen(id):
 
     database.kunden.delete_kunde(sqlite_file, id)
 
-    return redirect('/kunden')
+    return redirect(url_for('show_kunden'))
 
 @app.route('/lieferanten')
 def show_lieferanten():
