@@ -1,0 +1,20 @@
+{% include "header.html" %}
+
+    {% include "nav.html" %}
+
+
+    <div class="container">
+
+      <h3>{{ page_title }}</h3>
+      <p>
+        Der Brief kann nun ausgegeben werden:
+      </p>
+      <a class="btn btn-primary" href="/briefe/pdfrenderer/drucken/{{ brief['rowid'] }}" target="_rechnungsausgabe"><span class="glyphicon glyphicon-print"></span> Drucken</a>
+      <a class="btn btn-default" href="/briefe/pdfrenderer/speichern/{{ brief['rowid'] }}"><span class="glyphicon glyphicon-download"></span> Speichern</a>
+      <hr>
+      <a class="btn btn-default" href="/briefe"><span class="glyphicon glyphicon-triangle-left"></span> Zur&uuml;ck zur Briefen</a>
+
+
+    </div>
+
+{% include "footer.html" %}
