@@ -1006,12 +1006,37 @@ def show_briefe_neu():
 
     return render_template('briefe-neu.html', page_title = page_title, page_id = page_id)
 
+@app.route('/briefe/bearbeiten/<string:id>')
+def show_briefe_bearbeiten(id):
+
+    page_id = "korrespondenz"
+    page_title = "Brief bearbeiten"
+
+    brief = database.korrespondenz.load_brief(sqlite_file, id)
+
+    return render_template('briefe-bearbeiten.html', brief = brief, page_title = page_title, page_id = page_id)
+
+
 @app.route('/briefe/speichern', methods = ['POST'])
 def briefe_speichern():
 
     id = database.korrespondenz.save_brief(sqlite_file, request.form)
 
     return redirect('/briefe/ausgeben/' + str(id))
+
+@app.route('/briefe/aktualisieren', methods = ['POST'])
+def briefe_aktualisieren():
+
+    database.korrespondenz.update_brief(sqlite_file, request.form)
+
+    return redirect(url_for('show_briefe'))
+
+@app.route('/briefe/loeschen/<string:id>')
+def briefe_loeschen(id):
+
+    database.korrespondenz.delete_brief(sqlite_file, id)
+
+    return redirect(url_for('show_briefe'))
 
 @app.route('/briefe/ausgeben/<string:id>')
 def show_briefe_ausgeben(id):
