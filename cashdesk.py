@@ -32,6 +32,7 @@ import database.lieferanten
 import database.wareneingang
 import database.buchungen
 import database.warengruppen
+import database.korrespondenz
 
 import statics.konten
 
@@ -978,6 +979,16 @@ def konten_loeschen(id):
     database.konten.delete_konto(sqlite_file, id)
 
     return redirect(url_for('show_konten'))
+
+@app.route('/briefe')
+def show_briefe():
+
+    page_id = "korrespondenz"
+    page_title = "Briefe"
+
+    briefe = database.korrespondenz.load_briefe(sqlite_file)
+
+    return render_template('briefe.html', briefe = briefe, page_title = page_title, page_id = page_id)
 
 if __name__ == '__main__':
 	app.run(debug = debug, host = bind_host, port = bind_port)

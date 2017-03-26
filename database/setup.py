@@ -65,6 +65,11 @@ def setup_database(sqlite_file):
     except Exception as e:
         pass
 
+    try:
+        c.execute("CREATE TABLE briefe (empfaenger_id INT, empfaenger_typ INT, datum TEXT, betreff TEXT(50), inhalt TEXT)")
+    except Exception as e:
+        pass
+
     conn.commit()
     conn.close()
 

@@ -1,0 +1,35 @@
+{% include "header.html" %}
+
+    {% include "nav.html" %}
+
+
+    <div class="container">
+
+      <a class="btn btn-primary" href="/briefe/neu"><span class="glyphicon glyphicon-plus"></span> Neuen Brief schreiben</a>
+      <h3>{{ page_title }}</h3>
+      <table class="table table-striped table-condensed">
+        <thead>
+          <th>Datum</th>
+          <th>Adressat</th>
+          <th>Optionen</th>
+        </thead>
+        <tbody>
+          {% for brief in briefe %}
+          <tr>
+            <td>{{ brief['datum'] }}</td>
+            <td>{{ brief['adressat'] }}</td>
+            <td>
+              <a class="btn btn-xs btn-default" href="/briefe/pdfrenderer/{{ briefe['rowid'] }}"><span class="glyphicon glyphicon-document"></span> PDF</a>
+              <a class="btn btn-xs btn-default" href="/briefe/bearbeiten/{{ briefe['rowid'] }}"><span class="glyphicon glyphicon-pencil"></span> Bearbeiten</a>
+              <a class="btn btn-xs btn-danger" href="/briefe/loeschen/{{ briefe['rowid'] }}"><span class="glyphicon glyphicon-remove"></span> L&ouml;schen</a>
+            </td>
+          {% endfor %}
+        </tbody>
+
+      </table>
+
+
+
+    </div> <!-- /container -->
+
+{% include "footer.html" %}
