@@ -92,7 +92,26 @@ def show_index():
     if(os.path.isfile('assets/firmenlogo.png')):
         has_logo = True
 
-    return render_template('index.html', page_title = page_title, page_id = page_id, has_logo = has_logo)
+    settings = database.settings.load_settings()
+
+    no_backup = False
+    if(settings['dropbox_api_key'] == "" or settings['dropbox_api_key'] == None):
+        no_backup = True
+
+    no_accounts = False
+    konten = database.konten.load_konten(sqlite_file)
+    if(len(konten) == 0):
+        no_accounts = True
+
+    no_backup_password = False
+    if(settings['backup_passwort'] == '' or settings['backup_passwort'] == None):
+        no_backup_password = True
+
+    no_backup_freq = False
+    if(settings['backupfrequenz'] == '0' or settings['backupfrequenz'] == None):
+        no_backup_freq = True
+
+    return render_template('index.html', page_title = page_title, page_id = page_id, has_logo = has_logo, no_backup = no_backup, no_accounts = no_accounts, no_backup_password = no_backup_password, no_backup_freq = no_backup_freq)
 
 @app.route('/backups')
 def backups():
