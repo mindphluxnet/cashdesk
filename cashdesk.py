@@ -993,7 +993,7 @@ def show_briefe():
             empfaenger = database.kunden.load_kunde(sqlite_file, brief['empfaenger_id'])
             brief['empfaenger'] = empfaenger
         else:
-            empfaenger == database.lieferanten.load_lieferant(sqlite_file, brief['empfaenger_id'])
+            empfaenger = database.lieferanten.load_lieferant(sqlite_file, brief['empfaenger_id'])
             brief['empfaenger'] = empfaenger
 
     return render_template('briefe.html', briefe = briefe, page_title = page_title, page_id = page_id)
@@ -1032,6 +1032,45 @@ def briefe_ajax_empfaenger(typ):
         empfaenger = database.lieferanten.load_lieferanten(sqlite_file)
 
     return json.dumps(empfaenger)
+
+@app.route('/briefe/pdfrenderer/<string:action>/<string:id>')
+def briefe_pdfrenderer(action, id):
+
+    brief = database.korrespondenz.load_brief(sqlite_file, id)
+    if(brief['empfaenger_typ'] == '1'):
+        empfaenger = database.kunden.load_kunde(sqlite_file, brief['empfaenger_id'])
+    else:
+        empfaenger = database.lieferanten.load_lieferant(sqlite_file, brief['empfaenger_id'])
+
+    brief['inhalt'] = brief['inhalt'].replace('\n', '<br />\n')
+
+    stammdaten = database.settings.load_settings()
+
+    bootstrap_css = ''
+
+    f = file('assets/css/bootstrap.min.css', 'r')
+    for line in f:
+        bootstrap_css = bootstrap_css + line
+
+    f.close()
+
+    with open('assets/firmenlogo.png', 'rb') as logo:
+        firmenlogo = base64.b64encode(logo.read())
+
+    env = Environment(loader=FileSystemLoader('templates'))
+    template = env.get_template('template-brief.html')
+    out = template.render(bootstrap_css = bootstrap_css, firmenlogo = firmenlogo, brief = brief, empfaenger = empfaenger, stammdaten = stammdaten)
+    pdf = pdfkit.from_string(out, False)
+
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    if(action == 'speichern'):
+        response.headers['Content-Disposition'] = 'attachment; filename=brief-' + id + '.pdf'
+
+    if(action == 'drucken'):
+        response.headers['Content-Disposition'] = 'inline; filename=brief-' + id + '.pdf'
+
+    return response
 
 if __name__ == '__main__':
 	app.run(debug = debug, host = bind_host, port = bind_port)

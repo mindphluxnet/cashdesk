@@ -25,11 +25,11 @@
                 {{ brief['empfaenger']['firmenname'] }}, {{ brief['empfaenger']['ort'] }}
               {% endif %}
             </td>
-            <th>{{ brief['betreff']|trim(50) }}
+            <td>{{ brief['betreff'] }}</td>
             <td class="text-right">
-              <a class="btn btn-xs btn-default" href="/briefe/pdfrenderer/{{ briefe['rowid'] }}"><span class="glyphicon glyphicon-document"></span> PDF</a>
-              <a class="btn btn-xs btn-default" href="/briefe/bearbeiten/{{ briefe['rowid'] }}"><span class="glyphicon glyphicon-pencil"></span> Bearbeiten</a>
-              <a class="btn btn-xs btn-danger" href="/briefe/loeschen/{{ briefe['rowid'] }}"><span class="glyphicon glyphicon-remove"></span> L&ouml;schen</a>
+              <a class="btn btn-xs btn-default" href="/briefe/pdfrenderer/drucken/{{ brief['rowid'] }}" target="_rechnungsausgabe"><span class="glyphicon glyphicon-print"></span> Drucken</a>
+              <a class="btn btn-xs btn-default" href="/briefe/bearbeiten/{{ brief['rowid'] }}"><span class="glyphicon glyphicon-pencil"></span> Bearbeiten</a>
+              <a class="btn btn-xs btn-danger" href="/briefe/loeschen/{{ brief['rowid'] }}"><span class="glyphicon glyphicon-remove"></span> L&ouml;schen</a>
             </td>
           {% endfor %}
         </tbody>
