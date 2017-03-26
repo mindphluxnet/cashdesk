@@ -6,6 +6,7 @@ import database.wareneingang
 import os
 import timestring
 from datetime import datetime
+from locale import *
 
 def load_rechnungen(sqlite_file):
 
@@ -68,7 +69,7 @@ def save_position(sqlite_file, position):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("INSERT INTO rechnungspositionen (rechnungs_id, artikel_id, anzahl, rabatt, storniert) VALUES (?, ?, ?, ?, ?)", [ position['rechnungs_id'], position['artikel_id'], position['anzahl'], position['rabatt'], position['storniert'] ] )
+    c.execute("INSERT INTO rechnungspositionen (rechnungs_id, artikel_id, anzahl, rabatt, storniert) VALUES (?, ?, ?, ?, ?)", [ position['rechnungs_id'], position['artikel_id'], position['anzahl'], atof(position['rabatt']), position['storniert'] ] )
 
     conn.commit()
     conn.close()
@@ -78,7 +79,7 @@ def update_position(sqlite_file, position):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("UPDATE rechnungspositionen SET artikel_id = ?, anzahl = ?, rabatt = ? WHERE oid = ?", [ position['artikel_id'], position['anzahl'], position['rabatt'], position['positions_id'] ])
+    c.execute("UPDATE rechnungspositionen SET artikel_id = ?, anzahl = ?, rabatt = ? WHERE oid = ?", [ position['artikel_id'], position['anzahl'], atof(position['rabatt']), position['positions_id'] ])
 
     conn.commit()
     conn.close()
@@ -143,7 +144,7 @@ def get_invoice_id_from_date(sqlite_file, date):
     while ar == 1:
         tmp = tmp + 1
         c.execute("SELECT COUNT(*) as c FROM rechnungen WHERE rechnungsnummer = ?", [ tmp ])
-        count = c.fetchone()        
+        count = c.fetchone()
         ar = count['c']
 
     return tmp
@@ -301,7 +302,7 @@ def save_eingangsrechnung(sqlite_file, rechnung):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("INSERT INTO eingangsrechnungen (rechnungsnummer, rechnungsdatum, lieferant_id, eurkonto, rechnungsbetrag, bezahlt, ustsatz) VALUES (?, ?, ?, ?, ?, ?, ?)", [ rechnung['rechnungsnummer'], rechnung['rechnungsdatum'], rechnung['lieferant_id'], rechnung['eurkonto'], rechnung['rechnungsbetrag'], 0, rechnung['ustsatz'] ])
+    c.execute("INSERT INTO eingangsrechnungen (rechnungsnummer, rechnungsdatum, lieferant_id, eurkonto, rechnungsbetrag, bezahlt, ustsatz) VALUES (?, ?, ?, ?, ?, ?, ?)", [ rechnung['rechnungsnummer'], rechnung['rechnungsdatum'], rechnung['lieferant_id'], rechnung['eurkonto'], atof(rechnung['rechnungsbetrag']), 0, rechnung['ustsatz'] ])
 
     conn.commit()
     conn.close()
@@ -313,7 +314,7 @@ def update_eingangsrechnung(sqlite_file, rechnung):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("UPDATE eingangsrechnungen SET rechnungsnummer = ?, rechnungsdatum = ?, lieferant_id = ?, eurkonto = ?, rechnungsbetrag = ?, ustsatz = ? WHERE oid = ?", [ rechnung['rechnungsnummer'], rechnung['rechnungsdatum'], rechnung['lieferant_id'], rechnung['eurkonto'], rechnung['rechnungsbetrag'], rechnung['ustsatz'], rechnung['rechnungs_id'] ])
+    c.execute("UPDATE eingangsrechnungen SET rechnungsnummer = ?, rechnungsdatum = ?, lieferant_id = ?, eurkonto = ?, rechnungsbetrag = ?, ustsatz = ? WHERE oid = ?", [ rechnung['rechnungsnummer'], rechnung['rechnungsdatum'], rechnung['lieferant_id'], rechnung['eurkonto'], atof(rechnung['rechnungsbetrag']), rechnung['ustsatz'], rechnung['rechnungs_id'] ])
 
     conn.commit()
     conn.close()
