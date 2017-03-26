@@ -57,3 +57,15 @@ def delete_warengruppe(sqlite_file, id):
 
     conn.commit()
     conn.close()
+
+def get_first_wgr(sqlite_file):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("SELECT oid FROM warengruppen ORDER BY oid ASC LIMIT 1")
+    wgr = c.fetchone()
+
+    conn.close()
+
+    return wgr[0]

@@ -140,7 +140,9 @@ def show_artikel(id = None):
     if(selwgr != None):
         artikel = database.artikel.load_artikel_by_wgr(sqlite_file, selwgr)
     else:
-        artikel = database.artikel.load_artikel(sqlite_file)
+        first_wgr = database.warengruppen.get_first_wgr(sqlite_file)
+        artikel = database.artikel.load_artikel_by_wgr(sqlite_file, first_wgr)
+        selwgr = first_wgr
 
     warengruppen = database.warengruppen.load_warengruppen(sqlite_file)
     selwgr = database.warengruppen.load_warengruppe(sqlite_file, selwgr)
