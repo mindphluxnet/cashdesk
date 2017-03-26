@@ -19,9 +19,6 @@
           <a href="#backup" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-cloud"></span> Cloud-Backup</a>
         </li>
         <li>
-          <a href="#barcode" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-barcode"></span> Barcode-Scanner</a>
-        </li>
-        <li>
           <a href="#lcd" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-modal-window"></span> LCD-Display</a>
         </li>
       </ul>
@@ -129,30 +126,6 @@
           </div>
           {% endif %}
 
-        </div>
-
-        <div role="tabpanel" class="tab-pane" id="barcode">
-          <div class="clearfix">&nbsp;</div>
-          <div class="form-group">
-            <label for="suppress_enter" class="col-sm-2 control-label">Enter unterdr&uuml;cken*</label>
-              <div class="col-md-4">
-                <select name="suppress_enter" class="form-control">
-                  <option value="0"{% if einstellungen['suppress_enter'] == '0' %} selected="selected"{% endif %}>nirgendwo</option>
-                  <option value="1"{% if einstellungen['suppress_enter'] == '1' %} selected="selected"{% endif %}>nur in Artikelverwaltung</option>
-                  <option value="2"{% if einstellungen['suppress_enter'] == '2' %} selected="selected"{% endif %}>nur in Kasse</option>
-                  <option value="3"{% if einstellungen['suppress_enter'] == '3' %} selected="selected"{% endif %}>&uuml;berall</option>
-                </select>
-              </div>
-          </div>
-          <div class="form-group">
-              <div class="col-md-2">&nbsp;</div>
-              <div class="col-md-10">
-                <p>
-                  * In der gew&auml;hlten Umgebung wird das Senden der Enter-Taste nach der EAN unterdr&uuml;ckt. Sollte Ihr Handscanner kein Enter nach
-                  der EAN senden, ist diese Option wirkungslos.
-                </p>
-              </div>
-          </div>
         </div>
 
         <div role="tabpanel" class="tab-pane" id="backup">
