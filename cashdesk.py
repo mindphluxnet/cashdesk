@@ -988,6 +988,14 @@ def show_briefe():
 
     briefe = database.korrespondenz.load_briefe(sqlite_file)
 
+    for brief in briefe:
+        if(brief['empfaenger_typ'] == 1):
+            empfaenger = database.kunden.load_kunde(sqlite_file, brief['empfaenger_id'])
+            brief['empfaenger'] = empfaenger
+        else:
+            empfaenger == database.lieferanten.load_lieferant(sqlite_file, brief['empfaenger_id'])
+            brief['empfaenger'] = empfaenger
+
     return render_template('briefe.html', briefe = briefe, page_title = page_title, page_id = page_id)
 
 if __name__ == '__main__':
