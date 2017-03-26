@@ -1,7 +1,10 @@
 import sqlite3
+from locale import *
 
 import database.factory
 import database.wareneingang
+
+setlocale(LC_NUMERIC, 'de_DE.utf8')
 
 def load_single_artikel(sqlite_file, id):
 
@@ -60,7 +63,7 @@ def save_artikel(sqlite_file, artikel):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("INSERT INTO artikel (artikelnummer, artikelbezeichnung, vkpreis, bestand, ean, warengruppe) VALUES (?, ?, ?, ?, ?, ?)", [ artikel['artikelnummer'], artikel['artikelbezeichnung'], artikel['vkpreis'], artikel['bestand'], artikel['ean'], artikel['warengruppe'] ])
+    c.execute("INSERT INTO artikel (artikelnummer, artikelbezeichnung, vkpreis, bestand, ean, warengruppe) VALUES (?, ?, ?, ?, ?, ?)", [ artikel['artikelnummer'], artikel['artikelbezeichnung'], atof(artikel['vkpreis']), artikel['bestand'], artikel['ean'], artikel['warengruppe'] ])
 
     conn.commit()
     conn.close()
@@ -70,7 +73,7 @@ def update_artikel(sqlite_file, artikel):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("UPDATE artikel SET artikelnummer = ?, artikelbezeichnung = ?, vkpreis = ?, bestand = ?, ean = ?, warengruppe = ? WHERE oid = ?", [ artikel['artikelnummer'], artikel['artikelbezeichnung'], artikel['vkpreis'], artikel['bestand'], artikel['ean'], artikel['warengruppe'], artikel['id'] ])
+    c.execute("UPDATE artikel SET artikelnummer = ?, artikelbezeichnung = ?, vkpreis = ?, bestand = ?, ean = ?, warengruppe = ? WHERE oid = ?", [ artikel['artikelnummer'], artikel['artikelbezeichnung'], atof(artikel['vkpreis']), artikel['bestand'], artikel['ean'], artikel['warengruppe'], artikel['id'] ])
 
     conn.commit()
     conn.close()
