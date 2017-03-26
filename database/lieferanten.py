@@ -33,7 +33,7 @@ def save_lieferant(sqlite_file, lieferant):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("INSERT INTO lieferanten (firmenname, strasse, hausnummer, plz, ort, telefonnummer, telefaxnummer, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [ lieferant['firmenname'], lieferant['strasse'], lieferant['hausnummer'], lieferant['plz'], lieferant['ort'], lieferant['telefonnummer'], lieferant['telefaxnummer'], lieferant['email'] ])
+    c.execute("INSERT INTO lieferanten (firmenname, empfaenger, strasse, hausnummer, plz, ort, telefonnummer, telefaxnummer, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [ lieferant['firmenname'], lieferant['empfaenger'], lieferant['strasse'], lieferant['hausnummer'], lieferant['plz'], lieferant['ort'], lieferant['telefonnummer'], lieferant['telefaxnummer'], lieferant['email'] ])
 
     conn.commit()
     conn.close()
@@ -55,7 +55,7 @@ def update_lieferant(sqlite_file, lieferant):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("UPDATE lieferanten SET firmenname = ?, strasse = ?, hausnummer = ?, plz = ?, ort = ?, telefonnummer = ?, telefaxnummer = ?, email = ? WHERE oid = ?", [ lieferant['firmenname'], lieferant['strasse'], lieferant['hausnummer'], lieferant['plz'], lieferant['ort'], lieferant['telefonnummer'], lieferant['telefaxnummer'], lieferant['email'], lieferant['id'] ])
+    c.execute("UPDATE lieferanten SET firmenname = ?, empfaenger = ?, strasse = ?, hausnummer = ?, plz = ?, ort = ?, telefonnummer = ?, telefaxnummer = ?, email = ? WHERE oid = ?", [ lieferant['firmenname'], lieferant['empfaenger'], lieferant['strasse'], lieferant['hausnummer'], lieferant['plz'], lieferant['ort'], lieferant['telefonnummer'], lieferant['telefaxnummer'], lieferant['email'], lieferant['id'] ])
 
     conn.commit()
     conn.close()
