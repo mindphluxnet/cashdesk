@@ -998,5 +998,23 @@ def show_briefe():
 
     return render_template('briefe.html', briefe = briefe, page_title = page_title, page_id = page_id)
 
+@app.route('/briefe/neu')
+def show_briefe_neu():
+
+    page_id = "korrespondenz"
+    page_title = "Neuen Brief schreiben"
+
+    return render_template('briefe-neu.html', page_title = page_title, page_id = page_id)
+
+@app.route('/briefe/ajax/empfaenger/<string:typ>')
+def briefe_ajax_empfaenger(typ):
+
+    if(typ == '1'):
+        empfaenger = database.kunden.load_kunden(sqlite_file)
+    else:
+        empfaenger = database.lieferanten.load_lieferanten(sqlite_file)
+
+    return json.dumps(empfaenger)    
+
 if __name__ == '__main__':
 	app.run(debug = debug, host = bind_host, port = bind_port)
