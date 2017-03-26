@@ -1006,6 +1006,23 @@ def show_briefe_neu():
 
     return render_template('briefe-neu.html', page_title = page_title, page_id = page_id)
 
+@app.route('/briefe/speichern', methods = ['POST'])
+def briefe_speichern():
+
+    id = database.korrespondenz.save_brief(sqlite_file, request.form)
+
+    return redirect('/briefe/ausgeben/' + str(id))
+
+@app.route('/briefe/ausgeben/<string:id>')
+def show_briefe_ausgeben(id):
+
+    page_id = "korrespondenz"
+    page_title = "Brief ausgeben"
+
+    brief = database.korrespondenz.load_brief(sqlite_file, id)
+
+    return render_template('briefe-ausgeben.html', brief = brief, page_id = page_id, page_title = page_title)
+
 @app.route('/briefe/ajax/empfaenger/<string:typ>')
 def briefe_ajax_empfaenger(typ):
 
@@ -1014,7 +1031,7 @@ def briefe_ajax_empfaenger(typ):
     else:
         empfaenger = database.lieferanten.load_lieferanten(sqlite_file)
 
-    return json.dumps(empfaenger)    
+    return json.dumps(empfaenger)
 
 if __name__ == '__main__':
 	app.run(debug = debug, host = bind_host, port = bind_port)
