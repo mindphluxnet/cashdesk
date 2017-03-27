@@ -1086,10 +1086,17 @@ def briefe_aktualisieren():
 
     return redirect(url_for('show_briefe'))
 
-@app.route('/briefe/loeschen/<string:id>')
-def briefe_loeschen(id):
+@app.route('/briefe/archivieren/<string:id>')
+def briefe_archivieren(id):
 
-    database.korrespondenz.delete_brief(sqlite_file, id)
+    database.korrespondenz.archive_brief(sqlite_file, id)
+
+    return redirect(url_for('show_briefe'))
+
+@app.route('/briefe/wiederherstellen/<string:id>')
+def briefe_wiederherstellen(id):
+
+    database.korrespondenz.restore_brief(sqlite_file, id)
 
     return redirect(url_for('show_briefe'))
 

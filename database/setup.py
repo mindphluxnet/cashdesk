@@ -66,7 +66,7 @@ def setup_database(sqlite_file):
         pass
 
     try:
-        c.execute("CREATE TABLE briefe (empfaenger_id INT, empfaenger_typ INT, datum TEXT, betreff TEXT(50), inhalt TEXT)")
+        c.execute("CREATE TABLE briefe (empfaenger_id INT, empfaenger_typ INT, datum TEXT, betreff TEXT(50), inhalt TEXT, archiviert INT(1))")
     except Exception as e:
         pass
 

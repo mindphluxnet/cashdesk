@@ -16,7 +16,7 @@
         </thead>
         <tbody>
           {% for brief in briefe %}
-          <tr>
+          <tr{% if brief['archiviert'] == 1 %} class="text-muted"{% endif %}>
             <td>{{ brief['datum'] }}</td>
             <td>
               {% if brief['empfaenger_typ'] == 1 %}
@@ -29,7 +29,11 @@
             <td class="text-right">
               <a class="btn btn-xs btn-default" href="/briefe/pdfrenderer/drucken/{{ brief['rowid'] }}" target="_rechnungsausgabe"><span class="glyphicon glyphicon-print"></span> Drucken</a>
               <a class="btn btn-xs btn-default" href="/briefe/bearbeiten/{{ brief['rowid'] }}"><span class="glyphicon glyphicon-pencil"></span> Bearbeiten</a>
-              <a class="btn btn-xs btn-danger" href="/briefe/loeschen/{{ brief['rowid'] }}"><span class="glyphicon glyphicon-remove"></span> L&ouml;schen</a>
+              {% if brief['archiviert'] == 0 %}
+              <a class="btn btn-xs btn-danger" href="/briefe/archivieren/{{ brief['rowid'] }}"><span class="fa fa-archive"></span> Archivieren</a>
+              {% else %}
+              <a class="btn btn-xs btn-success" href="/briefe/wiederherstellen/{{ brief['rowid'] }}"><span class="fa fa-archive"></span> Wiederherstellen</a>
+              {% endif %}
             </td>
           {% endfor %}
         </tbody>
