@@ -92,6 +92,22 @@ def load_last_ekpreis(sqlite_file, id):
     conn.close()
 
     if tmp:
-        return tmp
+        return tmp['ekpreis']
+    else:
+        return 0
+
+def load_median_ekpreis(sqlite_file, id):
+
+    conn = sqlite3.connect(sqlite_file)
+    conn.row_factory = database.factory.dict_factory
+    c = conn.cursor()
+
+    c.execute("SELECT SUM(ekpreis)/COUNT(ekpreis) as ekpreis FROM wareneingang WHERE artikel_id = ? ORDER BY oid DESC LIMIT 1", [ id ])
+    tmp = c.fetchone()
+
+    conn.close()
+
+    if tmp:
+        return tmp['ekpreis']
     else:
         return 0
