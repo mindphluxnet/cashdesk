@@ -79,3 +79,19 @@ def wareneingang_verbuchen(sqlite_file, id):
 
     conn.commit()
     conn.close()
+
+def load_last_ekpreis(sqlite_file, id):
+
+    conn = sqlite3.connect(sqlite_file)
+    conn.row_factory = database.factory.dict_factory
+    c = conn.cursor()
+
+    c.execute("SELECT ekpreis FROM wareneingang WHERE artikel_id = ? ORDER BY oid DESC LIMIT 1", [ id ])
+    tmp = c.fetchone()
+
+    conn.close()
+
+    if tmp:
+        return tmp
+    else:
+        return 0
