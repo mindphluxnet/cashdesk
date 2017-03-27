@@ -181,12 +181,12 @@
             <label for="max_backups" class="col-sm-3 control-label">Backup-Dateien aufbewahren</label>
             <div class="col-sm-9">
               <select name="max_backups" id="max_backups" class="form-control">
-                <option value="1"{% if einstellungen['max_backups'] == '0' %} selected="selected"{% endif %}>1 Datei (nicht empfohlen!)</option>
-                <option value="5"{% if einstellungen['max_backups'] == '5' %} selected="selected"{% endif %}>5 Dateien</option>
-                <option value="10"{% if einstellungen['max_backups'] == '10' %} selected="selected"{% endif %}>10 Dateien</option>
-                <option value="15"{% if einstellungen['max_backups'] == '15' %} selected="selected"{% endif %}>15 Dateien</option>
-                <option value="20"{% if einstellungen['max_backups'] == '20' %} selected="selected"{% endif %}>20 Dateien</option>
-                <option value="25"{% if einstellungen['max_backups'] == '25' %} selected="selected"{% endif %}>25 Dateien</option>
+                <option value="1"{% if einstellungen['max_backups'] == '0' %} selected="selected"{% endif %}>nur letzte Datei (nicht empfohlen!)</option>
+                <option value="5"{% if einstellungen['max_backups'] == '5' %} selected="selected"{% endif %}>letzte 5 Dateien</option>
+                <option value="10"{% if einstellungen['max_backups'] == '10' %} selected="selected"{% endif %}>letzte 10 Dateien</option>
+                <option value="15"{% if einstellungen['max_backups'] == '15' %} selected="selected"{% endif %}>letzte 15 Dateien</option>
+                <option value="20"{% if einstellungen['max_backups'] == '20' %} selected="selected"{% endif %}>letzte 20 Dateien</option>
+                <option value="25"{% if einstellungen['max_backups'] == '25' %} selected="selected"{% endif %}>letzte 25 Dateien</option>
               </select>
             </div>
           </div>
