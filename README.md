@@ -45,3 +45,6 @@ aktuell nicht besonders funktionsfähig.
 # Fremder Code
 
 - UUID-Generator in Javascript von Jeff Ward (http://jcward.com/UUID.js)
+- Font Awesome by Dave Gandy - http://fontawesome.io
+- Bootstrap - http://getbootstrap.com
+- jQuery - http://jquery.com
