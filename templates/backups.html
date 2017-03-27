@@ -18,7 +18,7 @@
         <tbody>
           {% for backup in backups %}
           <tr>
-            <td>{{ backup[0] }}</td>
+            <td><span class="fa fa-file-zip-o"></span> {{ backup[0] }}</td>
             <td>{{ backup[1] }}</td>
             <td>
               <button class="btn btn-default btn-xs" data-filename="{{ backup[0] }}"><span class="glyphicon glyphicon-cloud-download"></span> Wiederherstellen</button>
