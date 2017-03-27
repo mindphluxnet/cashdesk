@@ -670,7 +670,6 @@ def ausgangsrechnung_neu_step2(id):
         else:
             pos['ekpreis'] = database.wareneingang.load_median_ekpreis(sqlite_file, pos['artikel_id'])
 
-        print(pos)    
         rohgewinn = gesamtpreis - (pos['ekpreis'] * pos['anzahl'])
 
     ust = (gesamtpreis / 100) * float(settings['ustsatz'])
