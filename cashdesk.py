@@ -40,8 +40,8 @@ import raspi.raspi
 
 import backup.dbx
 
-sqlite_file = "cashdesk.sqlite"
-upload_dir = "assets/"
+sqlite_file = os.path.dirname(os.path.realpath(__file__)) + os.sep + "cashdesk.sqlite"
+upload_dir = os.path.dirname(os.path.realpath(__file__)) + os.sep + "assets/"
 debug = True
 bind_host = '0.0.0.0'
 bind_port = 5000
