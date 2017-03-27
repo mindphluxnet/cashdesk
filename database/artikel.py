@@ -19,13 +19,16 @@ def load_single_artikel(sqlite_file, id):
 
     return artikel
 
-def load_artikel_by_ean(sqlite_file, ean):
+def load_artikel_by_ean(sqlite_file, ean, archiviert = False):
 
     conn = sqlite3.connect(sqlite_file)
     conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
 
-    c.execute("SELECT oid, * FROM artikel WHERE ean = ?", [ ean ])
+    if(not archiviert):
+        c.execute("SELECT oid, * FROM artikel WHERE ean = ?", [ ean ])
+    else:
+        c.execute("SELECT oid, * FROM artikel WHERE ean = ? AND archiviert = 0", [ ean ])
     artikel = c.fetchone()
 
     conn.close()
@@ -45,13 +48,16 @@ def load_artikel_by_wgr(sqlite_file, id):
 
     return artikel
 
-def load_artikel(sqlite_file):
+def load_artikel(sqlite_file, archiviert = False):
 
     conn = sqlite3.connect(sqlite_file)
     conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
 
-    c.execute("SELECT oid, * FROM artikel ORDER BY artikelnummer ASC")
+    if(not archiviert):
+        c.execute("SELECT oid, * FROM artikel ORDER BY artikelnummer ASC")
+    else:
+        c.execute("SELECT oid, * FROM artikel WHERE archiviert = 0 ORDER BY artikelnummer ASC")
     artikel = c.fetchall()
 
     conn.close()
@@ -63,7 +69,7 @@ def save_artikel(sqlite_file, artikel):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("INSERT INTO artikel (artikelnummer, artikelbezeichnung, vkpreis, bestand, ean, warengruppe) VALUES (?, ?, ?, ?, ?, ?)", [ artikel['artikelnummer'], artikel['artikelbezeichnung'], atof(artikel['vkpreis']), artikel['bestand'], artikel['ean'], artikel['warengruppe'] ])
+    c.execute("INSERT INTO artikel (artikelnummer, artikelbezeichnung, vkpreis, bestand, ean, warengruppe, archiviert) VALUES (?, ?, ?, ?, ?, ?, ?)", [ artikel['artikelnummer'], artikel['artikelbezeichnung'], atof(artikel['vkpreis']), artikel['bestand'], artikel['ean'], artikel['warengruppe'], 0 ])
 
     conn.commit()
     conn.close()
@@ -87,14 +93,14 @@ def copy_artikel(sqlite_file, id):
     c.execute("SELECT * FROM artikel WHERE oid = ?", [ id ])
     artikel = c.fetchone()
 
-    c.execute("INSERT INTO artikel (artikelnummer, artikelbezeichnung, vkpreis, bestand, ean, warengruppe) VALUES (?, ?, ?, ?, ?, ?)", [ artikel['artikelnummer'], artikel['artikelbezeichnung'], artikel['vkpreis'], 0, artikel['ean'], artikel['warengruppe'] ])
+    c.execute("INSERT INTO artikel (artikelnummer, artikelbezeichnung, vkpreis, bestand, ean, warengruppe, archiviert) VALUES (?, ?, ?, ?, ?, ?)", [ artikel['artikelnummer'], artikel['artikelbezeichnung'], artikel['vkpreis'], 0, artikel['ean'], artikel['warengruppe'], 0 ])
 
     conn.commit()
     conn.close()
 
     return c.lastrowid
 
-def delete_artikel(sqlite_file, id):
+def archive_artikel(sqlite_file, id):
 
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
@@ -102,7 +108,22 @@ def delete_artikel(sqlite_file, id):
     c.execute("SELECT warengruppe FROM artikel WHERE oid = ?", [ id ])
     wgr = c.fetchone()
 
-    c.execute("DELETE FROM artikel WHERE oid = ?", [ id ])
+    c.execute("UPDATE artikel SET archiviert = 1 WHERE oid = ?", [ id ])
+
+    conn.commit()
+    conn.close()
+
+    return wgr
+
+def restore_artikel(sqlite_file, id):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("SELECT warengruppe FROM artikel WHERE oid = ?", [ id ])
+    wgr = c.fetchone()
+
+    c.execute("UPDATE artikel SET archiviert = 0 WHERE oid = ?", [ id ])
 
     conn.commit()
     conn.close()

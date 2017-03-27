@@ -236,12 +236,19 @@ def artikel_aktualisieren():
 
     return redirect('/artikel/' + request.form['warengruppe'])
 
-@app.route('/artikel/loeschen/<string:id>')
-def artikel_loeschen(id):
+@app.route('/artikel/archivieren/<string:id>')
+def artikel_archivieren(id):
 
-        wgr = database.artikel.delete_artikel(sqlite_file, id)
+        wgr = database.artikel.archive_artikel(sqlite_file, id)
 
-        return redirect('/artikel/' + str(wgr))
+        return redirect('/artikel/' + str(wgr[0]))
+
+@app.route('/artikel/wiederherstellen/<string:id>')
+def artikel_wiederherstellen(id):
+
+        wgr = database.artikel.restore_artikel(sqlite_file, id)
+
+        return redirect('/artikel/' + str(wgr[0]))
 
 @app.route('/artikel/ajax/preis/<string:id>')
 def artikel_ajax_preis(id):
@@ -649,7 +656,7 @@ def ausgangsrechnung_neu_step2(id):
 
     rechnung = database.rechnungen.load_rechnung(sqlite_file, id)
     kunden = database.kunden.load_kunden(sqlite_file)
-    artikel = database.artikel.load_artikel(sqlite_file)
+    artikel = database.artikel.load_artikel(sqlite_file, True)
     positionen = database.rechnungen.load_positionen(sqlite_file, id)
     settings = database.settings.load_settings()
 

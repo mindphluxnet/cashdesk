@@ -40,7 +40,11 @@
               {% endif %}
               <a class="btn btn-xs btn-default" href="/artikel/kopieren/{{ art['rowid'] }}"><span class="glyphicon glyphicon-copy"></span> Kopieren</a>
               <a class="btn btn-xs btn-default" href="/artikel/bearbeiten/{{ art['rowid'] }}"><span class="glyphicon glyphicon-pencil"></span> Bearbeiten</a>
-              <a class="btn btn-xs btn-danger" href="/artikel/loeschen/{{ art['rowid'] }}"><span class="glyphicon glyphicon-remove"></span> L&ouml;schen</a>
+              {% if art['archiviert'] == 0 or art['archiviert'] == None %}
+              <a class="btn btn-xs btn-danger" href="/artikel/archivieren/{{ art['rowid'] }}"><span class="fa fa-archive"></span> Archivieren</a>
+              {% else %}
+              <a class="btn btn-xs btn-success" href="/artikel/wiederherstellen/{{ art['rowid'] }}"><span class="fa fa-archive"></span> Wiederherstellen</a>
+              {% endif %}
             </td>
           {% endfor %}
         </tbody>
