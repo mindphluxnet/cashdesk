@@ -27,7 +27,7 @@
             <td class="text-right">
                 <button class="btn btn-xs btn-default" id="pdfupload-button" data-id="{{ rechnung['rowid'] }}"><span class="glyphicon glyphicon-upload"></span> PDF hinzuf&uuml;gen</button>
                 {% if rechnung['pdf'] %}
-                <a class="btn btn-xs btn-default" target="_rechnungsausgabe" href="/pdfviewer/{{ rechnung['rowid'] }}"><span class="glyphicon glyphicon-file"></span> PDF</a>
+                <a class="btn btn-xs btn-default" target="_rechnungsausgabe" href="/pdfviewer/{{ rechnung['rowid'] }}"><span class="fa fa-file-pdf-o text-danger"></span> PDF</a>
                 {% endif %}
                 {% if rechnung['bezahlt'] == 0 %}
                 <a class="btn btn-xs btn-default" href="/eingangsrechnungen/neu/step2/{{ rechnung['rowid'] }}"><span class="glyphicon glyphicon-edit"></span> Bearbeiten</a>
