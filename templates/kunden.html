@@ -14,18 +14,23 @@
           <th>Ort</th>
           <th>Umsatz</th>
           <th>Rohgewinn</th>
-          <th>Optionen</th>
+          <th class="text-right">Optionen</th>
         </thead>
         <tbody>
           {% for kunde in kunden %}
-          <tr>
+          <tr{% if kunde['archiviert'] == 1 %} class="text-muted"{% endif %}>
             <td>{{ kunde['rowid'] }}</td>
             <td>{{ kunde['nachname'] }}, {{ kunde['vorname'] }}</td>
             <td>{{ kunde['ort'] }}</td>
             <td></td>
             <td></td>
-            <td>
-              <a class="btn btn-xs btn-default" href="/kunden/bearbeiten/{{ kunde['rowid'] }}"><span class="glyphicon glyphicon-pencil"></span> Bearbeiten</a> <a class="btn btn-xs btn-danger" href="/kunden/loeschen/{{ kunde['rowid'] }}"><span class="glyphicon glyphicon-remove"></span> L&ouml;schen</a>
+            <td class="text-right">
+              <a class="btn btn-xs btn-default" href="/kunden/bearbeiten/{{ kunde['rowid'] }}"><span class="glyphicon glyphicon-pencil"></span> Bearbeiten</a>
+              {% if kunde['archiviert'] == 0 %}
+              <a class="btn btn-xs btn-danger" href="/kunden/archivieren/{{ kunde['rowid'] }}"><span class="fa fa-archive"></span> Archivieren</a>
+              {% else %}
+              <a class="btn btn-xs btn-success" href="/kunden/wiederherstellen/{{ kunde['rowid'] }}"><span class="fa fa-archive"></span> Wiederherstellen</a>
+              {% endif %}
             </td>
           {% endfor %}
         </tbody>

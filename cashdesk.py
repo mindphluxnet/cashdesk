@@ -395,10 +395,17 @@ def kunde_ajax_speichern():
 
     return json.dumps(result)
 
-@app.route('/kunden/loeschen/<string:id>')
-def kunden_loeschen(id):
+@app.route('/kunden/archivieren/<string:id>')
+def kunden_archivieren(id):
 
-    database.kunden.delete_kunde(sqlite_file, id)
+    database.kunden.archive_kunde(sqlite_file, id)
+
+    return redirect(url_for('show_kunden'))
+
+@app.route('/kunden/wiederherstellen/<string:id>')
+def kunden_wiederherstellen(id):
+
+    database.kunden.restore_kunde(sqlite_file, id)
 
     return redirect(url_for('show_kunden'))
 
@@ -444,10 +451,17 @@ def update_lieferanten():
 
     return redirect(url_for('show_lieferanten'))
 
-@app.route('/lieferanten/loeschen/<string:id>')
-def delete_lieferant(id):
+@app.route('/lieferanten/archivieren/<string:id>')
+def archive_lieferant(id):
 
-    database.lieferanten.delete_lieferant(sqlite_file, id)
+    database.lieferanten.archive_lieferant(sqlite_file, id)
+
+    return redirect(url_for('show_lieferanten'))
+
+@app.route('/lieferanten/wiederherstellen/<string:id>')
+def restore_lieferant(id):
+
+    database.lieferanten.restore_lieferant(sqlite_file, id)
 
     return redirect(url_for('show_lieferanten'))
 
