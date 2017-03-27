@@ -9,7 +9,7 @@
 
       <ul class="nav nav-pills">
         {% for konto in konten %}
-        <li{% if usekonto == konto['rowid'] %} class="active"{% endif %}><a href="/buchungskonten/{{ konto['rowid'] }}"><span class="glyphicon glyphicon-{% if konto['is_kasse'] %}euro{% else %}credit-card{% endif %}"></span> {{ konto['bezeichnung'] }}</a></li>
+        <li{% if usekonto == konto['rowid'] %} class="active"{% endif %}><a href="/buchungskonten/{{ konto['rowid'] }}"><span class="{% if konto['is_kasse'] %}fa fa-money{% else %}glyphicon glyphicon-credit-card{% endif %}"></span> {{ konto['bezeichnung'] }}</a></li>
         {% endfor %}
       </ul>
       <hr />
