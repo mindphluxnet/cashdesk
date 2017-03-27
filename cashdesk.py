@@ -961,16 +961,12 @@ def einstellungen_speichern():
 @app.route('/konten', methods = ['GET'])
 def show_konten():
 
-    show_delete = False
-    if(request.args.get('show_delete') == 'True'):
-        show_delete = True
-
     page_title = "Kontoverwaltung"
     page_id = "konten"
 
     konten = database.konten.load_konten(sqlite_file)
 
-    return render_template('konten.html', page_title = page_title, page_id = page_id, konten = konten, show_delete = show_delete)
+    return render_template('konten.html', page_title = page_title, page_id = page_id, konten = konten)
 
 @app.route('/konten/neu')
 def show_konten_neu():
