@@ -51,7 +51,7 @@ def setup_database(sqlite_file):
         pass
 
     try:
-        c.execute("CREATE TABLE konten (bezeichnung TEXT(50), iban TEXT(34), bic TEXT(11), bankname TEXT(50), is_kasse INT(1))")
+        c.execute("CREATE TABLE konten (bezeichnung TEXT(50), iban TEXT(34), bic TEXT(11), bankname TEXT(50), is_kasse INT(1), archiviert INT(1))")
     except Exception as e:
         pass
 

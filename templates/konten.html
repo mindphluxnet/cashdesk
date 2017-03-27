@@ -22,15 +22,17 @@
         </thead>
         <tbody>
           {% for konto in konten %}
-          <tr>
+          <tr{% if konto['archiviert'] == 1 %} class="text-muted"{% endif %}>
             <td>{{ konto['bezeichnung'] }}</td>
             <td>{% if konto['is_kasse'] == 0 %}{{ konto['iban'] }}{% else %}&mdash;{% endif %}</td>
             <td>{% if konto['is_kasse'] == 0 %}{{ konto['bic'] }}{% else %}&mdash;{% endif %}</td>
             <td>{% if konto['is_kasse'] == 0 %}{{ konto['bankname'] }}{% else %}&mdash;{% endif %}</td>
             <td>
               <a class="btn btn-xs btn-default" href="/konten/bearbeiten/{{ konto['rowid'] }}"><span class="glyphicon glyphicon-pencil"></span> Bearbeiten</a>
-              {% if show_delete %}
-              <a class="btn btn-xs btn-danger" href="/konten/loeschen/{{ konto['rowid'] }}"><span class="glyphicon glyphicon-remove"></span> L&ouml;schen</a>
+              {% if konto['archiviert'] == 0 or konto['archiviert'] == None %}
+              <a class="btn btn-xs btn-danger" href="/konten/archivieren/{{ konto['rowid'] }}"><span class="fa fa-archive"></span> Archivieren</a>
+              {% else %}
+              <a class="btn btn-xs btn-success" href="/konten/wiederherstellen/{{ konto['rowid'] }}"><span class="fa fa-archive"></span> Wiederherstellen</a>
               {% endif %}
             </td>
           {% endfor %}

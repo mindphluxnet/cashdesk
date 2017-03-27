@@ -868,7 +868,7 @@ def show_buchungskonten(usekonto = 0):
     page_title = "Buchungskonten"
     page_id = "buchungskonten"
 
-    konten = database.konten.load_konten(sqlite_file)
+    konten = database.konten.load_konten(sqlite_file, True)
     stammdaten = database.settings.load_settings()
 
     if(usekonto == 0):
@@ -1004,10 +1004,17 @@ def konten_aktualisieren():
 
     return redirect(url_for('show_konten'))
 
-@app.route('/konten/loeschen/<string:id>')
-def konten_loeschen(id):
+@app.route('/konten/archivieren/<string:id>')
+def konten_archivieren(id):
 
-    database.konten.delete_konto(sqlite_file, id)
+    database.konten.archive_konto(sqlite_file, id)
+
+    return redirect(url_for('show_konten'))
+
+@app.route('/konten/wiederherstellen/<string:id>')
+def konten_wiederherstellen(id):
+
+    database.konten.restore_konto(sqlite_file, id)
 
     return redirect(url_for('show_konten'))
 
