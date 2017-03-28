@@ -195,9 +195,8 @@ def show_artikel_info(id):
         median_ekpreis += we['ekpreis']
         warenwert_lager += (we['ekpreis'] * we['anzahl'])
 
-    median_ekpreis = median_ekpreis / len(wareneingang)
-
-    print((float(settings['ustsatz'])+100.0) /100.0)
+    if(len(wareneingang) > 0):
+        median_ekpreis = median_ekpreis / len(wareneingang)
 
     ust = (median_ekpreis * (float(settings['ustsatz'])+100.0) /100.0) - median_ekpreis
 
