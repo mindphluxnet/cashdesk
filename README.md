@@ -1,14 +1,16 @@
 # Cashdesk
 
 Eine extrem schlanke Faktura in Python, hauptsächlich für den Einsatz auf einem
-Raspberry Pi (3) konzipiert.
+Raspberry Pi (3) konzipiert. Die Software richtet sich speziell an Kleinunternehmer nach §19 Abs. 1 UStG.
 
-# Geplante Features
+# Features
 
-- Komplette Faktura mit Ein- und Ausgangsrechnungen, Artikel- und Kundenverwaltung, Kassenbuch
+- vollständige Faktura mit Vollwarenwirtschaft, Ein- und Ausgangsrechnungen, Kunden- und Lieferantenstamm
+- Barverkauf mit Unterstützung von Barcode-Scanner (noch nicht implementiert)
 - alle Daten in einer SQLite-Datenbank für einfachen Austausch
 - Bedienung vollständig im Browser (Bootstrap, jQuery)
 - Ausgabe/Druck von Rechnungen als PDF mit eigenem Layout aus HTML-Template
+- Raspberry Pi: Unterstützung von LCD-Display für Barverkauf (noch nicht implementiert)
 
 # Abhängigkeiten installieren
 
@@ -36,7 +38,8 @@ Sobald das Programm läuft, kann die Oberfläche im Browser unter der URL
 http://localhost:5000
 ```
 
-geöffnet werden.
+geöffnet werden. Wenn der Debugmodus deaktiviert ist, wird automatisch
+ein neues Tab/Fenster geöffnet.
 
 # Fremder Code
 
