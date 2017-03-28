@@ -177,6 +177,35 @@ def show_artikel(id = None):
 
     return render_template('artikel.html', artikel = artikel, warengruppen = warengruppen, selwgr = selwgr, page_title = page_title, page_id = page_id)
 
+@app.route('/artikel/info/<string:id>')
+def show_artikel_info(id):
+
+    page_title = "Artikelinformation"
+    page_id = "artikel"
+
+    artikel = database.artikel.load_single_artikel(sqlite_file, id)
+    wareneingang = database.wareneingang.load_wareneingang_by_artikel(sqlite_file, id)
+    settings = database.settings.load_settings()
+    wgr = database.warengruppen.get_wgr_by_artikel(sqlite_file, id)
+
+    median_ekpreis = 0
+    warenwert_lager = 0
+
+    for we in wareneingang:
+        median_ekpreis += we['ekpreis']
+        warenwert_lager += (we['ekpreis'] * we['anzahl'])
+
+    median_ekpreis = median_ekpreis / len(wareneingang)
+
+    print((float(settings['ustsatz'])+100.0) /100.0)
+
+    ust = (median_ekpreis * (float(settings['ustsatz'])+100.0) /100.0) - median_ekpreis
+
+    median_revenue = artikel['vkpreis'] - median_ekpreis - ust
+    median_revenue_percent = (median_revenue / artikel['vkpreis']) * 100
+
+    return render_template('artikel-info.html', artikel = artikel, wareneingang = wareneingang, median_ekpreis = median_ekpreis, median_revenue = median_revenue, median_revenue_percent = median_revenue_percent, ust = ust, wgr = wgr, warenwert_lager = warenwert_lager, page_title = page_title, page_id = page_id)
+
 @app.route('/artikel/neu/<string:id>')
 def show_artikel_neu(id):
 

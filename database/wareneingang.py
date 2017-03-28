@@ -16,6 +16,22 @@ def load_wareneingang(sqlite_file, rechnung_id):
 
     return wareneingang
 
+def load_wareneingang_by_artikel(sqlite_file, artikel_id):
+
+    conn = sqlite3.connect(sqlite_file)
+    conn.row_factory = database.factory.dict_factory
+    c = conn.cursor()
+
+    c.execute("SELECT w.oid AS weid, w.*, a.oid, a.artikelbezeichnung, r.oid, r.*, l.* FROM wareneingang w LEFT JOIN artikel a ON(a.oid = w.artikel_id) LEFT JOIN eingangsrechnungen r ON(r.oid = w.rechnung_id) LEFT JOIN lieferanten l ON(l.oid = r.lieferant_id) WHERE w.artikel_id = ? ORDER BY r.rechnungsdatum DESC", [ artikel_id ])
+
+    wareneingang = c.fetchall()
+
+    conn.close()
+
+    return wareneingang
+
+
+
 def save_position(sqlite_file, position):
 
     conn = sqlite3.connect(sqlite_file)

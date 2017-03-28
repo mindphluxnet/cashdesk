@@ -1,0 +1,49 @@
+{% include "header.html" %}
+
+    {% include "nav.html" %}
+
+    <div class="container">
+
+      <a class="btn btn-default" href="/artikel/{{ wgr }}"><i class="fa fa-step-backward"></i> Zur&uuml;ck</a>
+
+      <h3>{{ page_title }} <small>{{ artikel['artikelbezeichnung'] }}</small></h3>
+
+      <p>
+        <strong>VK-Preis:</strong> &euro; {{ '{0:0.2f}'.format(artikel['vkpreis']) }}
+      </p>
+      <p>
+        <strong>&oslash; EK-Preis:</strong> &euro; {{ '{0:0.2f}'.format(median_ekpreis) }} (zzgl. &euro; {{ '{0:0.2f}'.format(ust) }} USt.)
+      </p>
+      <p>
+        <strong>&oslash; Spanne:</strong> &euro; {{ '{0:0.2f}'.format(median_revenue) }} ({{ '{0:0.2f}'.format(median_revenue_percent) }}%)
+      </p>
+      <p>
+        <strong>Warenwert am Lager:</strong> &euro; {{ '{0:0.2f}'.format(warenwert_lager) }}
+      </p>
+
+      <hr />
+      <h3>Letzte Wareneing&auml;nge</h3>
+
+      <table class="table table-striped table-condensed">
+        <thead>
+          <th>Datum</th>
+          <th>Lieferant</th>
+          <th>Anzahl</th>
+          <th>EK-Preis</th>
+        </thead>
+        <tbody>
+          {% for we in wareneingang %}
+          <tr>
+            <td>{{ we['rechnungsdatum'] }}</td>
+            <td>{{ we['firmenname'] }}</td>
+            <td>{{ we['anzahl'] }}</td>
+            <td>&euro; {{ '{0:0.2f}'.format(we['ekpreis']) }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+
+    </div>
+
+{% include "footer.html" %}

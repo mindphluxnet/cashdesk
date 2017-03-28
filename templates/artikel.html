@@ -35,6 +35,7 @@
             <td>{{ art['bestand'] }}</td>
             <td>&euro; {{ '{0:0.2f}'.format(art['vkpreis']) }}</td>
             <td class="text-right">
+              <a class="btn btn-xs btn-info" href="/artikel/info/{{ art['rowid'] }}"><span class="glyphicon glyphicon-info-sign"></span> Info</a>
               {% if art['bundle'] and art['bestand'] > 0 %}
               <a class="btn btn-xs btn-primary" href="/artikel/bundle/auspacken/{{ art['rowid'] }}"><span class="glyphicon glyphicon-gift"></span> Auspacken</a>
               {% endif %}

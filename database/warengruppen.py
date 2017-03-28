@@ -69,3 +69,15 @@ def get_first_wgr(sqlite_file):
     conn.close()
 
     return wgr[0]
+
+def get_wgr_by_artikel(sqlite_file, id):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("SELECT warengruppe FROM artikel WHERE oid = ?", [ id ])
+    wgr = c.fetchone()
+
+    conn.close()
+
+    return wgr[0]
