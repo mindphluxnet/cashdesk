@@ -33,6 +33,7 @@ import database.wareneingang
 import database.buchungen
 import database.warengruppen
 import database.korrespondenz
+import database.privatentnahmen
 
 import statics.konten
 
@@ -1186,6 +1187,33 @@ def briefe_pdfrenderer(action, id):
         response.headers['Content-Disposition'] = 'inline; filename=brief-' + id + '.pdf'
 
     return response
+
+@app.route('/privatentnahmen')
+def show_privatentnahmen():
+
+    page_id = "privatentnahmen"
+    page_title = "Privatentnahmen und Werbegeschenke"
+
+    privatentnahmen = database.privatentnahmen.load_privatentnahmen(sqlite_file)
+    artikelstamm = database.artikel.load_artikel(sqlite_file, False)
+
+    gesamtwert = 0
+
+    for pe in privatentnahmen:
+        artikel = database.artikel.load_single_artikel(sqlite_file, pe['artikel_id'])
+        pe['artikelbezeichnung'] = artikel['artikelbezeichnung']
+        median_ekpreis = database.wareneingang.load_median_ekpreis(sqlite_file, pe['artikel_id'])
+        pe['warenwert'] = median_ekpreis * pe['anzahl']
+        gesamtwert = gesamtwert + (median_ekpreis * pe['anzahl'])
+
+    return render_template('privatentnahmen.html', privatentnahmen = privatentnahmen, artikel = artikelstamm, gesamtwert = gesamtwert, page_id = page_id, page_title = page_title)
+
+@app.route('/privatentnahmen/speichern', methods = ['POST'])
+def privatentnahmen_speichern():
+
+    database.privatentnahmen.save_privatentnahmen(sqlite_file, request.form)
+
+    return redirect(url_for('show_privatentnahmen'))
 
 if __name__ == '__main__':
 	app.run(debug = debug, host = bind_host, port = bind_port)

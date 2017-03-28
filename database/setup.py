@@ -70,6 +70,11 @@ def setup_database(sqlite_file):
     except Exception as e:
         pass
 
+    try:
+        c.execute("CREATE TABLE privatentnahmen (datum TEXT, artikel_id INT, anzahl INT, typ INT, eurkonto INT)")
+    except Exception as e:
+        pass
+
     conn.commit()
     conn.close()
 

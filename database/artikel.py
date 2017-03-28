@@ -55,9 +55,9 @@ def load_artikel(sqlite_file, archiviert = False):
     c = conn.cursor()
 
     if(not archiviert):
-        c.execute("SELECT oid, * FROM artikel ORDER BY artikelnummer ASC")
+        c.execute("SELECT oid, * FROM artikel ORDER BY artikelbezeichnung ASC")
     else:
-        c.execute("SELECT oid, * FROM artikel WHERE archiviert = 0 ORDER BY artikelnummer ASC")
+        c.execute("SELECT oid, * FROM artikel WHERE archiviert = 0 ORDER BY artikelbezeichnung ASC")
     artikel = c.fetchall()
 
     conn.close()
