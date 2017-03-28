@@ -38,9 +38,6 @@ http://localhost:5000
 
 geöffnet werden.
 
-Hinweis: diese Software befindet sich im frühen Entwicklungsstadium. Sie ist
-aktuell nicht besonders funktionsfähig.
-
 # Fremder Code
 
 - UUID-Generator in Javascript von Jeff Ward (http://jcward.com/UUID.js)
