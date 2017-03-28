@@ -24,7 +24,7 @@
           <div class="form-group">
             <label for="rechnungsdatum" class="col-sm-2 control-label">Rechnungsdatum</label>
             <div class="col-sm-2">
-                <input type="date" class="form-control" name="rechnungsdatum" id="rechnungsdatum" />
+                <input type="date" class="form-control" required="required" name="rechnungsdatum" id="rechnungsdatum" />
             </div>
             <div class="col-sm-1">
               <a class="btn btn-default" href="#" onclick="document.getElementById('rechnungsdatum').valueAsDate = new Date();"><span class="glyphicon glyphicon-calendar"></span> Heute</a>
@@ -92,7 +92,7 @@
               <div class="form-group">
                 <label for="nachname" class="col-sm-2 control-label">Nachname</label>
                 <div class="col-sm-4">
-                  <input type="text" class="form-control" id="nachname" name="nachname" />
+                  <input type="text" class="form-control" required="required" id="nachname" name="nachname" />
                 </div>
                 <label for="vorname" class="col-sm-1 control-label">Vorname</label>
                 <div class="col-sm-5">
