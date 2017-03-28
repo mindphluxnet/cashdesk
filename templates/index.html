@@ -6,23 +6,23 @@
 
     <div class="container">
       {% if no_logo %}
-      <div class="alert alert-warning"><strong>Hinweis:</strong> Es wurde noch kein Firmenlogo hochgeladen! Es k&ouml;nnen so keine Rechnungen ausgegeben werden! <a href="/einstellungen">Hier hochladen</a></div>
+      <div class="alert alert-warning"><span class="glyphicon glyphicon-info-sign"></span> <strong>Hinweis:</strong> Es wurde noch kein Firmenlogo hochgeladen! Es k&ouml;nnen so keine Rechnungen ausgegeben werden! <a href="/einstellungen">Hier hochladen</a></div>
       {% endif %}
 
       {% if no_backup %}
-      <div class="alert alert-danger"><strong>Wichtiger Hinweis:</strong> Es wurde noch kein Dropbox-API-Schl&uuml;ssel hinterlegt, Backups sind so unm&ouml;glich! <a href="/einstellungen">Hier eingeben</a></div>
+      <div class="alert alert-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> <strong>Wichtiger Hinweis:</strong> Es wurde noch kein Dropbox-API-Schl&uuml;ssel hinterlegt, Backups sind so unm&ouml;glich! <a href="/einstellungen">Hier eingeben</a></div>
       {% endif %}
 
       {% if no_accounts %}
-      <div class="alert alert-warning"><strong>Hinweis:</strong> Es wurden noch keine Konten angelegt. F&uuml;r eine korrekte Funktion sollten Sie dies umgehend nachholen! <a href="/konten">Hier eingeben</a></div>
+      <div class="alert alert-warning"><span class="glyphicon glyphicon-info-sign"></span> <strong>Hinweis:</strong> Es wurden noch keine Konten angelegt. F&uuml;r eine korrekte Funktion sollten Sie dies umgehend nachholen! <a href="/konten">Hier eingeben</a></div>
       {% endif %}
 
       {% if no_backup_password %}
-      <div class="alert alert-warning"><strong>Hinweis:</strong> Es wurde kein Backup-Passwort vergeben. Ohne Passwort sind Backups nicht verschl&uuml;sselt! <a href="/einstellungen">Hier eingeben</a></div>
+      <div class="alert alert-warning"><span class="glyphicon glyphicon-info-sign"></span> <strong>Hinweis:</strong> Es wurde kein Backup-Passwort vergeben. Ohne Passwort sind Backups nicht verschl&uuml;sselt! <a href="/einstellungen">Hier eingeben</a></div>
       {% endif %}
 
       {% if no_backup_freq %}
-      <div class="alert alert-danger"><strong>Wichtiger Hinweis:</strong> Regelm&auml;ssige Backups sind akuell ausgeschaltet! <a href="/einstellungen">Hier einschalten</a></div>
+      <div class="alert alert-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> <strong>Wichtiger Hinweis:</strong> Regelm&auml;ssige Backups sind akuell ausgeschaltet! <a href="/einstellungen">Hier einschalten</a></div>
       {% endif %}
 
 
