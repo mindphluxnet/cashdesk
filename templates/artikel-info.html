@@ -12,7 +12,7 @@
         <strong>VK-Preis:</strong> &euro; {{ '{0:0.2f}'.format(artikel['vkpreis']) }}
       </p>
       <p>
-        <strong>&oslash; EK-Preis:</strong> &euro; {{ '{0:0.2f}'.format(median_ekpreis) }} (zzgl. &euro; {{ '{0:0.2f}'.format(ust) }} USt.)
+        <strong>&oslash; EK-Preis:</strong> {% if median_ekpreis > 0 %}&euro; {{ '{0:0.2f}'.format(median_ekpreis) }} (zzgl. &euro; {{ '{0:0.2f}'.format(ust) }} USt.){% else %}bisher kein Wareneingang{% endif %}
       </p>
       <p>
         <strong>&oslash; Spanne:</strong> &euro; {{ '{0:0.2f}'.format(median_revenue) }} ({{ '{0:0.2f}'.format(median_revenue_percent) }}%)
