@@ -41,7 +41,7 @@ def load_artikel_by_wgr(sqlite_file, id):
     conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
 
-    c.execute("SELECT oid, * FROM artikel WHERE warengruppe = ?", [ id ])
+    c.execute("SELECT oid, * FROM artikel WHERE warengruppe = ? ORDER BY artikelbezeichnung ASC", [ id ])
     artikel = c.fetchall()
 
     conn.close()
