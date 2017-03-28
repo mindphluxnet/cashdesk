@@ -7,7 +7,6 @@ Raspberry Pi (3) konzipiert.
 
 - Komplette Faktura mit Ein- und Ausgangsrechnungen, Artikel- und Kundenverwaltung, Kassenbuch
 - alle Daten in einer SQLite-Datenbank für einfachen Austausch
-- Kassenmodul mit Ansteuerung von LCD-Display und Bondrucker
 - Bedienung vollständig im Browser (Bootstrap, jQuery)
 - Ausgabe/Druck von Rechnungen als PDF mit eigenem Layout aus HTML-Template
 
