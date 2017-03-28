@@ -1,0 +1,146 @@
+{% include "header.html" %}
+
+    {% include "nav.html" %}
+
+    <div class="container">
+
+      <h3>{{ page_title }}</h3>
+
+      <table class="table table-striped table-condensed">
+        <thead>
+          <th>#</th>
+          <th>Artikelbezeichnung</th>
+          <th>Anzahl</th>
+          <th>Einzelpreis</th>
+          <th>Gesamtpreis</th>
+          <th>Optionen</th>
+        </thead>
+        <tbody>
+          {% for pos in positionen %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ pos['artikelbezeichnung'] }}</td>
+            <td>{{ pos['anzahl'] }}</td>
+            <td>{{ pos['vkpreis'] }}</td>
+            <td>{{ pos['vkpreis'] * pos['anzahl'] }}</td>
+            <td>
+              <a class="btn btn-danger" href="/barverkauf/stornieren/{{ pos['oid'] }}"><i class="glyphicon glyphicon-remove"></i> L&ouml;schen</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <br />
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-primary">
+            <div class="panel-heading"><i class="glyphicon glyphicon-barcode"></i> EAN</div>
+            <div class="panel-body">
+              <input type="text" name="ean" id="ean" class="form-control" placeholder="Artikel scannen" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel panel-success">
+            <div class="panel-heading"><i class="fa fa-percent"></i> Gesamtrabatt</div>
+            <div class="panel-body">
+              <input type="text" name="gesamtrabatt" id="gesamtrabatt" class="form-control" pattern="\d+(,\d{2})?" value="0,00" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-info">
+            <div class="panel-heading"><i class="fa fa-plus"></i> Anzahl</div>
+            <div class="panel-body text-center">
+              <button class="btn btn-default button-anzahl" data-anzahl="1">1</button>
+              <button class="btn btn-default button-anzahl" data-anzahl="2">2</button>
+              <button class="btn btn-default button-anzahl" data-anzahl="3">3</button>
+              <button class="btn btn-default button-anzahl" data-anzahl="4">4</button>
+              <button class="btn btn-default button-anzahl" data-anzahl="5">5</button>
+              <button class="btn btn-default button-anzahl" data-anzahl="6">6</button>
+              <button class="btn btn-default button-anzahl" data-anzahl="7">7</button>
+              <button class="btn btn-default button-anzahl" data-anzahl="8">8</button>
+              <button class="btn btn-default button-anzahl" data-anzahl="9">9</button>
+              <button class="btn btn-default button-anzahl" data-anzahl="10">10</button>
+              <button class="btn btn-default" id="morethanthis">&gt; 10</button>
+              <input type="hidden" name="anzahl" id="anzahl" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel panel-danger">
+            <div class="panel-heading"><i class="fa fa-star"></i> Aktionen</div>
+            <div class="panel-body text-center">
+              <a class="btn btn-success" href="/barverkauf/beenden"><i class="glyphicon glyphicon-ok"></i> Kassiervorgang abschlie&szlig;en</a>
+              <a class="btn btn-danger" href="/barverkauf/abbruch"><i class="glyphicon glyphicon-remove"></i> Kassiervorgang abbrechen</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <div class="modal" tabindex="-1" role="dialog" id="anzahl-eingeben">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Anzahl eingeben</h4>
+            </div>
+            <div class="modal-body">
+              <input type="number" id="mehr-anzahl" class="form-control" />
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Abbruch</button>
+              <button type="button" class="btn btn-success" data-dismiss="modal" id="mehr-anzahl-ok"><span class="glyphicon glyphicon-ok"></span> OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <script type="text/javascript">
+
+      $(".button-anzahl[data-anzahl='1']").addClass('btn-success');
+      $('#anzahl').val(1);
+      $('#ean').focus();
+
+      $('.button-anzahl').on('click', function() {
+
+        anz = $(this).data('anzahl');
+
+        $('.button-anzahl').removeClass('btn-success');
+        $('#morethanthis').removeClass('btn-success');
+        $(this).addClass('btn-success');
+        $('#anzahl').val(anz);
+        $('#ean').focus();
+
+      });
+
+      $('#morethanthis').on('click', function() {
+        $('#anzahl-eingeben').modal();
+      });
+
+      $('#anzahl-eingeben').on('shown.bs.modal', function() {
+        $('#mehr-anzahl').focus();
+      });
+
+      $('#anzahl-eingeben').on('hidden.bs.modal', function() {
+        $('#anzahl').val($('#mehr-anzahl').val());
+        $('.button-anzahl').removeClass('btn-success');
+        $('#morethanthis').addClass('btn-success');
+        $('#ean').focus();
+      });
+
+      $('#anzahl-eingeben').on('keydown', function(e) {
+        var keycode = e.keyCode || e.which;
+        if(keycode == 13) {
+            $('#mehr-anzahl-ok').click();
+        }
+
+      });
+
+    </script>
+
+{% include "footer.html" %}

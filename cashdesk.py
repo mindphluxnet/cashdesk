@@ -1215,5 +1215,15 @@ def privatentnahmen_speichern():
 
     return redirect(url_for('show_privatentnahmen'))
 
+@app.route('/barverkauf')
+def show_barverkauf():
+
+    page_id = "barverkauf"
+    page_title = "Barverkauf"
+
+    artikel = database.artikel.load_artikel(sqlite_file, True)
+
+    return render_template('barverkauf.html', artikel = artikel, page_id = page_id, page_title = page_title)
+
 if __name__ == '__main__':
 	app.run(debug = debug, host = bind_host, port = bind_port)
