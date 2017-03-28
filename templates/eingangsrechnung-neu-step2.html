@@ -21,7 +21,7 @@
         <div class="form-group">
           <label for="rechnungsnummer" class="col-sm-2 control-label">Rechnungsnummer</label>
           <div class="col-sm-4">
-            <input type="text" class="form-control" name="rechnungsnummer" id="rechnungsnummer" value="{{ rechnung['rechnungsnummer'] }}"/>
+            <input type="text" class="form-control" name="rechnungsnummer" required="required" id="rechnungsnummer" value="{{ rechnung['rechnungsnummer'] }}"/>
           </div>
           <div class="col-sm-2">
             <button class="btn btn-default" id="generate-rechnungsnummer">Keine Rechnungsnummer?</button>
@@ -30,7 +30,7 @@
         <div class="form-group">
           <label for="rechnungsdatum" class="col-sm-2 control-label">Rechnungsdatum</label>
           <div class="col-sm-2">
-              <input type="date" class="form-control" name="rechnungsdatum" id="rechnungsdatum" value="{{ rechnung['rechnungsdatum'] }}" />
+              <input type="date" class="form-control" name="rechnungsdatum" required="required" id="rechnungsdatum" value="{{ rechnung['rechnungsdatum'] }}" />
           </div>
           <div class="col-sm-1">
             <a class="btn btn-default" href="#" onclick="document.getElementById('rechnungsdatum').valueAsDate = new Date();"><span class="glyphicon glyphicon-calendar"></span> Heute</a>
@@ -49,7 +49,7 @@
         <div class="form-group">
           <label for="rechnungsbetrag" class="col-sm-2 control-label">Rechnungsbetrag &euro;</label>
           <div class="col-sm-2">
-            <input type="text" name="rechnungsbetrag" id="rechnungsbetrag" class="form-control" value="{{ rechnung['rechnungsbetrag'] }}" />
+            <input type="text" name="rechnungsbetrag" id="rechnungsbetrag" required="required" pattern="\d+(,\d{2})?" class="form-control" value="{{ rechnung['rechnungsbetrag'] }}" />
           </div>
         </div>
         <div class="form-group">
@@ -121,7 +121,7 @@
                 </select>
                 </td>
                 <td>
-                  <input type="text" class="form-control" id="ekpreis" name="ekpreis" />
+                  <input type="text" class="form-control" required="required" pattern="\d+(,\d{2})?" id="ekpreis" name="ekpreis" />
                 </td>
                 <td>&nbsp;</td>
               </tr>
@@ -185,7 +185,7 @@
                         </select>
                         </td>
                         <td>
-                          <input type="text" name="ekpreis" value="0" id="bearbeiten-ekpreis" class="form-control" />
+                          <input type="text" name="ekpreis" value="0" required="required" pattern="\d+(,\d{2})?" id="bearbeiten-ekpreis" class="form-control" />
                         </td>
                       </tr>
                     </tbody>
