@@ -42,7 +42,7 @@
         </div>
         <div class="col-md-6">
           <div class="panel panel-success">
-            <div class="panel-heading"><i class="fa fa-percent"></i> Gesamtrabatt</div>
+            <div class="panel-heading"><i class="fa fa-euro"></i> Gesamtrabatt</div>
             <div class="panel-body">
               <input type="text" name="gesamtrabatt" id="gesamtrabatt" class="form-control" pattern="\d+(,\d{2})?" value="0,00" />
             </div>
@@ -112,6 +112,7 @@
 
         $('.button-anzahl').removeClass('btn-success');
         $('#morethanthis').removeClass('btn-success');
+        $('#morethanthis').text('> 10');
         $(this).addClass('btn-success');
         $('#anzahl').val(anz);
         $('#ean').focus();
@@ -130,6 +131,7 @@
         $('#anzahl').val($('#mehr-anzahl').val());
         $('.button-anzahl').removeClass('btn-success');
         $('#morethanthis').addClass('btn-success');
+        $('#morethanthis').text($('#anzahl').val());
         $('#ean').focus();
       });
 
