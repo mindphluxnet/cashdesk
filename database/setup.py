@@ -76,7 +76,7 @@ def setup_database(sqlite_file):
         pass
 
     try:
-        c.execute("CREATE TABLE barverkauf (datum TEXT, uhrzeit TEXT, rechnungsnummer INT, gesamtrabatt REAL, verbucht INT(1))")
+        c.execute("CREATE TABLE barverkauf (datum TEXT, uhrzeit TEXT, rechnungsnummer INT, verbucht INT(1))")
     except Exception as e:
         pass
 
