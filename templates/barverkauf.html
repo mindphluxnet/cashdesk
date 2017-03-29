@@ -30,13 +30,6 @@
             </td>
           </tr>
           {% endfor %}
-          {% if gesamtrabatt > 0 %}
-          <tr>
-            <td colspan="4"><strong>Rabatt</strong></td>
-            <td class="text-right"><strong>&euro; -{{ '{0:0.2f}'.format(gesamtrabatt) }}</strong></td>
-            <td>&nbsp;</td>
-          </tr>
-          {% endif %}
           <tr>
             <td colspan="4"><strong>Gesamtsumme</strong></td>
             <td class="text-right">&euro; {{ '{0:0.2f}'.format(gesamtsumme) }}</td>
