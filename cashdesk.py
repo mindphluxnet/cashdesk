@@ -1261,7 +1261,11 @@ def barverkauf_position_neu():
         art = database.artikel.load_single_artikel(sqlite_file, pos['artikel_id'])
         pos['vkpreis'] = art['vkpreis']
         pos['artikelbezeichnung'] = art['artikelbezeichnung']
-        gesamtsumme += pos['vkpreis'] * pos['anzahl']
+        gesamtsumme += (pos['vkpreis'] * pos['anzahl'])
+        if(pos['anzahl'] >= art['bestand']):
+            pos['bestandswarnung'] = True
+        else:
+            pos['bestandswarnung'] = False
 
     artikel = database.artikel.load_artikel(sqlite_file)
 

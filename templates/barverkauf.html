@@ -7,14 +7,14 @@
       <button class="btn btn-primary" id="barverkauf-starten"><i class="glyphicon glyphicon-plus"></i> Barverkauf starten</button>
 
       <h3>{{ page_title }}</h3>
-
+      {% if positionen|length > 0 %}
       <table class="table table-striped table-condensed">
         <thead>
           <th>#</th>
           <th>Artikelbezeichnung</th>
           <th>Anzahl</th>
-          <th>Einzelpreis</th>
-          <th>Gesamtpreis</th>
+          <th class="text-right">Einzelpreis</th>
+          <th class="text-right">Gesamtpreis</th>
           <th class="text-right">Optionen</th>
         </thead>
         <tbody>
@@ -22,9 +22,9 @@
           <tr>
             <td>{{ loop.index }}</td>
             <td>{{ pos['artikelbezeichnung'] }}</td>
-            <td>{{ pos['anzahl'] }}</td>
-            <td class="text-right">{{ '{0:0.2f}'.format(pos['vkpreis']) }}</td>
-            <td class="text-right">{{ '{0:0.2f}'.format(pos['vkpreis'] * pos['anzahl']) }}</td>
+            <td>{{ pos['anzahl'] }}{% if pos['bestandswarnung'] %} <i class="glyphicon glyphicon-exclamation-sign text-danger"></i>{% endif %}</td>
+            <td class="text-right">&euro; {{ '{0:0.2f}'.format(pos['vkpreis']) }}</td>
+            <td class="text-right">&euro; {{ '{0:0.2f}'.format(pos['vkpreis'] * pos['anzahl']) }}</td>
             <td class="text-right">
               <a class="btn btn-xs btn-danger" href="/barverkauf/stornieren/{{ pos['rowid'] }}"><i class="glyphicon glyphicon-remove"></i> L&ouml;schen</a>
             </td>
@@ -38,6 +38,7 @@
         </tbody>
       </table>
       <br />
+      {% endif %}
       <div class="row">
         <div class="col-md-6">
           <div class="panel panel-primary">
