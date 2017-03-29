@@ -34,6 +34,7 @@ import database.buchungen
 import database.warengruppen
 import database.korrespondenz
 import database.privatentnahmen
+import database.barverkauf
 
 import statics.konten
 
@@ -1224,6 +1225,47 @@ def show_barverkauf():
     artikel = database.artikel.load_artikel(sqlite_file, True)
 
     return render_template('barverkauf.html', artikel = artikel, page_id = page_id, page_title = page_title)
+
+@app.route('/barverkauf/starten')
+def barverkauf_starten():
+
+    bon_id = database.barverkauf.start_barverkauf(sqlite_file)
+
+    result = { 'bon_id': bon_id }
+
+    return json.dumps(result)
+
+@app.route('/barverkauf/ajax/artikel', methods = ['POST'])
+def barverkauf_ajax_artikel():
+
+    artikel = database.artikel.load_artikel_by_ean(sqlite_file, request.form['ean'])
+
+    return json.dumps(artikel)
+
+@app.route('/barverkauf/position/neu', methods = ['POST'])
+def barverkauf_position_neu():
+
+    page_id = "barverkauf"
+    page_title = "Barverkauf"
+
+    bon_id = request.form['bon_id']
+
+    gesamtrabatt = 0
+    gesamtsumme = 0
+
+    database.barverkauf.save_position(sqlite_file, request.form)
+
+    positionen = database.barverkauf.load_positionen(sqlite_file, bon_id)
+
+    for pos in positionen:
+        art = database.artikel.load_single_artikel(sqlite_file, pos['artikel_id'])
+        pos['vkpreis'] = art['vkpreis']
+        pos['artikelbezeichnung'] = art['artikelbezeichnung']
+        gesamtsumme += pos['vkpreis'] * pos['anzahl']
+
+    artikel = database.artikel.load_artikel(sqlite_file)
+
+    return render_template('barverkauf.html', artikel = artikel, positionen = positionen, gesamtrabatt = gesamtrabatt, gesamtsumme = gesamtsumme, bon_id = bon_id, page_id = page_id, page_title = page_title)
 
 if __name__ == '__main__':
 	app.run(debug = debug, host = bind_host, port = bind_port)

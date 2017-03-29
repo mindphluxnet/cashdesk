@@ -75,6 +75,16 @@ def setup_database(sqlite_file):
     except Exception as e:
         pass
 
+    try:
+        c.execute("CREATE TABLE barverkauf (datum TEXT, uhrzeit TEXT, rechnungsnummer INT, gesamtrabatt REAL, verbucht INT(1))")
+    except Exception as e:
+        pass
+
+    try:
+        c.execute("CREATE TABLE barverkauf_positionen (datum TEXT, uhrzeit TEXT, bon_id INT, artikel_id INT, anzahl INT, rabatt REAL, verbucht INT(1))")
+    except Exception as e:
+        pass
+
     conn.commit()
     conn.close()
 
