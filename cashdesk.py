@@ -1271,5 +1271,35 @@ def barverkauf_position_neu():
 
     return render_template('barverkauf.html', artikel = artikel, positionen = positionen, gesamtrabatt = gesamtrabatt, gesamtsumme = gesamtsumme, bon_id = bon_id, page_id = page_id, page_title = page_title)
 
+@app.route('/barverkauf/position/aendern', methods = ['POST'])
+def barverkauf_position_aendern():
+
+    page_id = "barverkauf"
+    page_title = "Barverkauf"
+
+    bon_id = request.form['pa_bon_id']
+
+    gesamtrabatt = 0
+    gesamtsumme = 0
+
+    database.barverkauf.update_position(sqlite_file, request.form)
+
+    positionen = database.barverkauf.load_positionen(sqlite_file, bon_id)
+
+    for pos in positionen:
+        art = database.artikel.load_single_artikel(sqlite_file, pos['artikel_id'])
+        pos['vkpreis'] = art['vkpreis']
+        pos['artikelbezeichnung'] = art['artikelbezeichnung']
+        gesamtsumme += (pos['vkpreis'] * pos['anzahl'])
+        if(pos['anzahl'] >= art['bestand']):
+            pos['bestandswarnung'] = True
+        else:
+            pos['bestandswarnung'] = False
+
+    artikel = database.artikel.load_artikel(sqlite_file)
+
+    return render_template('barverkauf.html', artikel = artikel, positionen = positionen, gesamtrabatt = gesamtrabatt, gesamtsumme = gesamtsumme, bon_id = bon_id, page_id = page_id, page_title = page_title)
+
+
 if __name__ == '__main__':
 	app.run(debug = debug, host = bind_host, port = bind_port)

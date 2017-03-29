@@ -22,7 +22,13 @@
           <tr>
             <td>{{ loop.index }}</td>
             <td>{{ pos['artikelbezeichnung'] }}</td>
-            <td>{{ pos['anzahl'] }}{% if pos['bestandswarnung'] %} <i class="glyphicon glyphicon-exclamation-sign text-danger"></i>{% endif %}</td>
+            <td>
+              <select data-id="{{ pos['rowid'] }}" class="anzahl">
+                {% for i in range(1,100) %}
+                  <option value="{{ i }}"{% if pos['anzahl'] == i %} selected="selected"{% endif %}>{{ i }}</option>
+                {% endfor %}
+              </select>
+              {% if pos['bestandswarnung'] %} <i class="glyphicon glyphicon-exclamation-sign text-danger"></i>{% endif %}</td>
             <td class="text-right">&euro; {{ '{0:0.2f}'.format(pos['vkpreis']) }}</td>
             <td class="text-right">&euro; {{ '{0:0.2f}'.format(pos['vkpreis'] * pos['anzahl']) }}</td>
             <td class="text-right">
@@ -86,6 +92,13 @@
       <input type="hidden" name="bon_id" value="{{ bon_id }}" id="bon_id" />
       <input type="hidden" name="pos_artikel_id" value="" id="pos_artikel_id" />
       <input type="hidden" name="pos_anzahl" value="" id="pos_anzahl" />
+      <input type="hidden" name="change_anzahl" value="0" id="change_anzahl" />
+    </form>
+
+    <form action="/barverkauf/position/aendern" method="post" id="position-aendern-form">
+      <input type="hidden" name="pa_pos_id" value="" id="pa_pos_id" />
+      <input type="hidden" name="pa_anzahl" value="" id="pa_anzahl" />
+      <input type="hidden" name="pa_bon_id" value="{{ bon_id }}" id="pa_bon_id" />
     </form>
 
       <div class="modal" tabindex="-1" role="dialog" id="anzahl-eingeben">
@@ -208,6 +221,17 @@
         });
 
       });
+
+      $('.anzahl').on('change', function() {
+
+          anz = $(this).val();
+          id = $(this).data('id');
+
+          $('#pa_pos_id').val(id);
+          $('#pa_anzahl').val(anz);
+          $('#pa_bon_id').val($('#bon_id').val());
+          $('#position-aendern-form').submit();
+        });
 
 
     </script>

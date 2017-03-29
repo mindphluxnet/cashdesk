@@ -39,6 +39,19 @@ def save_position(sqlite_file, pos):
     conn.commit()
     conn.close()
 
+def update_position(sqlite_file, pos):
+
+    conn = sqlite3.connect(sqlite_file)
+    conn.row_factory = database.factory.dict_factory
+    c = conn.cursor()
+
+    now = datetime.datetime.now()
+
+    c.execute("UPDATE barverkauf_positionen SET datum = ?, uhrzeit = ?, anzahl = ? WHERE oid = ?", [ now.strftime("%Y-%m-%d"), now.strftime("%H:%I:%S"), pos['pa_anzahl'], pos['pa_pos_id'] ])
+
+    conn.commit()
+    conn.close()    
+
 def load_positionen(sqlite_file, bon_id):
 
     conn = sqlite3.connect(sqlite_file)
