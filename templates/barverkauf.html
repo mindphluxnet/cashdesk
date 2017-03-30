@@ -147,30 +147,45 @@
           <form action="/barverkauf/abschliessen" method="post">
           <div class="modal-body">
 
-            <h3 style="margin-top: -8px;">Gesamtbetrag: &euro; <span id="gesamtbetrag-aus"></span></h3>
+            <span class="text-center"><h2>Gesamtbetrag: &euro; <span id="gesamtbetrag-aus"></span></h2></span>
+            <div class="clearfix">&nbsp;</div>
 
-            <h4>Zahlungsart</h4>
+            <div class="panel panel-info">
+              <div class="panel-heading">Zahlungsart w&auml;hlen</div>
+              <div class="panel-body">
 
-            <div class="row">
-              <div class="col-md-4 text-center">
-                <img src="/assets/bargeld.jpg" id="za-bar" class="img img-rounded cp za-selected" width="150" height="100" />
-                Bargeld
-              </div>
-              <div class="col-md-4 text-center">
-                <img src="/assets/eckarte.jpg" id="za-ec" class="img img-rounded cp" width="150" height="100" />
-                EC-Karte
-              </div>
-              <div class="col-md-4 text-center">
-                <img src="/assets/kreditkarte.jpg" id="za-cc" class="img img-rounded cp" width="150" height="100" />
-                Kreditkarte
+                <div class="row">
+                  <div class="col-md-4 text-center">
+                    <img src="/assets/bargeld.jpg" id="za-bar" class="img img-rounded cp za-selected" width="150" height="100" />
+                    Bargeld
+                  </div>
+                  <div class="col-md-4 text-center">
+                    <img src="/assets/eckarte.jpg" id="za-ec" class="img img-rounded cp" width="150" height="100" />
+                    EC-Karte
+                  </div>
+                  <div class="col-md-4 text-center">
+                    <img src="/assets/kreditkarte.jpg" id="za-cc" class="img img-rounded cp" width="150" height="100" />
+                    Kreditkarte
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div id="za-karte-info">
-              <div class="clearfix">&nbsp;</div>
-              <div class="alert alert-info">
-                  <i class="glyphicon glyphicon-info-sign"></i> Bitte schlie&szlig;en Sie den Zahlungsvorgang <strong>erst</strong> &uuml;ber das Kartenleseger&auml;t ab und klicken
+            <div class="panel panel-info" id="za-bargeld-info">
+              <div class="panel-heading">Barzahlung</div>
+              <div class="panel-body">
+
+
+              </div>
+            </div>
+
+            <div class="panel panel-info" id="za-karte-info">
+              <div class="panel-heading">Kartenzahlung</div>
+              <div class="panel-body">
+                <p>
+                  Bitte schlie&szlig;en Sie den Zahlungsvorgang <strong>erst</strong> &uuml;ber das Kartenleseger&auml;t ab und klicken
                   <strong>erst nach erfolgreicher Zahlung</strong> auf &quot;Abschlie&szlig;en und drucken&quot;!
+                </p>
               </div>
             </div>
 
@@ -351,16 +366,19 @@
 
       $('#za-bar').on('click', function() {
         $('#za-karte-info').hide();
+        $('#za-bargeld-info').show();
         $('#zahlungsart').val(1);
       });
 
       $('#za-ec').on('click', function() {
         $('#za-karte-info').show();
+        $('#za-bargeld-info').hide();
         $('#zahlungsart').val(4);
       });
 
       $('#za-cc').on('click', function() {
         $('#za-karte-info').show();
+        $('#za-bargeld-info').hide();
         $('#zahlungsart').val(5);
       });
 
