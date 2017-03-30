@@ -2,7 +2,11 @@ $(".button-anzahl[data-anzahl='1']").addClass('btn-success');
 $('#anzahl').val(1);
 $('#za-karte-info').hide();
 if($('#bon_id').val() != '') {
-  $('#barverkauf-starten').attr('disabled', 'disabled')
+  $('#barverkauf-starten').attr('disabled', 'disabled');
+  $('#barverkauf-abbrechen').removeAttr('disabled');
+  $('#barverkauf-abschliessen').removeAttr('disabled');
+  $('.button-anzahl').removeAttr('disabled');
+  $('#morethanthis').removeAttr('disabled');
   $('#ean').removeAttr('disabled');
   $('#ean').focus();
 }
@@ -91,6 +95,10 @@ $('#barverkauf-starten').on('click', function() {
         $('#bon_id').val(result.bon_id);
         $('#barverkauf-starten').attr('disabled', 'disabled');
         $('#ean').removeAttr('disabled');
+        $('#barverkauf-abbrechen').removeAttr('disabled');
+        $('#barverkauf-abschliessen').removeAttr('disabled');
+        $('.button-anzahl').removeAttr('disabled');
+        $('#morethanthis').removeAttr('disabled');        
         $('#ean').focus();
       }
 
