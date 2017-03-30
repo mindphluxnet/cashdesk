@@ -1307,6 +1307,12 @@ def barverkauf_position_loeschen():
 
     return json.dumps({ 'id': request.form['id'] })
 
+@app.route('/barverkauf/abbrechen/<string:id>')
+def barverkauf_abbrechen(id):
+
+    database.barverkauf.barverkauf_abbrechen(sqlite_file, id)
+
+    return redirect(url_for('show_barverkauf'))
 
 if __name__ == '__main__':
 	app.run(debug = debug, host = bind_host, port = bind_port)

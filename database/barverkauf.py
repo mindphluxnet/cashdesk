@@ -74,3 +74,14 @@ def delete_position(sqlite_file, pos):
 
     conn.commit()
     conn.close()
+
+def barverkauf_abbrechen(sqlite_file, bon_id):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("DELETE FROM barverkauf_positionen WHERE bon_id = ?", [ bon_id ])
+    c.execute("DELETE FROM barverkauf WHERE oid = ?", [ bon_id ])
+
+    conn.commit()
+    conn.close()

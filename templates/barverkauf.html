@@ -80,8 +80,8 @@
           <div class="panel panel-danger">
             <div class="panel-heading"><i class="fa fa-star"></i> Aktionen</div>
             <div class="panel-body text-center">
-              <a class="btn btn-success" href="/barverkauf/beenden"><i class="glyphicon glyphicon-ok"></i> Kassiervorgang abschlie&szlig;en</a>
-              <a class="btn btn-danger" href="/barverkauf/abbruch"><i class="glyphicon glyphicon-remove"></i> Kassiervorgang abbrechen</a>
+              <button class="btn btn-success" id="barverkauf-abschliessen"><i class="glyphicon glyphicon-ok"></i> Kassiervorgang abschlie&szlig;en</button>
+              <button class="btn btn-danger" id="barverkauf-abbrechen"><i class="glyphicon glyphicon-remove"></i> Kassiervorgang abbrechen</button>
             </div>
           </div>
         </div>
@@ -101,23 +101,41 @@
       <input type="hidden" name="pa_bon_id" value="{{ bon_id }}" id="pa_bon_id" />
     </form>
 
-      <div class="modal" tabindex="-1" role="dialog" id="anzahl-eingeben">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">Anzahl eingeben</h4>
-            </div>
-            <div class="modal-body">
-              <input type="number" id="mehr-anzahl" class="form-control" />
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Abbruch</button>
-              <button type="button" class="btn btn-success" data-dismiss="modal" id="mehr-anzahl-ok"><span class="glyphicon glyphicon-ok"></span> OK</button>
-            </div>
+    <div class="modal" tabindex="-1" role="dialog" id="anzahl-eingeben">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Anzahl eingeben</h4>
+          </div>
+          <div class="modal-body">
+            <input type="number" id="mehr-anzahl" class="form-control" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Abbruch</button>
+            <button type="button" class="btn btn-success" data-dismiss="modal" id="mehr-anzahl-ok"><span class="glyphicon glyphicon-ok"></span> OK</button>
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="barverkauf-abbrechen-modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Barverkauf abbrechen</h4>
+          </div>
+          <div class="modal-body">
+            Wollen Sie den Kassiervorgang wirklich abbrechen? Eingegebene Daten werden gel&ouml;scht!
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Nein</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id="barverkauf-abbrechen-ok"><span class="glyphicon glyphicon-ok"></span> Ja</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script type="text/javascript">
 
@@ -220,6 +238,19 @@
 
         });
 
+      });
+
+      $('#barverkauf-abbrechen').on('click', function() {
+
+        $('#barverkauf-abbrechen-modal').modal();
+
+      });
+
+      $('#barverkauf-abbrechen-ok').on('click', function() {
+
+        bon_id = $('#bon_id').val();
+        window.location = '/barverkauf/abbrechen/' + bon_id;
+        
       });
 
       $('.anzahl').on('change', function() {
