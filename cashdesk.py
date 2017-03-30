@@ -1224,7 +1224,7 @@ def show_barverkauf():
 
     artikel = database.artikel.load_artikel(sqlite_file, True)
 
-    return render_template('barverkauf.html', artikel = artikel, page_id = page_id, page_title = page_title)
+    return render_template('barverkauf.html', gesamtsumme = 0, artikel = artikel, page_id = page_id, page_title = page_title)
 
 @app.route('/barverkauf/starten')
 def barverkauf_starten():
