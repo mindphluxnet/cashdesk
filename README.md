@@ -47,3 +47,8 @@ ein neues Tab/Fenster geöffnet.
 - Font Awesome by Dave Gandy - http://fontawesome.io
 - Bootstrap - http://getbootstrap.com
 - jQuery - http://jquery.com
+
+# Bilder
+
+- Euro-Bargeld: Wikipedia
+- EC- und Kreditkarten: Offizielle Website der Sparkassen
