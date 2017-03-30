@@ -137,10 +137,61 @@
       </div>
     </div>
 
+    <div class="modal" tabindex="-1" role="dialog" id="barverkauf-abschliessen-modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Barverkauf abschlie&szlig;en</h4>
+          </div>
+          <form action="/barverkauf/abschliessen" method="post">
+          <div class="modal-body">
+
+            <h3 style="margin-top: -8px;">Gesamtbetrag: &euro; <span id="gesamtbetrag-aus"></span></h3>
+
+            <h4>Zahlungsart</h4>
+
+            <div class="row">
+              <div class="col-md-4 text-center">
+                <img src="/assets/bargeld.jpg" id="za-bar" class="img img-rounded cp za-selected" width="150" height="100" />
+                Bargeld
+              </div>
+              <div class="col-md-4 text-center">
+                <img src="/assets/eckarte.jpg" id="za-ec" class="img img-rounded cp" width="150" height="100" />
+                EC-Karte
+              </div>
+              <div class="col-md-4 text-center">
+                <img src="/assets/kreditkarte.jpg" id="za-cc" class="img img-rounded cp" width="150" height="100" />
+                Kreditkarte
+              </div>
+            </div>
+
+            <div id="za-karte-info">
+              <div class="clearfix">&nbsp;</div>
+              <div class="alert alert-info">
+                  <i class="glyphicon glyphicon-info-sign"></i> Bitte schlie&szlig;en Sie den Zahlungsvorgang <strong>erst</strong> &uuml;ber das Kartenleseger&auml;t ab und klicken
+                  <strong>erst nach erfolgreicher Zahlung</strong> auf &quot;Abschlie&szlig;en und drucken&quot;!
+              </div>
+            </div>
+
+          </div>
+          <input type="hidden" name="zahlungsart" id="zahlungsart" value="0" />
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Abbruch</button>
+            <button type="submit" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-ok"></span> Abschlie&szlig;en und drucken</button>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+
     <script type="text/javascript">
+
+      var gesamtsumme = {{ '{0:0.2f}'.format(gesamtsumme) }};
 
       $(".button-anzahl[data-anzahl='1']").addClass('btn-success');
       $('#anzahl').val(1);
+      $('#za-karte-info').hide();
       if($('#bon_id').val() != '') {
         $('#barverkauf-starten').attr('disabled', 'disabled')
         $('#ean').removeAttr('disabled');
@@ -250,7 +301,14 @@
 
         bon_id = $('#bon_id').val();
         window.location = '/barverkauf/abbrechen/' + bon_id;
-        
+
+      });
+
+      $('#barverkauf-abschliessen').on('click', function() {
+
+        $('#gesamtbetrag-aus').text(gesamtsumme.toFixed(2));
+        $('#barverkauf-abschliessen-modal').modal();
+
       });
 
       $('.anzahl').on('change', function() {
@@ -282,6 +340,28 @@
 
         });
 
+      });
+
+      $('.cp').on('click', function() {
+
+        $('.cp').removeClass('za-selected');
+        $(this).addClass('za-selected');
+
+      });
+
+      $('#za-bar').on('click', function() {
+        $('#za-karte-info').hide();
+        $('#zahlungsart').val(1);
+      });
+
+      $('#za-ec').on('click', function() {
+        $('#za-karte-info').show();
+        $('#zahlungsart').val(4);
+      });
+
+      $('#za-cc').on('click', function() {
+        $('#za-karte-info').show();
+        $('#zahlungsart').val(5);
       });
 
     </script>
