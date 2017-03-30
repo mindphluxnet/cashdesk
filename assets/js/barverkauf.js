@@ -98,7 +98,7 @@ $('#barverkauf-starten').on('click', function() {
         $('#barverkauf-abbrechen').removeAttr('disabled');
         $('#barverkauf-abschliessen').removeAttr('disabled');
         $('.button-anzahl').removeAttr('disabled');
-        $('#morethanthis').removeAttr('disabled');        
+        $('#morethanthis').removeAttr('disabled');
         $('#ean').focus();
       }
 
@@ -147,20 +147,10 @@ $('.anzahl').on('change', function() {
 
 $('.deletebutton').on('click', function() {
 
-  id = $(this).data('id');
+  $('#lo_pos_id').val($(this).data('id'));
+  $('#lo_bon_id').val($('#bon_id').val());
+  $('#position-loeschen-form').submit();
 
-  $.ajax({
-    url: '/barverkauf/ajax/loeschen',
-    method: 'POST',
-    data: { 'id': id },
-    success: function(result) {
-      result = JSON.parse(result);
-      $("tr[data-row='" + id + "']").remove();
-      $('#ean').focus();
-
-    }
-
-  });
 
 });
 

@@ -70,7 +70,7 @@ def delete_position(sqlite_file, pos):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("DELETE FROM barverkauf_positionen WHERE oid = ?", [ pos['id'] ])
+    c.execute("DELETE FROM barverkauf_positionen WHERE oid = ?", [ pos['lo_pos_id'] ])
 
     conn.commit()
     conn.close()

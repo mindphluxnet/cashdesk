@@ -1224,7 +1224,9 @@ def show_barverkauf():
 
     artikel = database.artikel.load_artikel(sqlite_file, True)
 
-    return render_template('barverkauf.html', gesamtsumme = 0, artikel = artikel, page_id = page_id, page_title = page_title)
+    ts = time.time()
+
+    return render_template('barverkauf.html', ts = ts, gesamtsumme = 0, artikel = artikel, page_id = page_id, page_title = page_title)
 
 @app.route('/barverkauf/starten')
 def barverkauf_starten():
@@ -1269,7 +1271,9 @@ def barverkauf_position_neu():
 
     artikel = database.artikel.load_artikel(sqlite_file)
 
-    return render_template('barverkauf.html', artikel = artikel, positionen = positionen, gesamtrabatt = gesamtrabatt, gesamtsumme = gesamtsumme, bon_id = bon_id, page_id = page_id, page_title = page_title)
+    ts = time.time()
+
+    return render_template('barverkauf.html', ts = ts, artikel = artikel, positionen = positionen, gesamtrabatt = gesamtrabatt, gesamtsumme = gesamtsumme, bon_id = bon_id, page_id = page_id, page_title = page_title)
 
 @app.route('/barverkauf/position/aendern', methods = ['POST'])
 def barverkauf_position_aendern():
@@ -1298,14 +1302,40 @@ def barverkauf_position_aendern():
 
     artikel = database.artikel.load_artikel(sqlite_file)
 
-    return render_template('barverkauf.html', artikel = artikel, positionen = positionen, gesamtrabatt = gesamtrabatt, gesamtsumme = gesamtsumme, bon_id = bon_id, page_id = page_id, page_title = page_title)
+    ts = time.time()
 
-@app.route('/barverkauf/ajax/loeschen', methods = ['POST'])
+    return render_template('barverkauf.html', ts = ts, artikel = artikel, positionen = positionen, gesamtrabatt = gesamtrabatt, gesamtsumme = gesamtsumme, bon_id = bon_id, page_id = page_id, page_title = page_title)
+
+@app.route('/barverkauf/position/loeschen', methods = ['POST'])
 def barverkauf_position_loeschen():
+
+    page_id = "barverkauf"
+    page_title = "Barverkauf"
+
+    bon_id = request.form['lo_bon_id']
+
+    gesamtrabatt = 0
+    gesamtsumme = 0
 
     database.barverkauf.delete_position(sqlite_file, request.form)
 
-    return json.dumps({ 'id': request.form['id'] })
+    positionen = database.barverkauf.load_positionen(sqlite_file, bon_id)
+
+    for pos in positionen:
+        art = database.artikel.load_single_artikel(sqlite_file, pos['artikel_id'])
+        pos['vkpreis'] = art['vkpreis']
+        pos['artikelbezeichnung'] = art['artikelbezeichnung']
+        gesamtsumme += (pos['vkpreis'] * pos['anzahl'])
+        if(pos['anzahl'] >= art['bestand']):
+            pos['bestandswarnung'] = True
+        else:
+            pos['bestandswarnung'] = False
+
+    artikel = database.artikel.load_artikel(sqlite_file)
+
+    ts = time.time()
+
+    return render_template('barverkauf.html', artikel = artikel, ts = ts, positionen = positionen, gesamtrabatt = gesamtrabatt, gesamtsumme = gesamtsumme, bon_id = bon_id, page_id = page_id, page_title = page_title)
 
 @app.route('/barverkauf/abbrechen/<string:id>')
 def barverkauf_abbrechen(id):

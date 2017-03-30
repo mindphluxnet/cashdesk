@@ -101,6 +101,11 @@
       <input type="hidden" name="pa_bon_id" value="{{ bon_id }}" id="pa_bon_id" />
     </form>
 
+    <form action="/barverkauf/position/loeschen" method="post" id="position-loeschen-form">
+      <input type="hidden" name="lo_pos_id" value="" id="lo_pos_id" />
+      <input type="hidden" name="lo_bon_id" value="{{ bon_id }}" id="lo_bon_id" />
+    </form>
+
     <div class="modal" tabindex="-1" role="dialog" id="anzahl-eingeben">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -213,6 +218,6 @@
     <script type="text/javascript">
       var gesamtsumme = {{ '{0:0.2f}'.format(gesamtsumme) }};
     </script>
-    <script type="text/javascript" src="/assets/js/barverkauf.js"></script>
+    <script type="text/javascript" src="/assets/js/barverkauf.js?v{{ ts }}"></script>
 
 {% include "footer.html" %}
