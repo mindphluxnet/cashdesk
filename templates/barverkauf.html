@@ -19,7 +19,7 @@
         </thead>
         <tbody>
           {% for pos in positionen %}
-          <tr>
+          <tr data-row="{{ pos['rowid'] }}">
             <td>{{ loop.index }}</td>
             <td>{{ pos['artikelbezeichnung'] }}</td>
             <td>
@@ -32,7 +32,7 @@
             <td class="text-right">&euro; {{ '{0:0.2f}'.format(pos['vkpreis']) }}</td>
             <td class="text-right">&euro; {{ '{0:0.2f}'.format(pos['vkpreis'] * pos['anzahl']) }}</td>
             <td class="text-right">
-              <a class="btn btn-xs btn-danger" href="/barverkauf/stornieren/{{ pos['rowid'] }}"><i class="glyphicon glyphicon-remove"></i> L&ouml;schen</a>
+              <button class="btn btn-xs btn-danger deletebutton" data-id="{{ pos['rowid'] }}"><i class="glyphicon glyphicon-remove"></i> L&ouml;schen</button>
             </td>
           </tr>
           {% endfor %}
@@ -233,6 +233,25 @@
           $('#position-aendern-form').submit();
         });
 
+
+      $('.deletebutton').on('click', function() {
+
+        id = $(this).data('id');
+
+        $.ajax({
+          url: '/barverkauf/ajax/loeschen',
+          method: 'POST',
+          data: { 'id': id },
+          success: function(result) {
+            result = JSON.parse(result);
+            $("tr[data-row='" + id + "']").remove();
+            $('#ean').focus();
+
+          }
+
+        });
+
+      });
 
     </script>
 

@@ -50,7 +50,7 @@ def update_position(sqlite_file, pos):
     c.execute("UPDATE barverkauf_positionen SET datum = ?, uhrzeit = ?, anzahl = ? WHERE oid = ?", [ now.strftime("%Y-%m-%d"), now.strftime("%H:%I:%S"), pos['pa_anzahl'], pos['pa_pos_id'] ])
 
     conn.commit()
-    conn.close()    
+    conn.close()
 
 def load_positionen(sqlite_file, bon_id):
 
@@ -64,3 +64,13 @@ def load_positionen(sqlite_file, bon_id):
     conn.close()
 
     return positionen
+
+def delete_position(sqlite_file, pos):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("DELETE FROM barverkauf_positionen WHERE oid = ?", [ pos['id'] ])
+
+    conn.commit()
+    conn.close()

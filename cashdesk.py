@@ -1300,6 +1300,13 @@ def barverkauf_position_aendern():
 
     return render_template('barverkauf.html', artikel = artikel, positionen = positionen, gesamtrabatt = gesamtrabatt, gesamtsumme = gesamtsumme, bon_id = bon_id, page_id = page_id, page_title = page_title)
 
+@app.route('/barverkauf/ajax/loeschen', methods = ['POST'])
+def barverkauf_position_loeschen():
+
+    database.barverkauf.delete_position(sqlite_file, request.form)
+
+    return json.dumps({ 'id': request.form['id'] })
+
 
 if __name__ == '__main__':
 	app.run(debug = debug, host = bind_host, port = bind_port)
