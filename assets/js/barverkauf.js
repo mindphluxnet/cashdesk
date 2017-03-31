@@ -170,13 +170,13 @@ $('#za-bar').on('click', function() {
 $('#za-ec').on('click', function() {
   $('#za-karte-info').show();
   $('#za-bargeld-info').hide();
-  $('#zahlungsart').val(4);
+  $('#zahlungsart').val(5);
 });
 
 $('#za-cc').on('click', function() {
   $('#za-karte-info').show();
   $('#za-bargeld-info').hide();
-  $('#zahlungsart').val(5);
+  $('#zahlungsart').val(6);
 });
 
 $('#za-bargeld-info-gegeben').on('keydown keyup blur', function(e) {
