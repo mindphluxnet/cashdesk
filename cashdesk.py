@@ -959,20 +959,20 @@ def show_buchungskonten(usekonto = 0):
 
         #: Ausgangsrechnungen
         if(buchung['ausgangsrechnungs_id'] != 0 and buchung['ausgangsrechnungs_id'] != None):
-            re = database.rechnungen.load_rechnung(sqlite_file, buchung['ausgangsrechnungs_id'])
+            re = database.rechnungen.load_barrechnung(sqlite_file, buchung['ausgangsrechnungs_id'])
             if(buchung['einaus'] == 1):
                 buchung['empfaenger'] = stammdaten['firmenname']
-                buchung['verwendungszweck'] = "Zahlung Ausgangsrechnung Nr. " + re['rechnungsnummer'] + " durch Kunde"
+                buchung['verwendungszweck'] = "Zahlung Ausgangsrechnung Nr. " + str(re['rechnungsnummer']) + " durch Kunde"
             else:
                 buchung['empfaenger'] = re['nachname'] + ', ' + re['vorname']
-                buchung['verwendungszweck'] = "Erstattung Gutschrift " + re['rechnungsnummer'] + " an Kunde"
+                buchung['verwendungszweck'] = "Erstattung Gutschrift " + str(re['rechnungsnummer']) + " an Kunde"
 
         #: Eingangsrechnungen
         if(buchung['eingangsrechnungs_id'] != 0 and buchung['eingangsrechnungs_id'] != None):
             re = database.rechnungen.load_eingangsrechnung(sqlite_file, buchung['eingangsrechnungs_id'])
             li = database.lieferanten.load_lieferant(sqlite_file, re['lieferant_id'])
             buchung['empfaenger'] = li['firmenname']
-            buchung['verwendungszweck'] = "Zahlung Eingangsrechnung Nr. " + re['rechnungsnummer']
+            buchung['verwendungszweck'] = "Zahlung Eingangsrechnung Nr. " + str(re['rechnungsnummer'])
             if(os.path.isfile('/dokumente/eingangsrechnung/eingangsrechnung-' + str(buchung['eingangsrechnungs_id']) + '.pdf')):
                 buchung['pdf'] = True
 
