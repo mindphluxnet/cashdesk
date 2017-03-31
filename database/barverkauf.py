@@ -3,6 +3,8 @@ import datetime
 
 import database.factory
 import database.rechnungen
+import database.konten
+import database.artikel
 
 def start_barverkauf(sqlite_file):
 
@@ -102,10 +104,21 @@ def barverkauf_abschliessen(sqlite_file, post):
 
     rechnungs_id = c.lastrowid
 
+    gesamtbetrag = 0
+
     for pos in positionen:
         c.execute("INSERT INTO rechnungspositionen(rechnungs_id, artikel_id, anzahl, rabatt, storniert) VALUES (?, ?, ?, ?, ?)", [ rechnungs_id, pos['artikel_id'], pos['anzahl'], 0, 0 ])
         c.execute("UPDATE barverkauf_positionen SET verbucht = 1 WHERE oid = ?", pos['rowid'])
+        art = database.artikel.load_single_artikel(sqlite_file, pos['artikel_id'])
+        gesamtsumme += (art['vkpreis'] * pos['anzahl'])
 
     c.execute("UPDATE barverkauf SET verbucht = 1 WHERE oid = ?", barverkauf['rowid'])
+
+    kasse = database.konten.get_kasse(sqlite_file)
+
+    c.execute("INSERT INTO buchungen (konto_id, gegenkonto_id, eurkonto, ausgangsrechnungs_id, eingangsrechnungs_id, betrag, datum, einaus) VALUES(?, ?, ?, ?, ?, ?, ?, ?)", [ kasse, 0, 111, rechnungs_id, 0, gesamtbetrag, barverkauf['datum'], 1 ])
+
+    conn.commit()
+    conn.close()
 
     return { 'rechnungs_id': rechnungs_id }

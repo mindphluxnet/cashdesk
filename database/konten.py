@@ -73,3 +73,15 @@ def restore_konto(sqlite_file, id):
 
     conn.commit()
     conn.close()
+
+def get_kasse(sqlite_file):
+
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+
+    c.execute("SELECT oid FROM konten WHERE is_kasse = 1")
+    tmp = c.fetchone()
+
+    conn.close()
+
+    return tmp[0]
