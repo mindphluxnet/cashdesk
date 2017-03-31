@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <style type="text/css">
+    {{ bootstrap_css }}
+    </style>
+    <style type="text/css">
+      body {
+        padding: 10px;
+
+      }
+      .spacer {
+        height: 3em;
+      }
+
+      .spacer-small {
+        height: 1.5em;
+      }
+
+      .mleft {
+        margin-left: 1.5em;
+
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-left">
+          <img src="data:image/png;base64,{{ firmenlogo }}" class="img pull-right" width="200" height="220"/>
+          <h4>{{ stammdaten['firmenname'] }}</h4>
+          <h5>{{ stammdaten['inhaber'] }}</h5>
+          <h5>{{ stammdaten['strasse'] }} {{ stammdaten['hausnummer'] }}</h5>
+          <h5>{{ stammdaten['plz'] }} {{ stammdaten['ort'] }}</h5>
+          <h5>Fon {{ stammdaten['telefonnummer'] }}</h5>
+          {% if stammdaten['telefaxnummer']|trim != '' %}
+          <h5>Fax {{ stammdaten['telefaxnummer'] }}</h5>
+          {% endif %}
+          {% if stammdaten['email']|trim != '' %}
+          <h5>{{ stammdaten['email'] }}</h5>
+          {% endif %}
+          {% if stammdaten['website']|trim != '' %}
+          <h5>{{ stammdaten['website'] }}</h5>
+          {% endif %}
+          {% if stammdaten['ustid']|trim != '' %}
+          <h5>USt-Id: {{ stammdaten['ustid'] }}</h5>
+          {% endif %}
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 spacer">&nbsp;</div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <h2>Barverkaufsrechnung</h2>
+        </div>
+        <div class="col-md-6 text-right">
+          Rechnungsdatum: {{ rechnung['rechnungsdatum'] }}<br />
+          Rechnungsnummer: {{ rechnung['rechnungsnummer'] }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 spacer-small">&nbsp;</div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+            <table class="table table-condensed table-striped">
+              <thead>
+                <th>Pos.</th>
+                <th>Anzahl</th>
+                <th>Art-Nr.</th>
+                <th>Artikelbezeichnung</th>
+                <th>Einzelpreis</th>
+                <th>Rabatt</th>
+                <th>Gesamtpreis</th>
+              </thead>
+              <tbody>
+                {% for pos in positionen %}
+                  <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ pos['anzahl'] }}</td>
+                    <td>{{ pos['artikelnummer'] }}</td>
+                    <td>{{ pos['artikelbezeichnung'] }}</td>
+                    <td>&euro; {{ '{0:0.2f}'.format(pos['vkpreis']) }}</td>
+                    <td>{{ '{0:0.2f}'.format(pos['rabatt']) }} &#037;</td>
+                    {% set posgesamt = (pos['vkpreis'] - (pos['vkpreis'] / 100 * pos['rabatt'])) * pos['anzahl'] %}
+                    <td>&euro; {{ '{0:0.2f}'.format(posgesamt) }}</td>
+                  </tr>
+                {% endfor %}
+                  <tr>
+                    <td colspan="4">&nbsp;</td>
+                    <td colspan="2"><strong>Gesamtsumme:</strong></td>
+                    <td><strong>&euro; {{ '{0:0.2f}'.format(gesamtsumme) }}</strong></td>
+                  </tr>
+              </tbody>
+            </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 spacer-small">&nbsp;</div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          {% if stammdaten['kleinunternehmer'] == '0' %}
+            <p>
+              Im Gesamtbetrag sind {{ stammdaten['ustsatz'] }}% Mehrwertsteuer = &euro; {{ '{0:0.2f}'.format(mwst) }} enthalten.
+            </p>
+          {% endif %}
+
+          <p>Zahlungsart:
+            {% if rechnung['zahlungsart'] == 1 %}Barzahlung
+            {% elif rechnung['zahlungsart'] == 5 %}EC-Karte
+            {% elif rechnung['zahlungsart'] == 6 %}Kreditkarte
+            {% endif %}
+          </p>
+          <p>
+            Der Gesamtbetrag wurde bereits bar bezahlt, vielen Dank!
+          </p>
+          {% if stammdaten['kleinunternehmer'] == '1' %}
+          <p>
+            In dieser Rechnung ist gem&auml;&szlig; der Kleinunternehmer-Regelung nach &sect;19 Abs. 1 UStG. keine Umsatzsteuer enthalten und ausgewiesen.
+          </p>
+          {% endif %}
+        </div>
+      </div>
+
+
+  </body>
+</html>
