@@ -201,3 +201,31 @@ $('#za-bargeld-info-gegeben').on('keydown keyup blur', function(e) {
   }
 
 });
+
+$('#abschliessen-und-drucken').on('click', function() {
+
+  event.preventDefault(); 
+
+  if(gesamtsumme > 0) {
+
+    $.ajax({
+      url: '/barverkauf/abschliessen',
+      method: 'POST',
+      data: { 'bon_id': $('#bon_id').val(), 'zahlungsart': $('#zahlungsart').val(); },
+      success: function(result) {
+        result = JSON.parse(result);
+        if(result.rechnungs_id != '') {
+          $('<a>').attr('href', '/barverkauf/pdfrenderer/' + result.rechnungs_id).attr('target', '_blank')[0].click();
+          document.location = '/barverkauf';
+        }
+
+      }
+
+    });
+
+  }
+  else {
+    return;
+  }
+
+});
