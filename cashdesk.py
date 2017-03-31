@@ -1344,5 +1344,12 @@ def barverkauf_abbrechen(id):
 
     return redirect(url_for('show_barverkauf'))
 
+@app.route('/barverkauf/ajax/abschliessen', methods = ['POST'])
+def barverkauf_ajax_abschliessen():
+
+    result = database.barverkauf.barverkauf_ajax_abschliessen(sqlite_file, request.form)
+
+    return json.dumps(result)
+
 if __name__ == '__main__':
 	app.run(debug = debug, host = bind_host, port = bind_port)

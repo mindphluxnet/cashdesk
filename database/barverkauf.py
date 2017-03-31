@@ -85,3 +85,27 @@ def barverkauf_abbrechen(sqlite_file, bon_id):
 
     conn.commit()
     conn.close()
+
+def barverkauf_abschliessen(sqlite_file, post):
+
+    conn = sqlite3.connect(sqlite_file)
+    conn.row_factory = database.factory.dict_factory
+    c = conn.cursor()
+
+    c.execute("SELECT oid, * FROM barverkauf WHERE oid = ?", [ post['bon_id'] ])
+    barverkauf = c.fetchone()
+
+    c.execute("SELECT oid, * FROM barverkauf_positionen WHERE bon_id = ?", [ post['bon_id'] ])
+    positionen = c.fetchall()
+
+    c.execute("INSERT INTO rechnungen (rechnungsnummer, kunden_id, rechnungsdatum, zahlungsart, zahlungsstatus, gedruckt, storniert, storno_rechnungsnummer) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [ barverkauf['rechnungsnummer'], -1, barverkauf['datum'], post['zahlungsart'], 1, 1, 0, 0 ] )
+
+    rechnungs_id = c.lastrowid
+
+    for pos in positionen:
+        c.execute("INSERT INTO rechnungspositionen(rechnungs_id, artikel_id, anzahl, rabatt, storniert) VALUES (?, ?, ?, ?, ?)", [ rechnungs_id, pos['artikel_id'], pos['anzahl'], 0, 0 ])
+        c.execute("UPDATE barverkauf_positionen SET verbucht = 1 WHERE oid = ?", pos['rowid'])
+
+    c.execute("UPDATE barverkauf SET verbucht = 1 WHERE oid = ?", barverkauf['rowid'])
+
+    return { 'rechnungs_id': rechnungs_id }

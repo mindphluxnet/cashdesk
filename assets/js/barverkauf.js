@@ -204,12 +204,12 @@ $('#za-bargeld-info-gegeben').on('keydown keyup blur', function(e) {
 
 $('#abschliessen-und-drucken').on('click', function() {
 
-  event.preventDefault(); 
+  event.preventDefault();
 
   if(gesamtsumme > 0) {
 
     $.ajax({
-      url: '/barverkauf/abschliessen',
+      url: '/barverkauf/ajax/abschliessen',
       method: 'POST',
       data: { 'bon_id': $('#bon_id').val(), 'zahlungsart': $('#zahlungsart').val(); },
       success: function(result) {
