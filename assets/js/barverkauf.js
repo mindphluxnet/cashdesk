@@ -211,11 +211,14 @@ $('#abschliessen-und-drucken').on('click', function() {
     $.ajax({
       url: '/barverkauf/ajax/abschliessen',
       method: 'POST',
-      data: { 'bon_id': $('#bon_id').val(), 'zahlungsart': $('#zahlungsart').val(); },
+      data: { 'bon_id': $('#bon_id').val(), 'zahlungsart': $('#zahlungsart').val() },
       success: function(result) {
         result = JSON.parse(result);
         if(result.rechnungs_id != '') {
-          $('<a>').attr('href', '/barverkauf/pdfrenderer/' + result.rechnungs_id).attr('target', '_blank')[0].click();
+          w = window.open('/barverkauf/pdfrenderer/' + result.rechnungs_id, '_blank');
+
+          sleep(100);
+          w.focus();
           document.location = '/barverkauf';
         }
 

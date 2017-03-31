@@ -75,9 +75,9 @@
                 <th>Anzahl</th>
                 <th>Art-Nr.</th>
                 <th>Artikelbezeichnung</th>
-                <th>Einzelpreis</th>
-                <th>Rabatt</th>
-                <th>Gesamtpreis</th>
+                <th class="text-right">Einzelpreis</th>
+                <th class="text-right">Rabatt</th>
+                <th class="text-right">Gesamtpreis</th>
               </thead>
               <tbody>
                 {% for pos in positionen %}
@@ -86,16 +86,16 @@
                     <td>{{ pos['anzahl'] }}</td>
                     <td>{{ pos['artikelnummer'] }}</td>
                     <td>{{ pos['artikelbezeichnung'] }}</td>
-                    <td>&euro; {{ '{0:0.2f}'.format(pos['vkpreis']) }}</td>
-                    <td>{{ '{0:0.2f}'.format(pos['rabatt']) }} &#037;</td>
+                    <td class="text-right">&euro; {{ '{0:0.2f}'.format(pos['vkpreis']) }}</td>
+                    <td class="text-right">{{ '{0:0.2f}'.format(pos['rabatt']) }} &#037;</td>
                     {% set posgesamt = (pos['vkpreis'] - (pos['vkpreis'] / 100 * pos['rabatt'])) * pos['anzahl'] %}
-                    <td>&euro; {{ '{0:0.2f}'.format(posgesamt) }}</td>
+                    <td class="text-right">&euro; {{ '{0:0.2f}'.format(posgesamt) }}</td>
                   </tr>
                 {% endfor %}
                   <tr>
                     <td colspan="4">&nbsp;</td>
                     <td colspan="2"><strong>Gesamtsumme:</strong></td>
-                    <td><strong>&euro; {{ '{0:0.2f}'.format(gesamtsumme) }}</strong></td>
+                    <td class="text-right"><strong>&euro; {{ '{0:0.2f}'.format(gesamtsumme) }}</strong></td>
                   </tr>
               </tbody>
             </table>
@@ -119,7 +119,7 @@
             {% endif %}
           </p>
           <p>
-            Der Gesamtbetrag wurde bereits bar bezahlt, vielen Dank!
+            Der Gesamtbetrag wurde bereits bezahlt, vielen Dank!
           </p>
           {% if stammdaten['kleinunternehmer'] == '1' %}
           <p>

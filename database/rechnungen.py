@@ -34,6 +34,21 @@ def load_rechnung(sqlite_file, id):
 
     return rechnung
 
+def load_barrechnung(sqlite_file, id):
+
+    conn = sqlite3.connect(sqlite_file)
+    conn.row_factory = database.factory.dict_factory
+    c = conn.cursor()
+
+    c.execute("SELECT oid, * FROM rechnungen WHERE oid = ?", [ id ])
+    rechnung = c.fetchone()
+
+    conn.close()
+
+    return rechnung
+
+
+
 def save_rechnung(sqlite_file, rechnung):
 
     conn = sqlite3.connect(sqlite_file)

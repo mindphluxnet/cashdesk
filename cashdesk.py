@@ -1347,9 +1347,46 @@ def barverkauf_abbrechen(id):
 @app.route('/barverkauf/ajax/abschliessen', methods = ['POST'])
 def barverkauf_ajax_abschliessen():
 
-    result = database.barverkauf.barverkauf_ajax_abschliessen(sqlite_file, request.form)
+    result = database.barverkauf.barverkauf_abschliessen(sqlite_file, request.form)
 
     return json.dumps(result)
+
+@app.route('/barverkauf/pdfrenderer/<string:id>')
+def barverkauf_pdfrenderer(id):
+
+    rechnung = database.rechnungen.load_barrechnung(sqlite_file, id)
+    positionen = database.rechnungen.load_positionen(sqlite_file, id)
+    stammdaten = database.settings.load_settings()
+
+    gesamtsumme = 0
+
+    for pos in positionen:
+        possumme = (pos['vkpreis'] - ((pos['vkpreis'] / 100) * pos['rabatt'])) * pos['anzahl']
+        gesamtsumme = gesamtsumme + possumme
+
+    mwst = (gesamtsumme / 100) * float(stammdaten['ustsatz'])
+
+    bootstrap_css = ''
+
+    f = file('assets/css/bootstrap.min.css', 'r')
+    for line in f:
+        bootstrap_css = bootstrap_css + line
+
+    f.close()
+
+    with open('assets/firmenlogo.png', 'rb') as logo:
+        firmenlogo = base64.b64encode(logo.read())
+
+    env = Environment(loader=FileSystemLoader('templates'))
+    template = env.get_template('template-barverkaufsrechnung.html')
+    out = template.render(bootstrap_css = bootstrap_css, firmenlogo = firmenlogo, rechnung = rechnung, positionen = positionen, stammdaten = stammdaten, gesamtsumme = gesamtsumme, mwst = mwst)
+    pdf = pdfkit.from_string(out, False)
+
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'inline; filename=barverkaufsrechnung' + id + '.pdf'
+
+    return response
 
 if __name__ == '__main__':
 	app.run(debug = debug, host = bind_host, port = bind_port)

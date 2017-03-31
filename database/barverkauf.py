@@ -90,9 +90,13 @@ def barverkauf_abbrechen(sqlite_file, bon_id):
 
 def barverkauf_abschliessen(sqlite_file, post):
 
+    print(post)
+
     conn = sqlite3.connect(sqlite_file)
     conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
+
+    kasse = database.konten.get_kasse(sqlite_file)
 
     c.execute("SELECT oid, * FROM barverkauf WHERE oid = ?", [ post['bon_id'] ])
     barverkauf = c.fetchone()
@@ -108,13 +112,11 @@ def barverkauf_abschliessen(sqlite_file, post):
 
     for pos in positionen:
         c.execute("INSERT INTO rechnungspositionen(rechnungs_id, artikel_id, anzahl, rabatt, storniert) VALUES (?, ?, ?, ?, ?)", [ rechnungs_id, pos['artikel_id'], pos['anzahl'], 0, 0 ])
-        c.execute("UPDATE barverkauf_positionen SET verbucht = 1 WHERE oid = ?", pos['rowid'])
+        c.execute("UPDATE barverkauf_positionen SET verbucht = 1 WHERE oid = ?", [ pos['rowid'] ] )
         art = database.artikel.load_single_artikel(sqlite_file, pos['artikel_id'])
-        gesamtsumme += (art['vkpreis'] * pos['anzahl'])
+        gesamtbetrag += (art['vkpreis'] * pos['anzahl'])
 
-    c.execute("UPDATE barverkauf SET verbucht = 1 WHERE oid = ?", barverkauf['rowid'])
-
-    kasse = database.konten.get_kasse(sqlite_file)
+    c.execute("UPDATE barverkauf SET verbucht = 1 WHERE oid = ?", [ post['bon_id'] ])
 
     c.execute("INSERT INTO buchungen (konto_id, gegenkonto_id, eurkonto, ausgangsrechnungs_id, eingangsrechnungs_id, betrag, datum, einaus) VALUES(?, ?, ?, ?, ?, ?, ?, ?)", [ kasse, 0, 111, rechnungs_id, 0, gesamtbetrag, barverkauf['datum'], 1 ])
 
