@@ -215,11 +215,8 @@ $('#abschliessen-und-drucken').on('click', function() {
       success: function(result) {
         result = JSON.parse(result);
         if(result.rechnungs_id != '') {
-          w = window.open('/barverkauf/pdfrenderer/' + result.rechnungs_id, '_blank');
-
-          sleep(100);
-          w.focus();
           document.location = '/barverkauf';
+          w = window.open('/barverkauf/pdfrenderer/' + result.rechnungs_id, '_blank');
         }
 
       }
