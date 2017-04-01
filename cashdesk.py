@@ -764,6 +764,9 @@ def ausgangsrechnungen_pdfrenderer(action, typ, id):
 
     database.rechnungen.rechnung_gedruckt(sqlite_file, id)
 
+    if(rechnung['kunden_id'] == -1):
+        typ = 'barrechnung'
+
     if(typ == 'rechnung'):
         template = 'template-ausgangsrechnung'
         outfile = 'rechnung-'
@@ -772,6 +775,10 @@ def ausgangsrechnungen_pdfrenderer(action, typ, id):
         template = 'template-gutschrift'
         outfile = 'gutschrift-'
         alte_rechnungs_id = rechnung['storno_rechnungsnummer']
+    elif(typ == 'barrechnung'):
+        template = 'template-barverkaufsrechnung'
+        outfile = 'barrechnung-'
+        alte_rechnungs_id = 0
 
     gesamtsumme = 0
 
