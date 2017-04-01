@@ -226,7 +226,7 @@ def get_buchung(sqlite_file, rechnungs_id):
     conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
 
-    c.execute("SELECT * FROM buchungen WHERE rechnungs_id = ?", rechnungs_id)
+    c.execute("SELECT * FROM buchungen WHERE ausgangsrechnungs_id = ?", [ rechnungs_id ])
     buchung = c.fetchone()
 
     conn.close()
