@@ -248,7 +248,7 @@ def rechnung_storniert(sqlite_file, id):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("UPDATE rechnungen SET storniert = 1 WHERE rechnungsnummer = ?", id)
+    c.execute("UPDATE rechnungen SET storniert = 1 WHERE rechnungsnummer = ?", [ id ])
 
     conn.commit()
     conn.close()
