@@ -118,7 +118,7 @@ def barverkauf_abschliessen(sqlite_file, post):
 
     c.execute("UPDATE barverkauf SET verbucht = 1 WHERE oid = ?", [ post['bon_id'] ])
 
-    c.execute("INSERT INTO buchungen (konto_id, gegenkonto_id, eurkonto, ausgangsrechnungs_id, eingangsrechnungs_id, betrag, datum, einaus) VALUES(?, ?, ?, ?, ?, ?, ?, ?)", [ kasse, 0, 111, rechnungs_id, 0, gesamtbetrag, barverkauf['datum'], 1 ])
+    c.execute("INSERT INTO buchungen (konto_id, gegenkonto_id, eurkonto, ausgangsrechnungs_id, eingangsrechnungs_id, betrag, datum, einaus) VALUES(?, ?, ?, ?, ?, ?, ?, ?)", [ kasse, 0, 111, barverkauf['rechnungsnummer'], 0, gesamtbetrag, barverkauf['datum'], 1 ])
 
     conn.commit()
     conn.close()
