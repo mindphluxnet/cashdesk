@@ -867,6 +867,7 @@ def ausgangsrechnung_stornieren(id):
     rohgewinn = 0
 
     for pos in positionen:
+        pos['ekpreis'] = database.wareneingang.load_median_ekpreis(sqlite_file, pos['artikel_id'])
         rohgewinn = gesamtpreis - (-pos['ekpreis'] * pos['anzahl'])
 
     ust = (gesamtpreis / 100) * float(settings['ustsatz'])
