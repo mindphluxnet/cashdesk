@@ -111,7 +111,7 @@ def barverkauf_abschliessen(sqlite_file, post):
     gesamtbetrag = 0
 
     for pos in positionen:
-        c.execute("INSERT INTO rechnungspositionen(rechnungs_id, artikel_id, anzahl, rabatt, storniert) VALUES (?, ?, ?, ?, ?)", [ rechnungs_id, pos['artikel_id'], pos['anzahl'], 0, 0 ])
+        c.execute("INSERT INTO rechnungspositionen(rechnungs_id, artikel_id, anzahl, rabatt, storniert) VALUES (?, ?, ?, ?, ?)", [ barverkauf['rechnungsnummer'], pos['artikel_id'], pos['anzahl'], 0, 0 ])
         c.execute("UPDATE barverkauf_positionen SET verbucht = 1 WHERE oid = ?", [ pos['rowid'] ] )
         art = database.artikel.load_single_artikel(sqlite_file, pos['artikel_id'])
         gesamtbetrag += (art['vkpreis'] * pos['anzahl'])
@@ -123,4 +123,4 @@ def barverkauf_abschliessen(sqlite_file, post):
     conn.commit()
     conn.close()
 
-    return { 'rechnungs_id': rechnungs_id }
+    return { 'rechnungs_id': barverkauf['rechnungsnummer'] }

@@ -40,7 +40,7 @@ def load_barrechnung(sqlite_file, id):
     conn.row_factory = database.factory.dict_factory
     c = conn.cursor()
 
-    c.execute("SELECT oid, * FROM rechnungen WHERE oid = ?", [ id ])
+    c.execute("SELECT oid, * FROM rechnungen WHERE rechnungsnummer = ?", [ id ])
     rechnung = c.fetchone()
 
     conn.close()
