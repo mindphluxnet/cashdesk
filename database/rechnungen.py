@@ -84,7 +84,12 @@ def save_position(sqlite_file, position):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("INSERT INTO rechnungspositionen (rechnungs_id, artikel_id, anzahl, rabatt, storniert) VALUES (?, ?, ?, ?, ?)", [ position['rechnungs_id'], position['artikel_id'], position['anzahl'], atof(position['rabatt']), position['storniert'] ] )
+    try:
+        rabatt = atof(position['rabatt'])
+    except Exception:
+        rabatt = 0
+
+    c.execute("INSERT INTO rechnungspositionen (rechnungs_id, artikel_id, anzahl, rabatt, storniert) VALUES (?, ?, ?, ?, ?)", [ position['rechnungs_id'], position['artikel_id'], position['anzahl'], rabatt, position['storniert'] ] )
 
     conn.commit()
     conn.close()
