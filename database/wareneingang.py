@@ -1,4 +1,5 @@
 import sqlite3
+from locale import *
 
 import database.factory
 
@@ -37,7 +38,7 @@ def save_position(sqlite_file, position):
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
 
-    c.execute("INSERT INTO wareneingang (rechnung_id, artikel_id, anzahl, ekpreis) VALUES (?, ?, ?, ?)", [ position['rechnungs_id'], position['artikel_id'], position['anzahl'], position['ekpreis'] ])
+    c.execute("INSERT INTO wareneingang (rechnung_id, artikel_id, anzahl, ekpreis) VALUES (?, ?, ?, ?)", [ position['rechnungs_id'], position['artikel_id'], position['anzahl'], atof(position['ekpreis']) ])
 
     conn.commit()
     conn.close()
