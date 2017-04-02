@@ -979,7 +979,10 @@ def show_buchungskonten(usekonto = 0):
                 buchung['empfaenger'] = stammdaten['firmenname']
                 buchung['verwendungszweck'] = "Zahlung Ausgangsrechnung Nr. " + str(re['rechnungsnummer']) + " durch Kunde"
             else:
-                buchung['empfaenger'] = re['nachname'] + ', ' + re['vorname']
+                if(re['kunden_id'] == -1):
+                    buchung['empfaenger'] = "Bar-Erstattung an Kunde"
+                else:
+                    buchung['empfaenger'] = re['nachname'] + ', ' + re['vorname']
                 buchung['verwendungszweck'] = "Erstattung Gutschrift " + str(re['rechnungsnummer']) + " an Kunde"
 
         #: Eingangsrechnungen
