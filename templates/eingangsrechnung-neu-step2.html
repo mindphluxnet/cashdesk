@@ -49,7 +49,7 @@
         <div class="form-group">
           <label for="rechnungsbetrag" class="col-sm-2 control-label">Rechnungsbetrag &euro;</label>
           <div class="col-sm-2">
-            <input type="text" name="rechnungsbetrag" id="rechnungsbetrag" required="required" pattern="\d+(,\d{2})?" class="form-control" value="{{ rechnung['rechnungsbetrag'] }}" />
+            <input type="text" name="rechnungsbetrag" id="rechnungsbetrag" required="required" pattern="\d+(,\d{2})?" class="form-control" value="{{ rechnung['rechnungsbetrag']|replace('.', ',') }}" />
           </div>
         </div>
         <div class="form-group">
