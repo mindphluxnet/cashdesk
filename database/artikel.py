@@ -93,7 +93,7 @@ def copy_artikel(sqlite_file, id):
     c.execute("SELECT * FROM artikel WHERE oid = ?", [ id ])
     artikel = c.fetchone()
 
-    c.execute("INSERT INTO artikel (artikelnummer, artikelbezeichnung, vkpreis, bestand, ean, warengruppe, archiviert) VALUES (?, ?, ?, ?, ?, ?)", [ artikel['artikelnummer'], artikel['artikelbezeichnung'], artikel['vkpreis'], 0, artikel['ean'], artikel['warengruppe'], 0 ])
+    c.execute("INSERT INTO artikel (artikelnummer, artikelbezeichnung, vkpreis, bestand, ean, warengruppe, archiviert) VALUES (?, ?, ?, ?, ?, ?, ?)", [ artikel['artikelnummer'], artikel['artikelbezeichnung'], artikel['vkpreis'], 0, artikel['ean'], artikel['warengruppe'], 0 ])
 
     conn.commit()
     conn.close()
