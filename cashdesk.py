@@ -976,14 +976,21 @@ def show_buchungskonten(usekonto = 0):
         if(buchung['ausgangsrechnungs_id'] != 0 and buchung['ausgangsrechnungs_id'] != None):
             re = database.rechnungen.load_barrechnung(sqlite_file, buchung['ausgangsrechnungs_id'])
             if(buchung['einaus'] == 1):
-                buchung['empfaenger'] = stammdaten['firmenname']
-                buchung['verwendungszweck'] = "Zahlung Ausgangsrechnung Nr. " + str(re['rechnungsnummer']) + " durch Kunde"
+                if(buchung['barverkaufsnummer'] == 0):
+                    buchung['empfaenger'] = stammdaten['firmenname']
+                    buchung['verwendungszweck'] = "Zahlung Ausgangsrechnung Nr. " + str(re['rechnungsnummer']) + " durch Kunde"
+                else:
+                    buchung['empfaenger'] = "Barkunde"
+                    buchung['verwendungszweck'] = "Erloes aus Barverkaufsrechnung Nr. " + str(re['barverkaufsnummer'])
             else:
                 if(re['kunden_id'] == -1):
                     buchung['empfaenger'] = "Bar-Erstattung an Kunde"
                 else:
                     buchung['empfaenger'] = re['nachname'] + ', ' + re['vorname']
-                buchung['verwendungszweck'] = "Erstattung Gutschrift " + str(re['rechnungsnummer']) + " an Kunde"
+                if(buchung['barverkaufsnummer'] == 0):
+                    buchung['verwendungszweck'] = "Erstattung Gutschrift " + str(re['rechnungsnummer']) + " an Kunde"
+                else:
+                    buchung['verwendungszweck'] = "Erstattung aus Barverkaufsrechnung Nr. " + str(re['barverkaufsnummer'])
 
         #: Eingangsrechnungen
         if(buchung['eingangsrechnungs_id'] != 0 and buchung['eingangsrechnungs_id'] != None):

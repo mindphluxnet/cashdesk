@@ -14,8 +14,9 @@ def start_barverkauf(sqlite_file):
     now = datetime.datetime.now()
 
     rechnungsnummer = database.rechnungen.get_invoice_id_from_date(sqlite_file, now.strftime("%Y-%m-%d"))
+    barverkaufsnummer = database.rechnungen.get_next_cash_invoice_id(sqlite_file)
 
-    c.execute("INSERT INTO barverkauf (datum, uhrzeit, rechnungsnummer, gesamtrabatt, verbucht) VALUES (?, ?, ?, ?, ?)", [ now.strftime("%Y-%m-%d"), now.strftime("%H:%I:%S"), rechnungsnummer, 0, 0 ] )
+    c.execute("INSERT INTO barverkauf (datum, uhrzeit, rechnungsnummer, barverkaufsnummer, gesamtrabatt, verbucht) VALUES (?, ?, ?, ?, ?, ?)", [ now.strftime("%Y-%m-%d"), now.strftime("%H:%I:%S"), rechnungsnummer, barverkaufsnummer, 0, 0 ] )
 
     conn.commit()
     conn.close()
@@ -104,7 +105,7 @@ def barverkauf_abschliessen(sqlite_file, post):
     c.execute("SELECT oid, * FROM barverkauf_positionen WHERE bon_id = ?", [ post['bon_id'] ])
     positionen = c.fetchall()
 
-    c.execute("INSERT INTO rechnungen (rechnungsnummer, kunden_id, rechnungsdatum, zahlungsart, zahlungsstatus, gedruckt, storniert, storno_rechnungsnummer) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [ barverkauf['rechnungsnummer'], -1, barverkauf['datum'], post['zahlungsart'], 1, 1, 0, 0 ] )
+    c.execute("INSERT INTO rechnungen (rechnungsnummer, barverkaufsnummer, kunden_id, rechnungsdatum, zahlungsart, zahlungsstatus, gedruckt, storniert, storno_rechnungsnummer) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [ barverkauf['rechnungsnummer'], barverkauf['barverkaufsnummer'], -1, barverkauf['datum'], post['zahlungsart'], 1, 1, 0, 0 ] )
 
     rechnungs_id = c.lastrowid
 
@@ -118,7 +119,7 @@ def barverkauf_abschliessen(sqlite_file, post):
 
     c.execute("UPDATE barverkauf SET verbucht = 1 WHERE oid = ?", [ post['bon_id'] ])
 
-    c.execute("INSERT INTO buchungen (konto_id, gegenkonto_id, eurkonto, ausgangsrechnungs_id, eingangsrechnungs_id, betrag, datum, einaus) VALUES(?, ?, ?, ?, ?, ?, ?, ?)", [ kasse, 0, 111, barverkauf['rechnungsnummer'], 0, gesamtbetrag, barverkauf['datum'], 1 ])
+    c.execute("INSERT INTO buchungen (konto_id, gegenkonto_id, barverkaufsnummer, eurkonto, ausgangsrechnungs_id, eingangsrechnungs_id, betrag, datum, einaus) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", [ kasse, 0, 111, barverkauf['barverkaufsnummer'], barverkauf['rechnungsnummer'], 0, gesamtbetrag, barverkauf['datum'], 1 ])
 
     conn.commit()
     conn.close()
